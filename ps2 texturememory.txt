@@ -1,0 +1,132 @@
+BY: dlaudams
+DATE: 2003-Jul-31 06:32
+SUBJECT: How To Calculate Texture/Frame Addresses
+
+Memory problems caused me lots of headaches.
+
+Actually, it was from all the beers after finding lots of bugs with my textures. Anyway... after I finally worked everything I decided to make this mini tutorial:
+-------------------------------------
+
+First some definitions:
+1 Block = 256 bytes
+1 Page = 8 kilobytes = 32 Blocks
+Total GS Memory = 4 megabytes = 512 Pages = 16384 Blocks
+If you don't know these off by heart then you should re-read the GS manual again :P
+
+The next thing is really important, and you should keep it really clear in your mind and/or code:
+All frame buffer settings must be given in Pages.
+All texture settings must be given in Blocks.
+
+The function ps2_gs_set_dbuff() returns the Page address of the free memory area after the frame buffers/z buffer. To use this free memory address for storing textures it must converted into a Block address. To do this just multiply the address by 8196/256 == 32. Use this new Block address for your first texture.
+
+To work out where to put a second texture, calculate the size of the first texture in Blocks, and add it to the address of the first texture. Simple.
+
+Now the tricky bit. Here is how to calculate the size of the first texture. The number of pixels that can fit in a Page and a Block depends on the pixel format (obviously), but how much memory to reserver for a given texture is not so simple.
+
+The GS is picky about how it lays out the pixels in a Block/Page, and the layouts differ depending on the pixel format.
+
+For the 32 bpp formats (PSMCT32, PSMCT24, PSMT8H, PSMTHL, PSMT4HL, PSM4HL, PSMT4HH, PSMZ32, PSMZ24), a Page stores 64 pixels across by 32 pixels down for a total of 2048 pixels. A Block stores 8 pixels across by 8 down for a total of 64 pixels.
+
+For the 16 bpp formats (PSMCT16, PSMCT16S, PSMZ16, PSMZ16S), a Page stores 64 by 64 pixels. A Block stores 16 by 8 pixels.
+
+For the 8 bit format (PSMT8), a Page stores 128 by 64 pixels. A Block stores 16 by 16 pixels.
+
+And lastly for the 4 bit format (PSMT4), a Page stores 128 by 128 pixels and a Block stores 32 by 16 pixels.
+
+(These are all in the back of your GS manual)
+
+Now, for a 32 bit texture that is 1 pixel across and 64 pixels down, you cannot just squish all the pixels into a single Block (8x8 pixels). You must reserve 8 Blocks, each Block holding only 8 of the vertical pixels. That's a lot of wasted pixels, but that's just how the GS does things to speed things up.
+
+To calculate the number of Blocks for a texture:
+
+1) Look up the number of pixels across and down that a Block will hold for the texture's pixel format (given above).
+
+2) Divide the pixel width and height of the texture by the respective pixel width and height of the Block to give the width and height of the texture in blocks.
+
+3) The texture width and height in Blocks must be rounded up to the next highest block using the ceil() function or alternatively use the integer math trick: texture_width_in_blocks = (texture_pixel_width + block_pixel_width - 1) / block_pixel_width.
+
+4) Multiply the texture width and height in Blocks to give the total texture size in Blocks.
+
+A similar procedure applies for calculating the frame buffer size. Just use the Page pixel widths/heights instead of Block pixel widths/heights.
+
+Now for some sample C code:
+
+/* Calculate the texture size in Blocks */
+int texture_block_size( int texture_width, int texture_height, int psm )
+{
+int block_width;
+int block_height;
+
+switch( psm )
+{
+case PS2_GS_PSMCT32:
+case PS2_GS_PSMCT24:
+case PS2_GS_PSMT8H:
+case PS2_GS_PSMT4HL:
+case PS2_GS_PSMT4HH:
+/* 32 bit pixel formats */
+block_width = 8;
+block_height = 8;
+break;
+
+case PS2_GS_PSMCT16:
+case PS2_GS_PSMCT16S:
+/* 16 bit pixel formats */
+block_width = 16;
+block_height = 8;
+break;
+
+case PS2_GS_PSMT8:
+/* 8 bit pixel format */
+block_width = 16;
+block_height = 16;
+break;
+
+case PS2_GS_PSMT4:
+/* 4 bit pixel format */
+block_width = 32;
+block_height = 16;
+break;
+
+default:
+assert( 0 /* invalid format */ );
+}
+
+return ((texture_width + block_width - 1) / block_width) * ((texture_height + block_height - 1) / block_height);
+}
+
+/* Calculate the frame size in Pages */
+int frame_page_size( int frame_width, int frame_height, int psm )
+{
+int page_width;
+int page_height;
+
+switch( psm )
+{
+case PS2_GS_PSMCT32:
+case PS2_GS_PSMCT24:
+case PS2_GS_PSMZ32:
+case PS2_GS_PSMZ24:
+/* 32 bit pixel formats */
+page_width = 64;
+page_height = 32;
+break;
+
+case PS2_GS_PSMCT16:
+case PS2_GS_PSMCT16S:
+case PS2_GS_PSMZ16:
+case PS2_GS_PSMZ16S:
+/* 16 bit pixel formats */
+page_width = 64;
+page_height = 64;
+break;
+
+default:
+assert( 0 /* invalid format */ );
+}
+
+return ((frame_width + page_width - 1) / page_width) * ((frame_height + page_height - 1) / page_height);
+}
+
+
+Dan.

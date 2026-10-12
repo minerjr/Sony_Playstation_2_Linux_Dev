@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="1: How does the harness work?">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id28') && !n4p){
+    location.replace('id28.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">1: How does the harness work?</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you want to write a VU demo for the competition, you'll have to download the <A HREF="http://playstation2-linux.com/files/vudemocontest/vu_coding_contest_2003_ps2linux.tgz" TARGET="_top"    TITLE="http://playstation2-linux.com/files/vude"><U>current harness</U></A>, it's already compiled, so all you have to do is run it. &nbsp;Download this file to your favourite directory (your home directory will do). &nbsp;Then type:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">tar zxfv vu_coding_contest_2003_ps2linux.tar.gz</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">cd vu_coding_contest_2003_ps2linux</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">cd previous_demos</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">./harness -h</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">(Tip for Linux newbies: Just type the first few letters of the file, i.e. vu_c and hit Tab. &nbsp;The PS2 realises that only one file begins with vu_c, so it knows which one you mean!)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">That will show you the available harness options. &nbsp;Choose the right one for your display, e.g. <FONT  FACE="Courier New">./harness -p</FONT> for PAL, and the harness will load. &nbsp;Press start, and flick through previous demos with L1 and L2. &nbsp;Pay particular attention to all entries marked &quot;Winner!&quot;, but especially Mike Day's VUniverse. &nbsp;It's astounding.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2 other demos you should pay attention to are &quot;Basic&quot; and &quot;Dedicated to the one I love&quot;. &nbsp;The first is the basic sample we're going to start our learning from, the second is my first ever VU demo, and the kind of thing this tutorial series is going to push you towards.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">All competition entries have to co-operate with the harness, so to enter the competition, you have to leave it as it is. &nbsp;All I'm going to do in this tutorial is explain how it gets your VU demo up and running, this isn't an in depth discussion of the harness code.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Competition entries consist of a number of files, but the 2 most important ones are the data file, and the code file. &nbsp;We'll talk about how to make your own later (<A HREF="id29.htm" TARGET="_top"    TITLE="3: Making your data file"><U>3: Making your data file</U></A>, <A HREF="id30.htm" TARGET="_top"    TITLE="4: Making your code file"><U>4: Making your code file</U></A>). &nbsp;Once you've quit the harness, go over to the plain_harness/demodata directory:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">cd ..</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">cd plain_harness</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">cd demodata</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">You will find 4 files in there. &nbsp;3 of them make up the basic sample: basic.bin, basic.dat, and basic.hlp. &nbsp;The 4th (demotest.ini) is a list loaded by the harness to tell it which files belong to which demo. basic.bin is the code file (note that it's only 32 byte long!), basic.dat is the data file, and basic.hlp is the text file that is displayed if you press SELECT whilst viewing the demo. &nbsp;Prove it to yourself by opening it up in your favourite text editor and altering it, then rerunning the harness.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>But what does it do?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, how does the harness get your creation onto the screen? &nbsp;The harness only does a small number of things to get the demo up and running:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1) &nbsp;Get the data file, and load it into the vu data memory.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2) &nbsp;Get the code file, and load it into the vu instruction memory.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">3) &nbsp;Send some information to the last QWord of vu data memory (more on this later)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">4) &nbsp;Start VU code execution at address 0 (i.e. the very start of vu instruction memory)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">5) &nbsp;When VU code finishes, loop back to step 3.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">What's important about the above loop? &nbsp;The data file is only loaded into vu data mem *once*. &nbsp;After you've uploaded your initial data, the harness leaves it alone. &nbsp;If you want to do anything to the data memory during the demo, it has to be done by your program. &nbsp;Also note that the VU code must not loop continuously to itself, it is instead executed every frame. &nbsp;This allows the harness time to kill your demo and load up another one.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The harness loads both your data and code by a 'direct copy', i.e. there's no need to put any extra information like DMAtags into your data file or your code file. &nbsp;If you don't know what a DMAtag is, don't worry, you don't need one to write a VU demo. &nbsp;If you do know what one is, forget about them momentarily :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The most important part of this lesson to grasp is that your demo will consist of 2 separate files with 2 separate functions. &nbsp;They can be written by different means, using different languages, on different computers, it doesn't matter how they are generated. &nbsp;All you must end up with is a file of 16kb or less that will be loaded once only into data memory at the start of your demo, and a code file of (assembled) VU instructions that will be executed once per frame.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Ready to go and make those files? &nbsp;Before we do it ourselves, let's look at how the basic sample does it. &nbsp;To do that, we need to see what exactly the basic sample actually does.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Next - <A HREF="id32.htm" TARGET="_top"    TITLE="2: A brief overview of the basic sample"><U>2: A brief overview of the basic sample</U></A></FONT></BODY>
+</HTML>

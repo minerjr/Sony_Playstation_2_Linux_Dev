@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>3.2. Control</title><link rel="stylesheet" href="default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.50.0"><link rel="home" href="index.html" title="MPlayer - The Movie Player for LINUX"><link rel="up" href="usage.html" title="Chapter 3. Usage"><link rel="previous" href="commandline.html" title="3.1. Command line"><link rel="next" href="streaming.html" title="3.3. Streaming from network or pipes"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.2. Control</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="commandline.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Usage</th><td width="20%" align="right"> <a accesskey="n" href="streaming.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="control"></a>3.2. Control</h2></div></div><p>
+<span class="application">MPlayer</span> has a fully configurable, command
+driven, control layer which lets you control
+<span class="application">MPlayer</span> with keyboard, mouse, joystick or remote
+control (using LIRC). See the man page for the complete list of keyboard controls.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="ctrl-cfg"></a>3.2.1. Controls configuration</h3></div></div><p>
+<span class="application">MPlayer</span> allows you bind any key/button to any
+<span class="application">MPlayer</span> command using a simple config file.
+The syntax consist of a key name followed by a command. The default config file location is
+<tt class="filename">$HOME/.mplayer/input.conf</tt> but it can be overridden
+using the <tt class="option">-input <i><tt>conf</tt></i></tt> option
+(relative path are relative to <tt class="filename">$HOME/.mplayer</tt>).
+</p><div class="example"><p class="title"><b>Example 3.1. A simple input control file</b></p><pre class="programlisting">
+##
+## MPlayer input control file
+##
+
+RIGHT seek +10
+LEFT seek -10
+- audio_delay 0.100
++ audio_delay -0.100
+q quit
+&gt; pt_step 1
+&lt; pt_step -1
+ENTER pt_step 1 1</pre></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="ctrl-cfg-keys"></a>3.2.1.1. Key names</h4></div></div><p>
+You can have a full list by running
+<b>mplayer -input keylist</b>.
+</p><div class="itemizedlist"><p class="title"><b>Keyboard</b></p><ul type="disc"><li>Any printable character</li><li><tt>SPACE</tt></li><li><tt>ENTER</tt></li><li><tt>TAB</tt></li><li><tt>CTRL</tt></li><li><tt>BS</tt></li><li><tt>DEL</tt></li><li><tt>INS</tt></li><li><tt>HOME</tt></li><li><tt>END</tt></li><li><tt>PGUP</tt></li><li><tt>PGDWN</tt></li><li><tt>ESC</tt></li><li><tt>RIGHT</tt></li><li><tt>LEFT</tt></li><li><tt>UP</tt></li><li><tt>DOWN</tt></li></ul></div><div class="itemizedlist"><p class="title"><b>Mouse (only supported under X)</b></p><ul type="disc"><li>
+  <tt>MOUSE_BTN0</tt> (Left button)</li><li>
+  <tt>MOUSE_BTN1</tt> (Right button)</li><li>
+  <tt>MOUSE_BTN2</tt> (Middle button)</li><li>
+  <tt>MOUSE_BTN3</tt> (Wheel)</li><li>
+  <tt>MOUSE_BTN4</tt> (Wheel)</li><li>...</li><li><tt>MOUSE_BTN9</tt></li></ul></div><div class="itemizedlist"><p class="title"><b>Joystick (support must be enabled at compile time)</b></p><ul type="disc"><li>
+  <tt>JOY_RIGHT</tt> or
+  <tt>JOY_AXIS0_PLUS</tt></li><li>
+  <tt>JOY_LEFT</tt> or
+  <tt>JOY_AXIS0_MINUS</tt></li><li>
+  <tt>JOY_UP</tt> or
+  <tt>JOY_AXIS1_MINUS</tt></li><li>
+  <tt>JOY_DOWN</tt> or
+  <tt>JOY_AXIS1_PLUS</tt></li><li><tt>JOY_AXIS2_PLUS</tt></li><li><tt>JOY_AXIS2_MINUS</tt></li><li>...</li><li><tt>JOY_AXIS9_PLUS</tt></li><li><tt>JOY_AXIS9_MINUS</tt></li></ul></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="ctrl-cfg-commands"></a>3.2.1.2. Commands</h4></div></div><p>
+You can have a full list of known commands by running
+<b>mplayer -input cmdlist</b>.
+</p><div class="itemizedlist"><ul type="disc"><li><p><tt>seek</tt> (int) val [(int) type=0]</p><p>
+  Seek to some place in the movie.
+  Type <tt>0</tt> is a relative seek of +/- val seconds.
+  Type <tt>1</tt> seek to val % in the movie.
+  </p></li><li><p><tt>audio_delay</tt> (float) val</p><p>
+  Adjust the audio delay of val seconds
+  </p></li><li><p><tt>quit</tt></p><p>
+  Quit <span class="application">MPlayer</span>
+  </p></li><li><p><tt>pause</tt></p><p>
+  Pause/unpause the playback
+  </p></li><li><p><tt>grap_frames</tt></p><p>
+  Somebody know ?
+  </p></li><li><p><tt>pt_step</tt> (int) val [(int) force=0]</p><p>
+  Go to next/previous entry in playtree. Val sign tell the direction.  If
+  no other entry is available in the given direction it won't do anything
+  unless force is non 0.
+  </p></li><li><p><tt>pt_up_step</tt> (int) val [(int) force=0]</p><p>
+  Like pt_step but it jump to next/previous in the parent list. It's useful
+  to break inner loop in the playtree.
+  </p></li><li><p><tt>alt_src_step</tt> (int) val</p><p>
+  When more than one source is available it select the next/previous one
+  (only supported by asx playlist).
+  </p></li><li><p><tt>sub_delay</tt> (float) val [(int) abs=0]</p><p>
+  Adjust the subtitles delay of +/- val seconds or set it to val seconds
+  when abs is non zero.
+  </p></li><li><p><tt>osd</tt> [(int) level=-1]</p><p>
+  Toggle osd mode or set it to level when level &gt; 0.
+  </p></li><li><p><tt>volume</tt> (int) dir</p><p>Increase/decrease volume
+  </p></li><li><tt>contrast</tt> (int) val [(int) abs=0]
+  </li><li><tt>brightness</tt> (int) val [(int) abs=0]
+  </li><li><tt>hue</tt> (int) val [(int) abs=0]
+  </li><li><p><tt>saturation</tt> (int) val [(int) abs=0]</p><p>
+  Set/Adjust video parameters. Val range from -100 to 100.
+  </p></li><li><p><tt>frame_drop</tt> [(int) type=-1]</p><p>
+  Toggle/Set frame dropping mode.
+  </p></li><li><p><tt>sub_visibility</tt></p><p>
+  Adjust subtitles visibility.
+  </p></li><li><p><tt>sub_pos</tt> (int) val</p><p>
+  Adjust subtitles position.
+  </p></li><li><p><tt>vobsub_lang</tt></p><p>
+  Change the language of VobSub subtitles.
+  </p></li><li><p><tt>vo_fullscreen</tt></p><p>
+  Switch fullscreen mode.
+  </p></li><li><p><tt>vo_ontop</tt></p><p>
+  Toggle stay-on-top. Supported by drivers which use X11, except SDL,
+  as well as directx and gl2 under Windows.
+  </p></li><li><p><tt>tv_step_channel</tt> (int) dir</p><p>
+  Select next/previous tv channel.
+  </p></li><li><p><tt>tv_step_norm</tt></p><p>
+  Change TV norm.
+  </p></li><li><p><tt>tv_step_chanlist</tt></p><p>
+  Change channel list.
+  </p></li><li><tt>gui_loadfile</tt></li><li><tt>gui_loadsubtitle</tt></li><li><tt>gui_about</tt></li><li><tt>gui_play</tt></li><li><tt>gui_stop</tt></li><li><tt>gui_playlist</tt></li><li><tt>gui_preferences</tt></li><li><p><tt>gui_skinbrowser</tt></p><p>
+  GUI actions
+  </p></li></ul></div></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="lirc"></a>3.2.2. Control from LIRC</h3></div></div><p>
+Linux Infrared Remote Control - use an easy to build home-brewn IR-receiver,
+an (almost) arbitrary remote control and control your linux box with it!
+More about it at <a href="http://www.lirc.org" target="_top">www.lirc.org</a>.
+</p><p>
+If you have installed the lirc-package, configure will autodetect it. If
+everything went fine, <span class="application">MPlayer</span> will print a
+message like &quot;<tt>Setting up lirc support...</tt>&quot;
+on startup. If an error occurs it will tell you. If it doesn't tell you
+anything about LIRC there's no support compiled in. That's it :-)
+</p><p>
+The application name for <span class="application">MPlayer</span> is - oh wonder
+- <tt class="filename">mplayer</tt>.  You can use any mplayer commands and even
+pass more than one command by separating them with <tt>\n</tt>.
+Don't forget to enable the repeat flag in <tt class="filename">.lircrc</tt> when
+it make sense (seek, volume, etc). Here's an excerpt from my
+<tt class="filename">.lircrc</tt>:
+</p><pre class="programlisting">
+begin
+     button = VOLUME_PLUS
+     prog = mplayer
+     config = volume 1
+     repeat = 1
+end
+
+begin
+    button = VOLUME_MINUS
+    prog = mplayer
+    config = volume -1
+    repeat = 1
+end
+
+begin
+    button = CD_PLAY
+    prog = mplayer
+    config = pause
+end
+
+begin
+    button = CD_STOP
+    prog = mplayer
+    config = seek 0 1\npause
+end</pre><p>
+If you don't like the standard location for the lirc-config file
+(<tt class="filename">~/.lircrc</tt>) use the <tt class="option">-lircconf
+<i><tt>filename</tt></i></tt> switch to specify another
+file.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="slave-mode"></a>3.2.3. Slave mode</h3></div></div><p>
+The slave mode allow you to build simple frontend to
+<span class="application">MPlayer</span>. When enabled (with the
+<tt class="option">-slave</tt> option) <span class="application">MPlayer</span> will
+read commands separated by new line (\n) from stdin.
+</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="commandline.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="usage.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="streaming.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.1. Command line </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.3. Streaming from network or pipes</td></tr></table></div></body></html>

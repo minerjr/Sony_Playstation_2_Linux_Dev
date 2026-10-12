@@ -1,0 +1,214 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="6: Using the building blocks">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id34') && !n4p){
+    location.replace('id34.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">6: Using the building blocks</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Constructing IF statements can be very simple. &nbsp;The trick of dealing with complex statements is to do a bit of maths on them and turn them into simple ones. &nbsp;I'm going to concentrate to start with on the branching instructions ibeq, which branches if two (integer) registers are equal, ibne which branches if they aren't, and b, which always branches.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">About the simplest IF statement we could do is to check if the value in a register is zero, because we can do it in one instruction - </FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">if (iCheck == 0)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;{Do this}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">becomes</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibeq iCheck, vi00, DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck==0</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is executed either way.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Notice that we need to use 2 labels to implement the code, one to tell the VU where to go if iCheck is zero, but another to tell the VU where to skip to if iCheck is not zero. &nbsp;Shuffling the instructions around eliminates the need for the second label</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibne iCheck, vi00, DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;We can only get here if iCheck==0</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is executed either way.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Logically, this code does exactly the same thing but with one less instruction and one less label. &nbsp;Not much of a saving (In fact, eliminating the use of a label saves you nothing memory wise) and makes your code a little harder to read, but the choice is yours.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Adding an ELSE statement isn't too hard either, by changing the label that the unconditional branch jumps to</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">if (iCheck == 0)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;{Do this}</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">else</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;{Do that}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">becomes</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibeq iCheck, vi00, DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck==0</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck!=0</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is executed either way.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Notice that I've actually used 3 labels here, one for the iCheck==0 code, one for the iCheck!=0 code, and one for the end of the statement. &nbsp;I could again reverse the logic at the top and save myself an instruction</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibne iCheck, vi00, DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck==0</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck!=0</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is executed either way.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, having been given the code to test whether a register equals zero or not, you can quite easily adapt it to see if a register equals any other constant value, or if 2 registers are equal, just by doing a little maths. &nbsp;All you have to notice is that mathematically, A==5 means precisely the same as A - 5 == 0. &nbsp;So, if you want to check whether iCheck==5 or not, you simply subtract 5 from it, and now check whether iCheck == 0. &nbsp;Something like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;<FONT  FACE="Courier New">isubiu iCheck, iCheck, 5</FONT>
+</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibeq iCheck, vi00, DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck==5</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck!=5</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is executed either way.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Unfortunately, the above code destroys whatever value you had in iCheck. &nbsp;To get round this, you could either add 5 back on to the register after the ibeq line, or if you have &nbsp;a register to spare, you could store the result in a temporary register and check that. &nbsp;This is the fun thing about programming, there are so many ways to express the same idea, each with their own drawbacks and advantages.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;<FONT  FACE="Courier New">isubiu iTemp, iCheck, 5</FONT>
+</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibeq iTemp, vi00, DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THIS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck==5</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DO_THAT:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if iCheck!=5</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is executed either way.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There are a few more branching instructions I haven't used yet, ibgtz, ibgez, ibltz, and iblez. &nbsp;These are the instructions you would need to test inequalities. &nbsp;Notice that unlike ibeq and ibne, we aren't testing the relationship between two registers, we're testing the relationship between one register and zero. &nbsp;Maths comes to help us here again, remember that A&lt;B is logically the same as A-B&lt;0, and we're off. &nbsp;By means of an example, this piece of code checks to see if the A register is less than the B register.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isub iTemp, iA, iB</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibltz iTemp, A_LESS_THAN_B:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">A_NOT_LESS_THAN_B:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;Some code here</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b DONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">A_LESS_THAN_B:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;Some code here</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">DONE:</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Calling Functions / Subroutines</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There are a few more branching instructions, bal, jr and jalr, and they are useful to create other kinds of jumps. &nbsp;bal and jr used in combination make something like a GOSUB/RETURN pair if you've ever programmed in basic.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Let's say we had a little section of code that we executed a lot of times at different points in the code, say one that did a matrix multiply. &nbsp;We have two options to code up that repeated section, we either use macros, or we create a subroutine. &nbsp;Macros are a little more versatile, but use up more instruction memory, whereas subroutines use less instruction memory, but are a tiny bit slower, due to the branching in and out of the code.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Anyway, when we want to call the subroutine, we use the bal instruction</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;bal iJump, MATRIX_MULTIPLY</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The bal instruction branches to the MATRIX_MULTIPLY section unconditionally, but before it does so it stores the address of the instruction that would have been executed next in the iJump register. &nbsp;Then, somewhere else in the code, we have the subroutine</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">MATRIX_MULTIPLY:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;Code goes here - see <A HREF="id35.htm" TARGET="_top"    TITLE="7: Some Maths"><U>7: Some Maths</U></A></FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;jr iJump</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Which, thanks to the jr command, jumps back to the address stored in the iJump register, i.e. back where we made the subroutine call from. &nbsp;That's the essence of subroutines, you can make them into functions by making the subroutine operate on particular registers, setting those registers before the bal in the main code, and reading them again after the function has returned.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">For example, let's make a really simple function that adds up vi01, vi02, vi03 and vi04, and stores the result in vi05. &nbsp;This is a completely unrealistic example, I have no idea why you'd want to do this, but the theory is still sound :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">FUNCTION_4_SUM:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iadd vi05, vi01, vi02</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iadd vi05, vi05, vi03</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iadd vi05, vi05, vi04</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;jr iJump</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then, in our main code, all we have to do is write</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;bal iJump, FUNCTION_4_SUM</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">obviously after making sure that some meaningful values lie in vi01-04. &nbsp;Then the sum of the 4 registers magically appears in vi05. &nbsp;Like I said, this is a totally fictitious example, if you have a better, genuinely useful one, mail it to me!</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Loopy Loops</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Believe it or not, all of your favourite looping constructs come right back to the humble if statement. &nbsp;However, there is a little extra part to doing loops in VCL that helps optimisation. &nbsp;I'm going to concentrate of FOR loops here, you should quite easily be able to navigate your way around DO-WHILE and REPEAT-UNTIL loops using the information on if statements above.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">From a C background, for loops have 4 parts.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">for(Set up a variable; Do a check; Do something every time we go round the loop)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Do something inside the loop.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">We usually see counter variables being used like this</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">for(i=0; i&lt;10; i++)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;This piece of code executes 10 times.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">In assembly, that flows a little like this.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iCounter, vi00, 0 ; &quot;i=0&quot;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">TOP_OF_LOOP:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This piece of code executes 10 times.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iCounter, iCounter, 1 ; &quot;i++&quot;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isubiu iTemp, iCounter, 10 ; &quot;i&lt;10&quot;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibltz iTemp, TOP_OF_LOOP</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">However, if we aren't using the value of i anywhere in the loop, we can change the logic around to get rid of that extra isubiu in there.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">for (i=10; i!=0; i--)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;This code still executes 10 times</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iCounter, vi00, 10</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">TOP_OF_LOOP:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code still executes 10 times</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isubiu iCounter, iCounter, 1</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibne iCounter, vi00, TOP_OF_LOOP</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There, same instruction flow, but with one less instruction per loop. &nbsp;Come on, you love assembly now, don't you?</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">As I promised earlier, there is something that VCL can do to help with optimising loops. &nbsp;There is an optimisation technique called loop unrolling. &nbsp;Basically, if all you're trying to do is repeat an instruction 10 times, it's quicker to write the instruction 10 times than it is to bother with decrementing a counter, checking to see if it's zero yet then jumping back to the start of the loop. &nbsp;However, to save your fingers, VCL can do even better unrolling for you, using the --LoopCS directive. &nbsp;At the top of your loop, you put the line</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">--LoopCS n,m</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">where n is the minimum number of times the loop will be executed, and m is the number of times you can safely overrun the loop. &nbsp;What, overrunning a loop, isn't that insane? &nbsp;Well, it turns out that VCL can produce better code if you allow it to run the loop more times than you need. &nbsp;Say you're writing to an array that's 15 units long, if you allocated 17 units, you could safely run the loop 2 times to many without a problem. &nbsp;How does VCL produce better code with this? &nbsp;I haven't a clue. &nbsp;In fact, as of it's latest release, the m parameter is ignored, so it really doesn't matter!</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Homework</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">And that, as they say, is that. &nbsp;I know I promised you some good homework questions in this lesson, but I decided to publish the lesson before completing the homework questions so you can read and digest this first. &nbsp;I guess the competition deadline approaching is making me a little sloppy in what I release... but if it helps you get your demos rolling in, then all the better!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id33.htm" TARGET="_top"    TITLE="5:  Instruction set"><U>5: &nbsp;Instruction set</U></A> Next - <A HREF="id35.htm" TARGET="_top"    TITLE="7: Some Maths"><U>7: Some Maths</U></A></FONT><BR>
+<bR>
+</BODY>
+</HTML>

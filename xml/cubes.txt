@@ -1,0 +1,100 @@
+<model>
+ <mesh>
+  <vertices>
+   <vertex at="-3,-3,-3"/>
+   <vertex at="-3,-3,-2" />
+   <vertex at="-3,-2,-2"  />
+   <vertex at="-3,-2,-3" />
+   <vertex at="-2,-3,-3" />
+   <vertex at="-2,-3,-2"  />
+   <vertex at="-2,-2,-2"   />
+   <vertex at="-2,-2,-3"  />
+  </vertices>
+  
+  <normals>
+   <normal at="-1,0,0"/>
+   <normal at="1,0,0"/>
+   <normal at="0,-1,0"/>
+   <normal at="0,1,0"/>
+   <normal at="0,0,-1"/>
+   <normal at="0,0,1"/>
+  </normals>
+  
+  <maps>
+   <map at="0.0,0.0"/>
+   <map at="0.0,1.0"/>
+   <map at="1.0,0.0"/>
+   <map at="1.0,1.0"/>
+  </maps>
+  
+  <texture>
+   <properties name="dummy.rgba" rgba="0xFFFFFFFF"/>
+  </texture>
+  
+  <faces>
+   <face vertices="0,2,3" normals="0,0,0" maps="0,1,2" />
+   <face vertices="2,0,1" normals="0,0,0" maps="0,1,2" />
+   <face vertices="2,6,1" normals="5,5,5" maps="0,1,2" />
+   <face vertices="1,6,5" normals="5,5,5" maps="0,1,2" />
+   <face vertices="6,7,5" normals="1,1,1" maps="0,1,2" />
+   <face vertices="5,7,4" normals="1,1,1" maps="0,1,2" />
+   <face vertices="3,7,0" normals="4,4,4" maps="0,1,2" />
+   <face vertices="0,7,4" normals="4,4,4" maps="0,1,2" />
+   <face vertices="2,3,7" normals="3,3,3" maps="0,1,2" />
+   <face vertices="2,6,7" normals="3,3,3" maps="0,1,2" />
+   <face vertices="1,4,0" normals="2,2,2" maps="0,1,2" />
+   <face vertices="1,4,5" normals="2,2,2" maps="0,1,2" />
+  </faces>
+  
+ </mesh>
+  <mesh state="stripped">
+   <vertices>
+    <vertex at="-1,-1,-1"/>
+    <vertex at="-1,-1,1"/>
+    <vertex at="-1,1,1"/>
+    <vertex at="-1,1,-1"/>
+    <vertex at="1,-1,-1"/>
+    <vertex at="1,-1,1"/>
+    <vertex at="1,1,1"/>
+    <vertex at="1,1,-1"/>
+   </vertices>
+
+   <normals>
+    <normal at="-1,0,0"/>
+    <normal at="1,0,0"/>
+    <normal at="0,-1,0"/>
+    <normal at="0,1,0"/>
+    <normal at="0,0,-1"/>
+    <normal at="0,0,1"/>
+   </normals>
+
+   <maps>
+    <map at="0,0"/>
+    <map at="0,1"/>
+    <map at="1,0"/>
+    <map at="1,1"/>
+   </maps>
+
+   <texture>
+    <properties name="dummy.rgba" rgba="ffffffff"/>
+   </texture>
+
+   <faces>
+    <face vertices="6,1,2" normals="5,5,5" maps="0,1,2"/>
+    <face vertices="1,2,0" normals="0,0,0" maps="0,1,2"/>
+    <face vertices="2,0,3" normals="0,0,0" maps="0,1,2"/>
+    <face vertices="0,3,7" normals="4,4,4" maps="0,1,2"/>
+    <face vertices="3,7,2" normals="3,3,3" maps="0,1,2"/>
+    <face vertices="7,2,7" normals="0,0,0" maps="0,0,0"/>
+    <face vertices="2,7,6" normals="3,3,3" maps="0,1,2"/>
+    <face vertices="7,6,5" normals="1,1,1" maps="0,1,2"/>
+    <face vertices="6,5,1" normals="5,5,5" maps="0,1,2"/>
+    <face vertices="5,1,4" normals="2,2,2" maps="0,1,2"/>
+    <face vertices="1,4,0" normals="2,2,2" maps="0,1,2"/>
+    <face vertices="4,0,4" normals="0,0,0" maps="0,0,0"/>
+    <face vertices="0,4,7" normals="4,4,4" maps="0,1,2"/>
+    <face vertices="4,7,5" normals="1,1,1" maps="0,1,2"/>
+   </faces>
+
+  </mesh>
+</model>

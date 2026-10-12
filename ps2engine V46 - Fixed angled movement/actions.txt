@@ -1,0 +1,25 @@
+greeted
+0.0001
+0
+0
+-1
+annoyed
+-0.0001
+0
+0
+-1
+punched
+-0.03
+0
+0
+-1
+kicked
+-0.04
+0
+0
+-1
+told a joke to
+0.20
+0
+0
+-1

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Vector Processor Unit 1 (VPU1/VU1/COP2)</title><meta name="generator" content="DocBook XSL Stylesheets V1.40"><link rel="home" href="index.html" title="The Playstation 2 Linux Kit Handbook"><link rel="up" href="ch03.html" title="Chapter 3. Functional overview of the Playstation 2"><link rel="previous" href="ch03s03.html" title="Vector Processor Unit 0 (VPU0/VU0/COP1)"><link rel="next" href="ch03s05.html" title="Graphics Synthesizer (GS)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Vector Processor Unit 1 (VPU1/VU1/COP2)</th></tr><tr><td width="20%" align="left"><a href="ch03s03.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Functional overview of the Playstation 2</th><td width="20%" align="right"> <a href="ch03s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="id2740420"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2740420"></a>Vector Processor Unit 1 (VPU1/VU1/COP2)</h2></div></div><p>
+   Vector Unit 1 (VU1) is one of the EE co-processors and is used primarily
+   for graphics pre-processing for the GS. Both vector units are 
+   micro-programmable processors with their own instruction and data space.
+  </p><p>
+   The main features of VU1 include:
+  
+   <div class="itemizedlist"><ul><li><a name="id2740443"></a>
+     32 32-bit floating point registers
+    </li><li><a name="id2740341"></a>
+     16 16-bit integer registers
+    </li><li><a name="id2733766"></a>
+     16KB of micro-memory for instructions
+    </li><li><a name="id2733771"></a>
+     16KB of micro-memory for data
+    </li><li><a name="id2733776"></a>
+     4 32-bit single precision floating point multiply-add units
+    </li><li><a name="id2733781"></a>
+     1 32-bit single precision floating point divide unit
+    </li></ul></div>
+  </p><p>
+   The main difference between VU0 and VU1 is the micro-memory available and
+   their purpose. VU1 has 16KB more internal instruction and data space, versus
+   just 4KB for VU0. VU1 is primarily used for pre-processing of geometry,
+   texture and other graphics data before it is sent to the GS. VU0's primary
+   purpose is to pre-process geometry or aid the EE with physics or other 
+   heavy floating point calculations. An example of VU1s use would be 
+   performing the perspective transform for all verticies before they are
+   sent to the GS.
+  </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a href="ch03s03.html">Prev</a> </td><td width="20%" align="center"><a href="index.html">Home</a></td><td width="40%" align="right"> <a href="ch03s05.html">Next</a></td></tr><tr><td width="40%" align="left">Vector Processor Unit 0 (VPU0/VU0/COP1) </td><td width="20%" align="center"><a href="ch03.html">Up</a></td><td width="40%" align="right"> Graphics Synthesizer (GS)</td></tr></table></div></body></html>

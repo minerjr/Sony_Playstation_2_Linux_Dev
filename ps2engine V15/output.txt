@@ -1,0 +1,1 @@
+cc -g -Wall -Wmissing-prototypes  -I../sps2dev-0.3.0a   -c -o main.o main.c

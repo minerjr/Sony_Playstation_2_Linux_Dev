@@ -1,0 +1,30 @@
+Read codec 'libexec/vu1/basic.vu'
+Info: _gp->center: 2048, 2048
+Info: _gp->offset: 1728, 1808
+Info: _gp->version: 0
+Info: _gp->interlace_mode: 0
+Info: _gp->interlace_format: 0
+Info: _gp->out_mode: 0
+Info: _gp->ff_mode: 65536
+Info: _gp->resolution: 0
+Info: _gp->refresh_rate: 256
+Info: _gp->width: 640
+Info: _gp->height: 480
+Info: _gp->pixel_ratio: 1.000000
+Loaded image 'lib/img/ps2tux.pcx' (512 x 256)
+Displaying sprite at (27648,28928) => (37888,36608)
+lib/models/ape.ms size: 119831 bytes
+Loading done, 0x13 meshes, 0x270e polys
+lib/models/ape.ms size: 119831 bytes
+Loading done, 0x13 meshes, 0x270e polys
+lib/models/ape.ms size: 119831 bytes
+Loading done, 0x13 meshes, 0x270e polys
+ .. allocating 28140 qwords (450240 bytes)
+good model format
+finished packet: 27878 qwords, 1 tags
+ .. allocating 28140 qwords (450240 bytes)
+good model format
+finished packet: 27878 qwords, 1 tags
+ .. allocating 28140 qwords (450240 bytes)
+good model format
+finished packet: 27878 qwords, 1 tags

@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<svg width="590.762" height="400.179">
+  <defs> 
+    <marker id="ArrowEnd" viewBox="0 0 10 10" refX="0" refY="5" 
+     markerUnits="strokeWidth" 
+     markerWidth="4" 
+     markerHeight="3" 
+     orient="auto"> 
+        <path d="M 0 0 L 10 5 L 0 10 z" /> 
+    </marker>
+    <marker id="ArrowStart" viewBox="0 0 10 10" refX="10" refY="5" 
+     markerUnits="strokeWidth" 
+     markerWidth="4" 
+     markerHeight="3" 
+     orient="auto"> 
+        <path d="M 10 0 L 0 5 L 10 10 z" /> 
+    </marker> </defs>
+<g>
+<path style="stroke:#000000; stroke-width:4.0; fill:none; font-family:Times; font-size:12.0" d="M 57.5217 155.423L 510.025 155.423"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 547.257 13.8868L 573.098 13.8868L 573.098 116.236L 547.257 116.236L 547.257 13.8868L 547.257 13.8868L 547.257 13.8868L 547.257 13.8868L 547.257 13.8868L 547.257 13.8868z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 308.074 14.3439L 414.305 14.3439L 414.305 116.546L 308.074 116.546L 308.074 14.3439L 308.074 14.3439L 308.074 14.3439L 308.074 14.3439L 308.074 14.3439L 308.074 14.3439z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 331.518 21.6702L 390.861 21.6702L 390.861 56.1039L 331.518 56.1039L 331.518 21.6702L 331.518 21.6702L 331.518 21.6702L 331.518 21.6702L 331.518 21.6702L 331.518 21.6702z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 328.221 96.032L 394.158 96.032L 394.158 109.586L 328.221 109.586L 328.221 96.032L 328.221 96.032L 328.221 96.032L 328.221 96.032L 328.221 96.032L 328.221 96.032z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 320.041 61.6969L 360.719 61.6969L 360.719 89.9032L 320.041 89.9032L 320.041 61.6969L 320.041 61.6969L 320.041 61.6969L 320.041 61.6969L 320.041 61.6969L 320.041 61.6969z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 361.99 61.6969L 402.668 61.6969L 402.668 89.9032L 361.99 89.9032L 361.99 61.6969L 361.99 61.6969L 361.99 61.6969L 361.99 61.6969L 361.99 61.6969L 361.99 61.6969z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 353.297 40.9607)">
+VU0
+</text >
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 332.715 73.6613)">
+4KB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 321.219 82.0863)">
+microMEM
+</text >
+</g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 352.619 104.882)">
+VIF0
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(4.14115e-17 -0.676324 0.676324 4.14115e-17 316.499 38.5207)">
+VPU0
+</text >
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 374.663 73.8439)">
+4KB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 368.577 81.903)">
+vuMEM
+</text >
+</g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 425.098 13.808L 531.329 13.808L 531.329 116.01L 425.098 116.01L 425.098 13.808L 425.098 13.808L 425.098 13.808L 425.098 13.808L 425.098 13.808L 425.098 13.808z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 448.542 21.1344L 507.885 21.1344L 507.885 55.568L 448.542 55.568L 448.542 21.1344L 448.542 21.1344L 448.542 21.1344L 448.542 21.1344L 448.542 21.1344L 448.542 21.1344z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 445.245 95.4964L 511.182 95.4964L 511.182 109.05L 445.245 109.05L 445.245 95.4964L 445.245 95.4964L 445.245 95.4964L 445.245 95.4964L 445.245 95.4964L 445.245 95.4964z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 437.065 61.161L 477.743 61.161L 477.743 89.3676L 437.065 89.3676L 437.065 61.161L 437.065 61.161L 437.065 61.161L 437.065 61.161L 437.065 61.161L 437.065 61.161z"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 479.014 61.161L 519.692 61.161L 519.692 89.3676L 479.014 89.3676L 479.014 61.161L 479.014 61.161L 479.014 61.161L 479.014 61.161L 479.014 61.161L 479.014 61.161z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 470.321 40.4248)">
+VU1
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 469.643 104.347)">
+VIF1
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(4.14115e-17 -0.676324 0.676324 4.14115e-17 433.523 37.9849)">
+VPU1
+</text >
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 489.427 73.3082)">
+16KB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 485.6 81.3673)">
+vuMEM
+</text >
+</g>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 447.479 73.125)">
+16KB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 438.019 81.5506)">
+microMEM
+</text >
+</g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(4.14115e-17 -0.676324 0.676324 4.14115e-17 562.251 71.8257)">
+GIF
+</text >
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 36.4994 178.319L 77.304 178.319L 77.304 205.279L 36.4994 205.279L 36.4994 178.319L 36.4994 178.319L 36.4994 178.319L 36.4994 178.319L 36.4994 178.319L 36.4994 178.319z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 46.5335 193.872)">
+Timer
+</text >
+</g>
+<path style="stroke:#000000; stroke-width:2.0; fill:none; font-family:Times; font-size:12.0" d="M 56.9016 178.453L 56.9016 116.729"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 110.63 14.3439L 280.966 14.3439L 280.966 116.546L 110.63 116.546L 110.63 14.3439L 110.63 14.3439L 110.63 14.3439L 110.63 14.3439L 110.63 14.3439L 110.63 14.3439z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(4.14115e-17 -0.676324 0.676324 4.14115e-17 118.689 47.6786)">
+EE Core
+</text >
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 142.231 20.3033L 190.951 20.3033L 190.951 63.1622L 142.231 63.1622L 142.231 20.3033L 142.231 20.3033L 142.231 20.3033L 142.231 20.3033L 142.231 20.3033L 142.231 20.3033z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 147.872 39.5938)">
+Instruction
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 154.832 48.019)">
+Unit 0
+</text >
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 200.645 20.1338L 249.365 20.1338L 249.365 62.9927L 200.645 62.9927L 200.645 20.1338L 200.645 20.1338L 200.645 20.1338L 200.645 20.1338L 200.645 20.1338L 200.645 20.1338z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 206.286 39.4243)">
+Instruction
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 213.246 47.8494)">
+Unit 1
+</text >
+</g>
+</g>
+<g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 124.992 70.6855L 169.317 70.6855L 169.317 111.346L 124.992 111.346L 124.992 70.6855L 124.992 70.6855L 124.992 70.6855L 124.992 70.6855L 124.992 70.6855L 124.992 70.6855z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 137.229 84.2978)">
+16KB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 128.435 93.0894)">
+Instruction
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 135.427 101.881)">
+Cache
+</text >
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 172.783 70.6855L 217.107 70.6855L 217.107 111.346L 172.783 111.346L 172.783 70.6855L 172.783 70.6855L 172.783 70.6855L 172.783 70.6855L 172.783 70.6855L 172.783 70.6855z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 187.276 84.2978)">
+8KB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 186.375 93.4559)">
+Data
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 183.218 101.881)">
+Cache
+</text >
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 220.448 70.3189L 266.604 70.3189L 266.604 110.98L 220.448 110.98L 220.448 70.3189L 220.448 70.3189L 220.448 70.3189L 220.448 70.3189L 220.448 70.3189L 220.448 70.3189z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 233.6 84.6644)">
+16KB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676278 0.00786369 -0.00786369 0.676278 222.978 93.0894)">
+Scratchpad
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 234.509 101.514)">
+RAM
+</text >
+</g>
+</g>
+</g>
+<path style="stroke:#000000; stroke-width:2.0; fill:none; font-family:Times; font-size:12.0" d="M 75.0058 41.2669L 110.722 41.2669"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 90.7574 96.8173L 110.42 96.8173"/>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 13.1669 77.1991L 91.8605 77.1991L 91.8605 116.546L 13.1669 116.546L 13.1669 77.1991L 13.1669 77.1991L 13.1669 77.1991L 13.1669 77.1991L 13.1669 77.1991L 13.1669 77.1991z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 37.41 94.7335)">
+Interrupt
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 34.9266 103.158)">
+Controller
+</text >
+</g>
+</g>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 281.241 65.4449L 307.799 65.4449"/>
+<path style="stroke:#000000; stroke-width:2.0; fill:none; font-family:Times; font-size:12.0" d="M 414.214 65.9028L 424.836 65.9028"/>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 531.068 64.909L 547.186 64.909"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 287.752 56.4244)">
+128
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 88.3511 33.9096)">
+32
+</text >
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 289.025 71.1684L 300.015 60.1791"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 87.369 46.7616L 98.3586 35.7721"/>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 195.798 116.271L 195.798 155.65"/>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 361.19 116.454L 361.19 155.833"/>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 478.213 115.904L 478.213 155.65"/>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 190.107 141.455L 201.096 130.466"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 203.399 138.034)">
+128
+</text >
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 355.851 141.821L 366.84 130.832"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 369.143 138.4)">
+128
+</text >
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 472.325 141.272L 483.315 130.282"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 485.618 137.851)">
+128
+</text >
+</g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 13.1669 14.6712L 75.1019 14.6712L 75.1019 67.8624L 13.1669 67.8624L 13.1669 14.6712L 13.1669 14.6712L 13.1669 14.6712L 13.1669 14.6712L 13.1669 14.6712L 13.1669 14.6712z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 29.7002 34.8982)">
+Floating
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 34.8863 43.9069)">
+Point
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 36.9193 51.7827)">
+Unit
+</text >
+</g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 5.24084 5.24084L 585.521 5.24084L 585.521 225.854L 5.24084 225.854L 5.24084 5.24084L 5.24084 5.24084L 5.24084 5.24084L 5.24084 5.24084L 5.24084 5.24084L 5.24084 5.24084z"/>
+<g>
+<g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 519.845 249.057L 563.266 249.057L 563.266 280.92L 519.845 280.92L 519.845 249.057L 519.845 249.057L 519.845 249.057z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.640657 0 0 0.640657 533.222 264.058)">
+CRT
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.640657 0 0 0.640657 524.896 273.283)">
+Controller
+</text >
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 462.679 249.057L 516.409 249.057L 516.409 293.727L 462.679 293.727L 462.679 249.057L 462.679 249.057L 462.679 249.057z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.640657 0 0 0.640657 481.641 268.744)">
+4MB
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.640657 0 0 0.640657 470.105 277.969)">
+Video RAM
+</text >
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 447.998 242.809L 572.325 242.809L 572.325 394.938L 447.998 394.938L 447.998 242.809L 447.998 242.809L 447.998 242.809z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(3.92276e-17 -0.640657 0.640657 3.92276e-17 456.119 256.554)">
+GS
+</text >
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 462.679 302.161L 563.266 302.161L 563.266 389.315L 462.679 389.315L 462.679 302.161L 462.679 302.161L 462.679 302.161z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.640657 0 0 0.640657 496.951 338.477)">
+Graphics
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.640657 0 0 0.640657 492.892 347.703)">
+Synthesizer
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.640657 0 0 0.640657 503.355 356.928)">
+Core
+</text >
+</g>
+</g>
+</g>
+<g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 503.877 196.793L 514.866 185.803"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 517.169 193.371)">
+128
+</text >
+</g>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 510.161 153.58L 510.161 243.297"/>
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 444.115 170.453L 444.115 157.083"/>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 413.876 170.243L 474.354 170.243L 474.354 217.604L 413.876 217.604L 413.876 170.243L 413.876 170.243L 413.876 170.243L 413.876 170.243L 413.876 170.243L 413.876 170.243z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 432.838 186.258)">
+Image
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 424.044 195.997)">
+Processing
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 436.9 205.736)">
+Unit
+</text >
+</g>
+</g>
+</g>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 561.119 115.547L 561.119 242.322"/>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 269.539 243.297L 439.221 243.297L 439.221 394.451L 269.539 394.451L 269.539 243.297L 269.539 243.297L 269.539 243.297z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.706572 0 0 0.6998 317.395 321.019)">
+32MB System RAM
+</text >
+</g>
+<g>
+<g>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 351.894 171.859L 351.894 156.474"/>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 331.492 172.182L 372.296 172.182L 372.296 212.258L 331.492 212.258L 331.492 172.182L 331.492 172.182L 331.492 172.182L 331.492 172.182L 331.492 172.182L 331.492 172.182z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 335.874 189.714)">
+RDRAM
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 336.336 198.873)">
+Interface
+</text >
+</g>
+</g>
+</g>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 351.942 211.603L 351.942 243.297"/>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:3.0; fill:none; font-family:Times; font-size:12.0" d="M 257.163 168.746L 257.163 156.84"/>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 226.195 168.539L 288.13 168.539L 288.13 215.901L 226.195 215.901L 226.195 168.539L 226.195 168.539L 226.195 168.539L 226.195 168.539L 226.195 168.539L 226.195 168.539z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 238.901 189.531)">
+10 channel
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 229.43 199.056)">
+DMA Controller
+</text >
+</g>
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 29.495 315.212L 73.6739 315.212L 73.6739 360.071L 29.495 360.071L 29.495 315.212L 29.495 315.212L 29.495 315.212z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.69697 0 0 0.69697 35.5556 329.742)">
+CD/DVD
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.69697 0 0 0.69697 41.8283 339.779)">
+ROM
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.69697 0 0 0.69697 37.8723 349.815)">
+Reader
+</text >
+</g>
+</g>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 83.5218 274.99L 100.831 274.99"/>
+<path style="stroke:#000000; stroke-width:1.0; fill:none; font-family:Times; font-size:12.0" d="M 73.5261 337.402L 100.831 337.402"/>
+<g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 19.8909 255.974L 83.278 255.974L 83.278 294.837L 19.8909 294.837L 19.8909 255.974L 19.8909 255.974L 19.8909 255.974z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.77381 0 0 0.77381 23.4673 266.635)">
+Memory Card
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.77381 0 0 0.77381 43.8402 277.778)">
+and
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.77381 0 0 0.77381 34.2945 288.921)">
+Joypads
+</text >
+</g>
+</g>
+<g>
+<g>
+<path style="stroke:#000000; stroke-width:2.0; fill:none; font-family:Times; font-size:12.0" d="M 178.468 204.397L 178.468 242.925"/>
+<path style="stroke:#000000; stroke-width:2.0; fill:none; font-family:Times; font-size:12.0" d="M 178.502 156.42L 178.502 178.519"/>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 159.084 178.319L 199.888 178.319L 199.888 205.279L 159.084 205.279L 159.084 178.319L 159.084 178.319L 159.084 178.319L 159.084 178.319L 159.084 178.319L 159.084 178.319z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.676324 0 0 0.676324 173.172 193.872)">
+SIF
+</text >
+</g>
+</g>
+<g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#ffffff; font-family:Times; font-size:12.0" d="M 100.985 243.297L 257.135 243.297L 257.135 374.825L 100.985 374.825L 100.985 243.297L 100.985 243.297L 100.985 243.297L 100.985 243.297L 100.985 243.297L 100.985 243.297z"/>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(4.20616e-17 -0.686941 0.686941 4.20616e-17 108.9 260.328)">
+IOP
+</text >
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 158.066 329.802L 198.753 329.802L 198.753 365.671L 158.066 365.671L 158.066 329.802L 158.066 329.802L 158.066 329.802z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 163.06 344.897)">
+USB 1.0
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 160.546 354.789)">
+Controller
+</text >
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 204.914 329.802L 245.601 329.802L 245.601 365.671L 204.914 365.671L 204.914 329.802L 204.914 329.802L 204.914 329.802z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 215.865 339.951)">
+Sony
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 215.638 349.843)">
+i.Link
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 207.395 359.735)">
+Controller
+</text >
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 112.36 329.802L 153.047 329.802L 153.047 365.671L 112.36 365.671L 112.36 329.802L 112.36 329.802L 112.36 329.802z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 120.788 339.951)">
+Sound
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 114.152 349.843)">
+Processor
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 121.938 359.735)">
+Unit 2
+</text >
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 170.107 254.994L 245.592 254.994L 245.592 323.519L 170.107 323.519L 170.107 254.994L 170.107 254.994L 170.107 254.994z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 200.29 286.417)">
+IOP
+</text >
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 198.918 296.308)">
+Core
+</text >
+</g>
+</g>
+</g>
+<g>
+<path style="stroke:#000000; stroke-width:1.0; fill:#cccccc; font-family:Times; font-size:12.0" d="M 165.506 323.299L 112.25 323.299L 112.25 262.003L 165.506 262.003L 165.506 323.299L 165.506 323.299L 165.506 323.299z"/>
+<g>
+<text style="stroke:none; fill:#000000; font-family:Helvetica; font-size:12.0" transform="matrix(0.686941 0 0 0.686941 129.72 294.757)">
+RAM
+</text >
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

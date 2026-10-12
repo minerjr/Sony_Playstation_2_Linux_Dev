@@ -1,0 +1,31 @@
+TARGET = dma_triangle
+
+# Which compiler
+CC = gcc
+
+# libs and includes
+LIBS = -lsps2util -L../..
+
+.SUFFIXES: .c .cpp .s .vsm .dsm .o
+
+OBJS = dma_triangle.o
+
+# Options for development
+CFLAGS = -g -Wall -Werror -fno-common -ffast-math -I ../..
+
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $(OBJS) $(LIBS)
+
+.c.o:
+	$(CC) -c $< $(CFLAGS) -o $@
+
+depend:
+	$(CC) $(CFLAGS) -MM *.c > .depend
+
+clean:
+	rm -f $(TARGET)
+	rm -f $(OBJS)
+	rm -f Makefile.bak
+	rm -f .depend
+
+-include .depend

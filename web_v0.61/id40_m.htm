@@ -1,0 +1,74 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="10: Texture Mapping">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id40') && !n4p){
+    location.replace('id40.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">10: Texture Mapping</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Now that we've got ourselves an image uploaded, let's use it as a texture. &nbsp;If you've skipped ahead to this lesson without knowing how to upload images to the GS, go back to <A HREF="id39.htm" TARGET="_top"    TITLE="9: Uploading Image data"><U>9: Uploading Image data</U></A> and come back when you're ready.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">You'll be relieved to know that the hard work has already been done, in getting the textures uploaded in the first place. &nbsp;Now it's just a case of telling the GS how to use those textures to draw primitives. &nbsp;Follow the code below, then experiment with the settings to see what effect they have!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The necessary registers to set are TEXA, TEX0, and TEX1. &nbsp;If you haven't done so since you uploaded the textures, you need to access the TEXFLUSH register to let the GS know that new textures have arrived. &nbsp;Then, if you're using Mipmapping, you need to set the MIPTBP1 and MIPTBP2 registers. &nbsp;We'll ignore those for the moment, because I've never used Mipmapping before!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Study this piece of code:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">qword_t reg; //as before</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, GIF_SET_TAG(NLOOP(4), EOP(1), PRE(0), 0, GIF_PACKED, NREG(1)));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, AD_REG);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_TEXFLUSH();</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = TEXFLUSH_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_TEXA(0x80, TEXA_AEM_NORMAL, 0x80);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = TEXA_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_TEX0(0x118 &lt;&lt; 5, 1, PSMCT32, 3, 3, TEX0_TCC_RGB, TEX0_TFX_MODULATE, 0, 0, 0, 0, 0);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = TEX0_1_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_TEX1(TEX1_LCM_K, 0, TEX1_MMAG_NEAREST, TEX1_MMIN_NEAREST, TEX1_MTBA_NOAUTO, 0, 0);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = TEX1_1_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">A couple of notes about the above code before I discuss the parameters. &nbsp;Firstly, GS_SET_TEXFLUSH takes no parameters! &nbsp;This is absolutely deliberate, the GS detects when something is written to it, it really doesn't matter what. &nbsp;Secondly, I'm writing to the TEX0_1 and TEX1_1 registers. &nbsp;These registers are the first we've met which have a context. &nbsp;It's possible to write a different set of texture settings to TEX0_2 and TEX1_2. &nbsp;How is it possible to tell the GS which context setting to use? &nbsp;That finally answers the question of what the CTXT field of the PRIM register is for. &nbsp;This enables you to switch between two different settings for rendering textures without constantly having to reload the TEX0 and TEX1 registers. &nbsp;Good, eh?</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, what's actually going into those registers? &nbsp;Well, TEXA is only used when Alpha blending, and it tells the GS what to do if you've asked for alpha blending, but the pixel format we're using has only 1 alpha bit. &nbsp;For now, we set the 2 alpha values to a moderate 0x80, and set the alpha calculation to a normal mode.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then, on to the beast that is TEX0. &nbsp;There are lots of parameters here, the easiest to deal with is the five zeros at the end, you only need them if your texture is using a CLUT, i.e. is in a colour mode of 8-bits or less. &nbsp;Now, the first parameter is the start of the texture buffer (which hopefully you'll notice is the same as the address we used for the image upload in <A HREF="id39.htm" TARGET="_top"    TITLE="9: Uploading Image data"><U>9: Uploading Image data</U></A>.) &nbsp;That's followed by the texture buffer width, which again is the same as used in the upload. &nbsp;The pixel storage mode is next, followed by the width and height of the actual texture. &nbsp;Hang on, it isn't 3x3, I thought it was 8x8?</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The answer there, is that textures must have a width and a height that are both powers of 2. &nbsp;So, they can be 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, or 1024 texels high. &nbsp;It would be wasteful to store those numbers in the registers to denote width and height, so instead we notice that 8 is 2 to the power of 3, and store the 3 instead. &nbsp;Thus, if our texture was 16x16, height and width would each be 4. &nbsp;If the texture was 1024 x 4, the width would be 10, and the height would be 2, and so on.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Finally, we specify whether or not the texels are given an alpha component, and what texture function we're going to use. &nbsp;Then we move on to tex1, where we set lots of registers to do with level of detail settings and Mipmapping. &nbsp;The above setting will completely ignore the LOD calculations, but for more information, see P63 of the GS manual for Mipmapping, and P64 for LOD calculations. &nbsp;Look at pages 125 to 127 to see what goes into the TEX0 and TEX1 registers, or alternatively look up the comments in the defines.h file. &nbsp;(The updated one at <A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>my project page</U></A> that is.)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">That's got the texturing setting set up, all that's left is to specify texture co-ordinates in the primitives themselves. &nbsp;Before, we specified the RGBAQ and XYZ2 register settings, all we need to do is add a line (and updated the NLOOP and NREG fields of the GIFtag accordingly) to allow for a write to the ST register. &nbsp;STQ form a set of 2D homogeneous texture co-ordinates, which means that if you keep Q at 1.0f all the time, then (S,T) = (0.0f, 0.0f) denotes the top left corner of the texture, and (1.0f, 1.0f) denotes the bottom left corner of the texture.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Homework</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Hopefully, you'll be able to figure out how to put together this and the last lesson for yourself, to upload a texture and use it to texture map a primitive or set of primitives. &nbsp;That's you're homework. &nbsp;Firstly, put two triangles together to make a square in the middle of the screen, and make their texture co-ordinates such that you see the whole texture. &nbsp;Then, change the texture co-ordinates to go past 1.0f, say to 2.0g, and see what happens. &nbsp;For a laugh, go up to 4.0f.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">This is going to be the final standalone lesson for a moment, at least until I can think of something worthwhile to add. &nbsp;I have two directions to head in from here, to go back through the lessons so far and supply homework answers and sample code that uses them, and to go forwards and put all of our knowledge together to form a complete demo. &nbsp;First up will be an analysis of my demo dedicated to my girlfriend, entered into the DevStation 2003 competition. &nbsp;Bjt has graciously allowed me to dissect the source code for his VU game Plasmaroids, and that will be next up for dissection. &nbsp;Between those tasks, and writing my own demo for the competition, all the time between now and the deadline should be taken up! &nbsp;So, I hope it's been a worthwhile journey for you, and I want to see a demo entered from each of you reading this into the competition! &nbsp;Putting a hello in the .hlp file that makes part of your entry would really go down well too :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Until next time, happy microcoding! &nbsp;Please see the comments and suggestions page to give me your feedback so far!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id39.htm" TARGET="_top"    TITLE="9: Uploading Image data"><U>9: Uploading Image data</U></A> Next - <A HREF="id42.htm" TARGET="_top"    TITLE="11: Putting it all together"><U>11: Putting it all together</U></A></FONT><BR>
+<bR>
+</BODY>
+</HTML>

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>7.9. Préserver l'aspect ratio</title><link rel="stylesheet" href="default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.50.0"><link rel="home" href="index.html" title="MPlayer - Le lecteur vidéo pour LINUX"><link rel="up" href="mencoder.html" title="Chapitre 7. Encodage avec MEncoder"><link rel="previous" href="menc-feat-extractsub.html" title="7.8. Extraction des sous-titres DVD dans un fichier Vobsub"><link rel="next" href="custommatrices.html" title="7.10. Inter/intra matrices personnalisées"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">7.9. Préserver l'aspect ratio</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="menc-feat-extractsub.html">Précédent</a> </td><th width="60%" align="center">Chapitre 7. Encodage avec MEncoder</th><td width="20%" align="right"> <a accesskey="n" href="custommatrices.html">Suivant</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="aspect"></a>7.9. Préserver l'aspect ratio</h2></div></div><p>
+Les fichiers des DVDs et des SVCDs (c-a-d MPEG1/2) contiennent une valeur d'aspect
+ratio, qui décrit comment le lecteur devrait dimensionner le flux vidéo, pour que les
+humains n'aient pas des &quot;têtes d'oeuf&quot; (ex. 480x480 + 4:3 = 640x480). De toute façon,
+quand vous encodez un fichier AVI (DivX), vous devez être conscients que les entêtes
+AVI ne stockent pas cette valeur. Redimensionner le film est dégouttant et coûteux en
+temps, il doit y avoir une meilleur solution !
+</p><p>Il y en a une.</p><p>
+MPEG4 a une fonction unique: le flux vidéo peut contenir l'aspect ratio requis. Oui,
+tout comme les fichiers MPEG1/2 (DVD, SVCD). Malheureusement, il n'y a
+<span class="bold"><b>pas</b></span> de lecteurs vidéo au dehors qui supportent cet
+attribut. Excepté <span class="application">MPlayer</span>.
+</p><p>
+Cette fonction ne peut être utilisé qu'avec le codec <tt>mpeg4</tt> de
+<span class="bold"><b>libavcodec</b></span>. Gardez à l'esprit: bien que
+<span class="application">MPlayer</span> lise correctement le fichier créé, les autres lecteurs
+utiliseront un mauvais aspect ratio.
+</p><p>
+Vous devriez sérieusement couper les bandes noires au dessus et en dessous de l'image.
+Voir la page de man pour l'utilisation des filtres <tt>cropdetect</tt>
+et <tt>crop</tt>.
+</p><p><b>Utilisation. </b>
+<pre class="screen">mencoder echantillon-svcd.mpg -ovc lavc -lavcopts vcodec=mpeg4:autoaspect -vf crop=714:548:0:14 -oac copy -o sortie.avi</pre>
+</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="menc-feat-extractsub.html">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="mencoder.html">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="custommatrices.html">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">7.8. Extraction des sous-titres DVD dans un fichier Vobsub </td><td width="20%" align="center"><a accesskey="h" href="index.html">Sommaire</a></td><td width="40%" align="right" valign="top"> 7.10. Inter/intra matrices personnalisées</td></tr></table></div></body></html>

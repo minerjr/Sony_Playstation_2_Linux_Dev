@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>R5900 Emotion Engine CPU core</title><meta name="generator" content="DocBook XSL Stylesheets V1.40"><link rel="home" href="index.html" title="The Playstation 2 Linux Kit Handbook"><link rel="up" href="ch03.html" title="Chapter 3. Functional overview of the Playstation 2"><link rel="previous" href="ch03.html" title="Chapter 3. Functional overview of the Playstation 2"><link rel="next" href="ch03s03.html" title="Vector Processor Unit 0 (VPU0/VU0/COP1)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">R5900 Emotion Engine CPU core</th></tr><tr><td width="20%" align="left"><a href="ch03.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Functional overview of the Playstation 2</th><td width="20%" align="right"> <a href="ch03s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="id2740819"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2740819"></a>R5900 Emotion Engine CPU core</h2></div></div><div class="figure"><p><a name="id2740795"></a><b>Figure 3.2. Block diagram of the Playstation 2 - Emotion Engine Core</b></p><p><img src="figures/PS2BD-EEcore.png"></p></div><p>
+   The main CPU in the Playstation 2 is one developed by Toshiba, exclusively
+   for the console. It is a 128-bit MIPS ISA level III compliant processor.
+   The Emotion Engine (EE) is the chip that manages most of the other
+   processors in the system, performing the role of a traditional CPU.
+  </p><p>
+   Some of its more advanced features include:
+   <div class="itemizedlist"><ul><li><a name="id2783937"></a>
+     32 128-bit wide general purpose registers
+    </li><li><a name="id2783942"></a>
+     32 32-bit wide floating point registers
+    </li><li><a name="id2783947"></a>
+     128-bit wide data path connected to a 128-bit wide system bus
+    </li><li><a name="id2783953"></a>
+     2-way superscalar pipeline, capable of processing two 64-bit MIPS III
+     instructions per cycle.
+    </li><li><a name="id2783959"></a>
+     MIPS IV parallel multimedia instructions capable of doing one 128, two 
+     64, four 32, eight 16 or sixteen 8-bit operations per instruction.
+    </li><li><a name="id2783966"></a>
+     2 micro-programmable vector processors capable of ~2.8GFlops each.
+    </li></ul></div>
+  </p><div class="sect2"><a name="id2783974"></a><div class="titlepage"><div><h3 class="title"><a name="id2783974"></a>Floating Point Unit (FPU)</h3></div></div><div class="figure"><p><a name="id2740214"></a><b>Figure 3.3. Block diagram of the Playstation 2 - Floating Point Unit</b></p><p><img src="figures/PS2BD-FPU.png"></p></div><p>
+    The floating point unit included in the EE core is a high performance
+    single-precision floating-point unit. The designers of the FPU
+    decided to not make it IEEE compliant and save some silicon. All this
+    means is that the floating point numbers generated do not comply -exactly-
+    to the IEEE spec, but the numbers should be close enough for most
+    programmers. The FPU contains one multiply-add unit and one floating point
+    divide unit.
+   </p></div><div class="sect2"><a name="id2740250"></a><div class="titlepage"><div><h3 class="title"><a name="id2740250"></a>Cache and Scratchpad RAM (SPR)</h3></div></div><p>
+    Due to the requirement of low manufacturing cost, the EE contains a very
+    limited on-chip cache. 8KB of data cache and 16KB of instruction cache 
+    are included on-chip. There is also another cache specified as the
+    Scratchpad that is used as a low-latency working area.
+   </p></div><div class="sect2"><a name="id2740268"></a><div class="titlepage"><div><h3 class="title"><a name="id2740268"></a>DMA, DRAM and Memory Management Unit (MMU)</h3></div></div><p>
+    The memory management unit, RDRAM controller and DMA controller handle all
+    memory access within the system. The Playstation 2 is rated at performing
+    a peak theoretical bandwidth of 3.2 GBps. 
+   </p><p>
+    The DMA controller is a 10 channel controller that can DMA data between
+    main memory and an I/O device (such as the IPU) as well as memory and 
+    scratchpad RAM.
+   </p><p>
+    The MMU is capable of doing 32-bit physical/logical address space 
+    conversion and has a 48-entry TLB to speed lookups.
+   </p></div><div class="sect2"><a name="id2740306"></a><div class="titlepage"><div><h3 class="title"><a name="id2740306"></a>Interrupt controller and Timers</h3></div></div><p>
+    The PS2 provides an interrupt for every device in the system as well as
+    a special interrupt for the DMA controller. Four 16-bit timers are provided
+    for high precision, processor cycle-level timing.
+   </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a href="ch03.html">Prev</a> </td><td width="20%" align="center"><a href="index.html">Home</a></td><td width="40%" align="right"> <a href="ch03s03.html">Next</a></td></tr><tr><td width="40%" align="left">Chapter 3. Functional overview of the Playstation 2 </td><td width="20%" align="center"><a href="ch03.html">Up</a></td><td width="40%" align="right"> Vector Processor Unit 0 (VPU0/VU0/COP1)</td></tr></table></div></body></html>

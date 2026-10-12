@@ -1,0 +1,666 @@
+		NUT Open Container Format DRAFT 20030906
+		----------------------------------------
+
+
+                
+			Intro:
+
+Features / goals: 
+	(supported by the format, not necessary by a specific implementation)
+
+Simple
+	use the same encoding for nearly all fields
+	simple decoding, so slow cpus (and embedded systems) can handle it
+Extendible
+	no limit for the possible values for all fields (using universal vlc)
+	allow adding of new headers in the future
+	allow adding more fields at the end of headers
+Compact
+	~0.2% overhead, for normal bitrates
+	index is <10kb per hour (1 keyframe every 3sec)
+	a usual header for a file is about 100bytes (audio + video headers together)
+	a packet header is about ~8 bytes
+Error resistant
+	seeking / playback without an index
+	headers & index can be repeated
+	audio packet reshuffle
+	checksums to allow quick redownloading of damaged parts
+	damaged files can be played back with minimal data lost and fast
+	resyncing times
+
+
+        
+			Definitions:
+
+MUST	the specific part must be done to conform to this standard
+SHOULD	its recommanded to be done that way but its not strictly required
+
+
+
+			Syntax:
+
+		Type definitions:
+v
+	value=0
+	do{
+		more_data			u(1)
+		data				u(7)
+		value= 128*value + data
+	}while(more_data)
+        
+s
+	temp					v
+	temp++
+	if(temp&1) value= -(temp>>1)
+	else       value=  (temp>>1)
+
+b (binary data or string)
+	length					v
+	for(i=0; i<length; i++){
+		data[i]				u(8)
+	}
+	Note: strings MUST be encoded in utf8
+
+        
+f(x)	n fixed bits in big endian order
+u(x)	unsigned number encoded in x bits in MSB first order
+
+
+		Bitstream syntax:
+packet header
+	forward ptr				v
+	backward ptr				v
+
+align_byte
+	while(not byte aligned)
+		one				f(1)
+
+reserved_bytes
+	for(i=0; i<forward_ptr - length_of_non_reserved; i++)
+		reserved			u(8)
+	a decoder MUST ignore any reserved bytes
+	a encoder MUST NOT write any reserved bytes, as this would make it
+	inpossible to add new fields at the end of packets in the future in
+	a compatible way
+
+main header:
+	main_startcode				f(64)
+	packet header
+	version					v
+	stream_count				v
+	reserved_bytes
+	checksum				u(32)
+
+stream_header:
+	stream_startcode			f(64)
+	packet_header
+	stream_id				v
+	stream_class				v
+	fourcc					b
+	average_bitrate				v
+	language_code				b
+	time_base_nom				v
+	time_base_denom				v
+	msb_timestamp_shift			v
+	shuffle_type				v
+	fixed_fps				u(1)
+	index_flag				u(1)
+	reserved				u(6)
+	for(;;){
+		codec_specific_data_type	v
+		if(codec_specific_data_type==0) break;
+		codec_specific_data_size	v
+		codec_specific_data		b
+	}
+
+video_stream_header:
+	stream_header
+	width					v
+	height					v
+	sample_width				v
+	sample_height				v
+	colorspace_type				v
+	reserved_bytes
+	checksum				u(32)
+
+audio_stream_header:
+	stream_header
+	samplerate_mul				v
+	channel_count				v
+	reserved_bytes
+	checksum				u(32)
+
+frame
+	if(keyframe){
+		keyframe_startcode		f(64)
+	}
+	zero_bit				f(1)
+	priority				u(2)
+	checksum_flag				u(1)
+	msb_timestamp_flag			u(1)
+	subpacket_type				u(2)
+	reserved				u(1)
+	packet header
+	stream_id				v
+	if(msb_timestamp_flag)
+		msb_timestamp			v
+	lsb_timestamp				s
+	if(sub_packet_type==01)
+		sub_packet[0]
+	else{
+		subpacket_count			v
+		if(sub_packet_type&01)
+		    for(i=0; ; i++)
+			keyframe_run[i]		v
+		for(i=0; ; i++){
+		    timestamp_diff[i]		v
+		    if(timestamp_diff[i] & 1)
+			timestamp_diff_run[i]	v
+		}
+		if(sub_packet_type&10){
+		    for(i=0; i<subpacket_count-1; i++)
+			subpacket_size_diff[i]	s
+		}
+		for(i=0; i<subpacket_count; i++)
+		    subpacket[i]
+		}
+	}
+	if(checksum_flag)
+		frame_checksum			u(32)
+
+Index:
+	index_startcode				f(64)
+	packet header
+	stream_id				v
+	index_length				v
+	for(i=0; i<index_length; i++){
+		index_timestamp			v
+		index_position			v
+	}
+	reserved_bytes
+	checksum				u(32)
+
+info_packet: (optional)
+	info_startcode				f(64)
+	packet header
+	for(;;){
+		id				v
+		if(id==0) break
+		name= info_table[id][0]
+		type= info_table[id][1]
+		if(type==NULL)
+			type			b
+		if(name==NULL)
+			name			b
+		if(type=="v")
+			value			v
+		else if(type=="s")
+			value			s
+		else
+			value			b
+	}
+	reserved_bytes
+        checksum				u(32)
+        
+                
+forward_ptr
+backward_ptr
+	pointer to the next / previous packet
+	pointers are relative and backward pointer is implicitelly negative
+	Note: a frame with 0 bytes means that its skiped
+	Note: the forward pointer is equal to the size of this packet including
+              the header
+              the backward pointer is equal to the size of the previous packet
+	Example: 
+                0
+                size1 (size of frame1 including header)
+                frame1
+
+                size1
+                size2
+                frame2
+
+                size2
+                size3
+                frame3
+
+
+*_startcode
+	the first bit is allways set
+
+version
+	0 for now
+
+file_size
+	size in bytes. 0 invalidates the field
+
+length_in_msec
+	length of the file in milli seconds (0 invalidates the field)
+ 
+stream_id
+	Note: streams with a lower relative class MUST have a lower relative id
+	so a stream with class 0 MUST allways have a id which is lower then any
+	stream with class > 0
+	streams should use low ids 
+
+stream_class
+	0	video
+	32	audio
+	64	subtiles
+	Note the remaining values are reserved and MUST NOT be used
+	     a decoder MUST ignore streams with reserved classes
+
+fourcc
+	identification for the codec
+	example: "H264"
+	MUST contain 2 or 4 bytes, note, this might be increased in the future
+	if needed
+      
+language_code 
+	ISO 639 and ISO 3166 for language/country code
+	something like "usen" (US english), can be 0
+	if unknown
+	see http://www.loc.gov/standards/iso639-2/englangn.html
+	and http://www.din.de/gremien/nas/nabd/iso3166ma/codlstp1/en_listp1.html
+
+time_base_nom / time_base_denom = time_base
+	the number of timer ticks per second, this MUST be equal to the fps
+	if the fixed_fps is 1
+	time_base_denom MUST not be 0
+	time_base_nom and time_base_denom MUST be relative prime
+	time_base_nom MUST be < 2^16
+	examples:
+        	fps	time_base_nom	time_base_denom
+		30	30		1
+		29.97	30000		1001
+		23.976	24000		1001
+		sample_rate	sample_rate_mul	time_base_nom	time_base_denom
+		44100		1		44100		1
+		44100		64		11025		16 
+		48000		1024		375		8  
+		Note: the advantage to using a large sample_rate_mul is that the
+		      timestamps need fewer bits
+
+msb_timestamp_shift
+	amount of bits msb_timestamp is shifted left before adding lsb_timestamp
+	MUST be <16
+
+fixed_fps
+	1 indicates that the fps is fixed
+
+index_flag
+	1 indicates that this file has an index
+	Note, all files SHOULD have an index at the end except, (realtime) streams 
+	Note, all streams SHOULD have an index
+
+codec_specific_data_type
+	0	none/end
+	1	native
+	2	bitmapinfoheader
+	3	waveformatex
+	4	imagedesc
+	5	sounddesc
+	"native", means a simple api & container independanet storage form,
+	for example some mpeg4-es headers
+        
+codec_specific_data
+	private global data for a codec (could be huffman tables or ...)
+        
+msb_timestamp_flag
+	indicates that the msb_timestamp is coded
+	MUST be 1 for keyframes
+        
+subpacket_type
+		subpacket_count	subpacket_size	keyframe_flag
+	00	>1		constant	constant
+	01	1		NA		NA
+	10	>1		variable	constant
+	11	>1		variable	variable
+	the only legal subpacket_type for video streams is 01, so video streams
+	MUST NOT contain multiple subpackets per packet
+	Note, if there are multiple subpackets then the timestamp of the packet
+	is the timestamp of the first subpacket
+	Note, if multiple subpackets are stored in one frame then the resulting
+	framesize SHOULD be < 16kbyte and not more then 0.5 sec of data SHOULD
+	be put in a single packet
+
+subpacket_count
+	the number of subpackets, if not pressent then 1
+
+keyframe_run[i]
+	the number of subpackets with an identical keyframe_flag
+	Note, the value of first flag is stored in the packet header
+	is equal to subpacket count if not coded
+
+timestamp_diff[i]
+	the difference from the last subpacket timestamp to the current one in
+	time_base precission
+	the lowwest bit is used to indicate if timestamp_diff_run[i] is coded
+
+timestamp_diff_run[i]
+	the number of subpackets which have the same timestamp_diff
+	if not coded than 1
+	0 is forbidden
+        
+subpacket_size_diff
+	the difference between the predicted size of this subpacket and the
+	actual size
+	the predicted size is 64 for the first subpacket in a packet
+	otherwise it is MAX(64, last_subpacket_size)
+	the size of the last subpacket is not coded and is simply the space left
+	Note a subpacket MUST be in exactly one packet, it cannot be split
+       
+msb_timestamp
+	most significant bits of the timestamp, SHOULD be 0 for the first frame
+ 
+lsb_timestamp
+	difference from the msb_timestamp in time_base precission
+        Example: IBBP display order
+		keyframe msb_timestamp=0 lsb_timestamp=0 -> timestamp=0
+		frame                    lsb_timestamp=3 -> timestamp=3
+		frame                    lsb_timestamp=1 -> timestamp=1
+		frame                    lsb_timestamp=2 -> timestamp=2
+		...
+		keyframe msb_timestamp=1 lsb_timestamp=1 -> timestamp=257
+		frame                    lsb_timestamp=-1-> timestamp=255
+		frame                    lsb_timestamp=0 -> timestamp=256
+		frame                    lsb_timestamp=4 -> timestamp=260
+		frame                    lsb_timestamp=2 -> timestamp=258
+		frame                    lsb_timestamp=3 -> timestamp=259
+
+width/height
+	MUST be set to the coded width/height
+
+sample_width/sample_height (aspect ratio)
+	sample_width is the horizontal distance between samples
+	sample_width and sample_height MUST be relative prime if not zero
+	MUST be 0 if unknown
+        
+colorspace_type
+	0	unknown
+	1	ITU Rec 624 / ITU Rec 601 Y range: 16..235 Cb/Cr range: 16..240
+	2	ITU Rec 709               Y range: 16..235 Cb/Cr range: 16..240
+	17	ITU Rec 624 / ITU Rec 601 Y range:  0..255 Cb/Cr range:  0..255
+	18	ITU Rec 709               Y range:  0..255 Cb/Cr range:  0..255
+
+samplerate_mul
+	the number of samples per second in one time_base unit
+	samplerate = time_base*samplerate_mul
+
+zero_bit
+	MUST be 0, its there to distinguish non keyframes from other packets,
+	Note: all packets have a 64-bit startcode except non-keyframes to reduce
+	      their size, and all startcodes start with a 1 bit
+        
+priority
+	if 0 then the frame isnt used as reference (b frame) and can be droped
+	MUST be > 0 for keyframes
+
+shuffle_type
+	audio is often encoded in small subpackets, and to increase the
+	error robustness these can be shuffled
+	0 -> no shuffle
+	1-16 -> interleave packets by 2^n 
+
+checksum
+	crc32 checksum using the generator polynomial 0x104c11db7 (same as ogg)
+
+checksum_flag
+	indicates that the frame_checksum is coded
+	must be 1 for the last non keyframe before a keyframe
+        
+frame_checksum
+	identical to checksum, but instead of covering just the current 
+	packet, it covers all frames of the same stream id since the last
+	frame_checksum
+	this field is only coded if checksum_flag=1
+        
+index_timestamp
+	value in time_base precission, relative to the last index_timestamp
+
+index_position
+	position in bytes of the first byte of the keyframe header, relative
+	to the last index_position
+
+id
+	the id of the type/name pair, so its more compact
+	0 means end
+                
+type
+	for example: "UTF8" -> String or "JPEG" -> jpeg image
+	Note: nonstandard fields should be prefixed by "X-"
+	Note: MUST be less than 6 byte long (might be increased to 64 later)
+
+name
+	the name of the info entry, valid names are
+	"TotalTime"	total length of the stream in msecs
+	"StreamId"	the stream(s) to which the info packet applies
+	"StartTimestamp" 
+	"EndTimestamp" 	the time range in msecs to which the info applies
+	"SegmentId"	a unique id for the streams + time specified
+	"Author"
+	"Description"
+	"Copyright"
+	"Encoder"	the name & version of the software used for encoding
+	"Title"
+	"Cover"		an image of the (cd,dvd,vhs,..) cover (preferable PNG or JPEG)
+	"Source"	"DVD", "VCD", "CD", "MD", "FM radio", "VHS", "TV", 
+			"LD"
+			Optional: appended PAL,NTSC,SECAM, ... in parentheses
+	"CaptureDevice"	"BT878", "BT848", "webcam", ... (more exact names are fine too)
+	"CreationTime"	"2003-01-20 20:13:15Z", ... 
+			(ISO 8601 format, see http://www.cl.cam.ac.uk/~mgk25/iso-time.html)
+			Note: dont forget the timezone
+	"Keywords"
+	Note: if someone needs some others, please tell us about them, so we can
+	      add them to the official standard (if they are sane)
+	Note: nonstandard fields should be prefixed by "X-"
+	Note: MUST be less than 64 bytes long
+
+value
+	value of this name/type pair
+	
+stuffing
+        0x80 can be placed infront of any type v entry for stuffing
+	      purposes
+
+info_table[][2]={
+	{NULL			,  NULL }, // end
+	{NULL			,  NULL },
+	{NULL			, "UTF8"},
+	{NULL			, "v"},
+	{NULL			, "s"},
+	{"StreamId"		, "v"},
+	{"SegmentId"		, "v"},
+	{"StartTimestamp"	, "v"},
+	{"EndTimestamp"		, "v"},
+	{"Author"		, "UTF8"},
+	{"Titel"		, "UTF8"},
+	{"Description"		, "UTF8"},
+	{"Copyright"		, "UTF8"},
+	{"Encoder"		, "UTF8"},
+	{"Keyword"		, "UTF8"},
+	{"Cover"		, "JPEG"},
+	{"Cover"		, "PNG"},
+};
+
+			Structure:
+
+the headers MUST be in exactly the following order (to simplify demuxer design)
+main header
+stream_header (id=0)
+stream_header (id=1)
+...
+stream_header (id=n)
+
+headers may be repated, but if they are then they MUST all be repeated together
+and repeated headers MUST be identical
+
+headers MUST be repeated every 10sec at least ? FIXME
+headers MUST be repeated BEFORE keyframes
+headers MUST be repeated at least twice (so they exist 3 times in a file)
+
+		Index
+the index can be repeated but there SHOULD be at least one for each stream at
+the end
+Note: in case of realtime streaming there is no end, so no index there either
+
+		Info packets
+the info_packet can be repeated, it can also contain different names & values
+each time but only if allso the time is different
+Info packets can be used to describe the file or some part of it (chapters)
+
+info packets, SHOULD be placed at the begin of the file at least
+for realtime streaming info packets will normally be transmitted when they apply
+for example, the current song title & artist of the currently shown music video
+
+		Stuffing packets
+can be used as a filler, for example to leave some empty space at the begin for
+a copy of the index
+
+		Unknown packets
+MUST be ignored by the decoder
+
+			Sample code (GPL, & untested)
+
+typedef BufferContext{
+	uint8_t *buf;
+	uint8_t *buf_ptr;
+}BufferContext;
+
+static inline uint64_t get_bytes(BufferContext *bc, int count){
+	uint64_t val=0;
+
+	assert(count>0 && count<9)
+        
+	for(i=0; i<count; i++){
+		val <<=8;
+		val += *(bc->buf_ptr++);
+	}
+        
+	return val;
+}
+
+static inline void put_bytes(BufferContext *bc, int count, uint64_t val){
+	uint64_t val=0;
+
+	assert(count>0 && count<9)
+
+	for(i=count-1; i>=0; i--){
+		*(bc->buf_ptr++)= val >> (8*i);
+	}
+        
+	return val;
+}
+
+static inline uint64_t get_v(BufferContext *bc){
+	uint64_t val= 0;
+
+	for(; space_left(bc) > 0; ){
+		int tmp= *(bc->buf_ptr++);
+		if(tmp&0x80)
+			val= (val<<7) + tmp - 0x80;
+		else
+			return (val<<7) + tmp;
+	}
+        
+	return -1;
+}
+
+static inline int put_v(BufferContext *bc, uint64_t val){
+	int i;
+        
+	if(space_left(bc) < 9) return -1;
+
+	val &= 0x7FFFFFFFFFFFFFFFULL; // FIXME can only encode upto 63 bits currently
+	for(i=7; ; i+=7){
+		if(val>>i == 0) break;
+	}
+
+	for(i-=7; i>0; i-=7){
+		*(bc->buf_ptr++)= 0x80 | (val>>i);
+	}
+	*(bc->buf_ptr++)= val&0x7F;
+        
+	return 0;
+}
+
+static inline int put_s(BufferContext *bc, uint64_t val){
+	if(val<=0) return put_v(bc, -2*val  );
+	else       return put_v(bc,  2*val-1);
+}
+
+static inline int64_t get_s(BufferContext *bc){
+	int64_t v= get_v(bc) + 1;
+	if(v&1) return -(v>>1);
+	else    return  (v>>1);
+}
+
+                
+			Example stream
+                
+main header
+video_stream_header (stream 0, video    jpjp, timebase 30, lsb_timestamp_length=8)
+video_stream_header (stream 1  subtitle usen, timebase 30, lsb_timestamp_length=8)
+video_stream_header (stream 2  subtitle atde, timebase 30, lsb_timestamp_length=8)
+audio_stream_header (stream 3, audio    jpjp, timebase 1 , lsb_timestamp_length=8)
+audio_stream_header (stream 4, audio    usen, timebase 1 , lsb_timestamp_length=8)
+index (stream 0)
+keyframe (stream 0, msb_timestamp=0, lsb_timestamp=0)
+keyframe (stream 1, msb_timestamp=0, lsb_timestamp=0)
+keyframe (stream 2, msb_timestamp=0, lsb_timestamp=0)
+keyframe (stream 3, msb_timestamp=0, lsb_timestamp=0)
+keyframe (stream 4, msb_timestamp=0, lsb_timestamp=0)
+frame    (stream 0,                  lsb_timestamp=1)
+frame    (stream 0,                  lsb_timestamp=2)
+...
+frame    (stream 0,                  lsb_timestamp=30)
+keyframe (stream 3, msb_timestamp=0, lsb_timestamp=1)
+keyframe (stream 4, msb_timestamp=0, lsb_timestamp=1)
+frame    (stream 0,                  lsb_timestamp=31)
+frame    (stream 0,                  lsb_timestamp=32)
+...
+frame    (stream 0,                  lsb_timestamp=60)
+frame    (stream 1,                  lsb_timestamp=60)
+frame    (stream 2,                  lsb_timestamp=60)
+keyframe (stream 3, msb_timestamp=0, lsb_timestamp=2)
+keyframe (stream 4, msb_timestamp=0, lsb_timestamp=2)
+frame    (stream 0,                  lsb_timestamp=61)
+frame    (stream 0,                  lsb_timestamp=62)
+...
+main header
+video_stream_header (stream 0, video    jpjp, timebase 30, lsb_timestamp_length=8)
+video_stream_header (stream 1  subtitle usen, timebase 30, lsb_timestamp_length=8)
+video_stream_header (stream 2  subtitle atde, timebase 30, lsb_timestamp_length=8)
+audio_stream_header (stream 3, audio    jpjp, timebase 1 , lsb_timestamp_length=8)
+audio_stream_header (stream 4, audio    usen, timebase 1 , lsb_timestamp_length=8)
+frame    (stream 0,                  lsb_timestamp=255)
+frame    (stream 0, msb_timestamp=1  lsb_timestamp=0)
+frame    (stream 0,                  lsb_timestamp=1)
+frame    (stream 0,                  lsb_timestamp=2)
+frame    (stream 1, msb_timestamp=1  lsb_timestamp=2)
+frame    (stream 2, msb_timestamp=1  lsb_timestamp=2)
+frame    (stream 0,                  lsb_timestamp=3)
+frame    (stream 0,                  lsb_timestamp=4)
+...
+keyframe (stream 3, msb_timestamp=0, lsb_timestamp=9)
+keyframe (stream 4, msb_timestamp=0, lsb_timestamp=9)
+main header
+video_stream_header (stream 0, video    jpjp, timebase 30, lsb_timestamp_length=8)
+video_stream_header (stream 1  subtitle usen, timebase 30, lsb_timestamp_length=8)
+video_stream_header (stream 2  subtitle atde, timebase 30, lsb_timestamp_length=8)
+audio_stream_header (stream 3, audio    jpjp, timebase 1 , lsb_timestamp_length=8)
+audio_stream_header (stream 4, audio    usen, timebase 1 , lsb_timestamp_length=8)
+index (stream 0)
+
+		        Authors
+
+Folks from MPlayer Developers Mailinglist (http://www.mplayehrq.hu/).
+Authors in ABC-order: (FIXME! Tell us if we left you out)
+    Beregszaszi, Alex (alex@fsn.hu)
+    Bunkus, Moritz (moritz@bunkus.org)
+    Diedrich, Tobias (td@sim.uni-hannover.de)
+    Franz, Fabian (FabianFranz@gmx.de)
+    Gereoffy, Arpad (arpi@thot.banki.hu)
+    Hess, Andreas (jaska@gmx.net)
+    Niedermayer, Michael (michaelni@gmx.at)

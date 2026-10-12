@@ -1,0 +1,4842 @@
+Read codec 'libexec/vu1/basic.vu'
+Info: _gp->center: 2048, 2048
+Info: _gp->offset: 1728, 1808
+Info: _gp->version: 0
+Info: _gp->interlace_mode: 0
+Info: _gp->interlace_format: 0
+Info: _gp->out_mode: 0
+Info: _gp->ff_mode: 65536
+Info: _gp->resolution: 0
+Info: _gp->refresh_rate: 256
+Info: _gp->width: 640
+Info: _gp->height: 480
+Info: _gp->pixel_ratio: 1.000000
+Size of BitmapFileHeader = 16
+Size of BitmapInfoHeader = 40
+biBitCount		=8
+biClrUsed		=0
+biSize			=40
+biHeight		=256
+biWidth		=512
+Number of colors = 256
+Data size = 131072
+BITMAP: Convert8 
+IMAGE Swaping bits 3 and 4
+IMAGE Bitmap Load tw and th
+IMAGE bitmap delete loadingimage
+BITMAP Delete colors...done
+BITMAP Delete data...done
+Loaded image 'lib/img/trog.bmp' (512 x 256)
+Size of BitmapFileHeader = 16
+Size of BitmapInfoHeader = 40
+biBitCount		=8
+biClrUsed		=0
+biSize			=40
+biHeight		=256
+biWidth		=512
+Number of colors = 256
+Data size = 131072
+BITMAP: Convert8 
+IMAGE Swaping bits 3 and 4
+IMAGE Bitmap Load tw and th
+IMAGE bitmap delete loadingimage
+BITMAP Delete colors...done
+BITMAP Delete data...done
+Loaded image 'lib/img/trog.bmp' (512 x 256)
+IMAGE: Initial textureAddr = 7680
+IMAGE: After clut textureAddr = 7684
+IMAGE: After PSMT8 textureAddr = 8196
+IMAGE: Initial textureAddr = 8196
+IMAGE: After clut textureAddr = 8200
+IMAGE: After PSMT8 textureAddr = 8712
+Displaying sprite at (27648,28928) => (37888,36608)
+Displaying sprite at (27648,28928) => (37888,36608)
+Opened md2 file.
+MD2: Number of groups:198
+MD2: Frame Number:-1
+MD2: Frame name:stand01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:0
+MD2: Frame name:stand02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:1
+MD2: Frame name:stand03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:2
+MD2: Frame name:stand04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:3
+MD2: Frame name:stand05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:4
+MD2: Frame name:stand06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:5
+MD2: Frame name:stand07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:6
+MD2: Frame name:stand08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:7
+MD2: Frame name:stand09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:8
+MD2: Frame name:stand10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:9
+MD2: Frame name:stand11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:10
+MD2: Frame name:stand12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:11
+MD2: Frame name:stand13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:12
+MD2: Frame name:stand14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:13
+MD2: Frame name:stand15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:14
+MD2: Frame name:stand16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:15
+MD2: Frame name:stand17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:16
+MD2: Frame name:stand18
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:17
+MD2: Frame name:stand19
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:18
+MD2: Frame name:stand20
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:19
+MD2: Frame name:stand21
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:20
+MD2: Frame name:stand22
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:21
+MD2: Frame name:stand23
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:22
+MD2: Frame name:stand24
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:23
+MD2: Frame name:stand25
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:24
+MD2: Frame name:stand26
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:25
+MD2: Frame name:stand27
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:26
+MD2: Frame name:stand28
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:27
+MD2: Frame name:stand29
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:28
+MD2: Frame name:stand30
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:29
+MD2: Frame name:stand31
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:30
+MD2: Frame name:stand32
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:31
+MD2: Frame name:stand33
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:32
+MD2: Frame name:stand34
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:33
+MD2: Frame name:stand35
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:34
+MD2: Frame name:stand36
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:35
+MD2: Frame name:stand37
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:36
+MD2: Frame name:stand38
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:37
+MD2: Frame name:stand39
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:38
+MD2: Frame name:stand40
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:39
+MD2: Frame name:run1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:40
+MD2: Frame name:run2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:41
+MD2: Frame name:run3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:42
+MD2: Frame name:run4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:43
+MD2: Frame name:run5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:44
+MD2: Frame name:run6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:45
+MD2: Frame name:attack1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:46
+MD2: Frame name:attack2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:47
+MD2: Frame name:attack3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:48
+MD2: Frame name:attack4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:49
+MD2: Frame name:attack5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:50
+MD2: Frame name:attack6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:51
+MD2: Frame name:attack7
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:52
+MD2: Frame name:attack8
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:53
+MD2: Frame name:pain101
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:54
+MD2: Frame name:pain102
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:55
+MD2: Frame name:pain103
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:56
+MD2: Frame name:pain104
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:57
+MD2: Frame name:pain201
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:58
+MD2: Frame name:pain202
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:59
+MD2: Frame name:pain203
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:60
+MD2: Frame name:pain204
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:61
+MD2: Frame name:pain301
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:62
+MD2: Frame name:pain302
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:63
+MD2: Frame name:pain303
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:64
+MD2: Frame name:pain304
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:65
+MD2: Frame name:jump1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:66
+MD2: Frame name:jump2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:67
+MD2: Frame name:jump3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:68
+MD2: Frame name:jump4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:69
+MD2: Frame name:jump5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:70
+MD2: Frame name:jump6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:71
+MD2: Frame name:flip01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:72
+MD2: Frame name:flip02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:73
+MD2: Frame name:flip03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:74
+MD2: Frame name:flip04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:75
+MD2: Frame name:flip05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:76
+MD2: Frame name:flip06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:77
+MD2: Frame name:flip07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:78
+MD2: Frame name:flip08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:79
+MD2: Frame name:flip09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:80
+MD2: Frame name:flip10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:81
+MD2: Frame name:flip11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:82
+MD2: Frame name:flip12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:83
+MD2: Frame name:salute01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:84
+MD2: Frame name:salute02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:85
+MD2: Frame name:salute03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:86
+MD2: Frame name:salute04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:87
+MD2: Frame name:salute05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:88
+MD2: Frame name:salute06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:89
+MD2: Frame name:salute07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:90
+MD2: Frame name:salute08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:91
+MD2: Frame name:salute09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:92
+MD2: Frame name:salute10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:93
+MD2: Frame name:salute11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:94
+MD2: Frame name:taunt01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:95
+MD2: Frame name:taunt02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:96
+MD2: Frame name:taunt03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:97
+MD2: Frame name:taunt04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:98
+MD2: Frame name:taunt05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:99
+MD2: Frame name:taunt06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:100
+MD2: Frame name:taunt07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:101
+MD2: Frame name:taunt08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:102
+MD2: Frame name:taunt09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:103
+MD2: Frame name:taunt10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:104
+MD2: Frame name:taunt11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:105
+MD2: Frame name:taunt12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:106
+MD2: Frame name:taunt13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:107
+MD2: Frame name:taunt14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:108
+MD2: Frame name:taunt15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:109
+MD2: Frame name:taunt16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:110
+MD2: Frame name:taunt17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:111
+MD2: Frame name:wave01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:112
+MD2: Frame name:wave02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:113
+MD2: Frame name:wave03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:114
+MD2: Frame name:wave04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:115
+MD2: Frame name:wave05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:116
+MD2: Frame name:wave06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:117
+MD2: Frame name:wave07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:118
+MD2: Frame name:wave08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:119
+MD2: Frame name:wave09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:120
+MD2: Frame name:wave10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:121
+MD2: Frame name:wave11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:122
+MD2: Frame name:point01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:123
+MD2: Frame name:point02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:124
+MD2: Frame name:point03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:125
+MD2: Frame name:point04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:126
+MD2: Frame name:point05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:127
+MD2: Frame name:point06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:128
+MD2: Frame name:point07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:129
+MD2: Frame name:point08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:130
+MD2: Frame name:point09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:131
+MD2: Frame name:point10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:132
+MD2: Frame name:point11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:133
+MD2: Frame name:point12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:134
+MD2: Frame name:crstnd01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:135
+MD2: Frame name:crstnd02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:136
+MD2: Frame name:crstnd03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:137
+MD2: Frame name:crstnd04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:138
+MD2: Frame name:crstnd05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:139
+MD2: Frame name:crstnd06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:140
+MD2: Frame name:crstnd07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:141
+MD2: Frame name:crstnd08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:142
+MD2: Frame name:crstnd09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:143
+MD2: Frame name:crstnd10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:144
+MD2: Frame name:crstnd11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:145
+MD2: Frame name:crstnd12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:146
+MD2: Frame name:crstnd13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:147
+MD2: Frame name:crstnd14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:148
+MD2: Frame name:crstnd15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:149
+MD2: Frame name:crstnd16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:150
+MD2: Frame name:crstnd17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:151
+MD2: Frame name:crstnd18
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:152
+MD2: Frame name:crstnd19
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:153
+MD2: Frame name:crwalk1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:154
+MD2: Frame name:crwalk2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:155
+MD2: Frame name:crwalk3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:156
+MD2: Frame name:crwalk4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:157
+MD2: Frame name:crwalk5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:158
+MD2: Frame name:crwalk6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:159
+MD2: Frame name:crattak1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:160
+MD2: Frame name:crattak2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:161
+MD2: Frame name:crattak3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:162
+MD2: Frame name:crattak4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:163
+MD2: Frame name:crattak5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:164
+MD2: Frame name:crattak6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:165
+MD2: Frame name:crattak7
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:166
+MD2: Frame name:crattak8
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:167
+MD2: Frame name:crattak9
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:168
+MD2: Frame name:crpain1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:169
+MD2: Frame name:crpain2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:170
+MD2: Frame name:crpain3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:171
+MD2: Frame name:crpain4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:172
+MD2: Frame name:crdeath1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:173
+MD2: Frame name:crdeath2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:174
+MD2: Frame name:crdeath3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:175
+MD2: Frame name:crdeath4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:176
+MD2: Frame name:crdeath5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:177
+MD2: Frame name:death101
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:178
+MD2: Frame name:death102
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:179
+MD2: Frame name:death103
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:180
+MD2: Frame name:death104
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:181
+MD2: Frame name:death105
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:182
+MD2: Frame name:death106
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:183
+MD2: Frame name:death201
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:184
+MD2: Frame name:death202
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:185
+MD2: Frame name:death203
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:186
+MD2: Frame name:death204
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:187
+MD2: Frame name:death205
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:188
+MD2: Frame name:death206
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:189
+MD2: Frame name:death301
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:190
+MD2: Frame name:death302
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:191
+MD2: Frame name:death303
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:192
+MD2: Frame name:death304
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:193
+MD2: Frame name:death305
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:194
+MD2: Frame name:death306
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:195
+MD2: Frame name:death307
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:196
+MD2: Frame name:death308
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+Enter buildMD2Aniamtions
+BuildMD2Animations Start
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = pain1
+tmpName = pain1
+tmpName = pain1
+tmpName = pain1
+tmpName = pain2
+tmpName = pain2
+tmpName = pain2
+tmpName = pain2
+tmpName = pain3
+tmpName = pain3
+tmpName = pain3
+tmpName = pain3
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = crpai
+tmpName = crpai
+tmpName = crpai
+tmpName = crpai
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+BuildMD2Animations: number of animations = 20
+2ndTmplast name == 
+2ndTmp name == stand
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+1stTmplast name == stand
+1sttmp name == ru
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+1stTmplast name == ru
+1sttmp name == attac
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+1stTmplast name == attac
+1sttmp name == pain1
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 3
+Animation index = 3
+Animation index = 3
+Animation index = 3
+1stTmplast name == pain1
+1sttmp name == pain2
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 4
+Animation index = 4
+Animation index = 4
+Animation index = 4
+1stTmplast name == pain2
+1sttmp name == pain3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 5
+Animation index = 5
+Animation index = 5
+Animation index = 5
+1stTmplast name == pain3
+1sttmp name == jum
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+1stTmplast name == jum
+1sttmp name == flip
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+1stTmplast name == flip
+1sttmp name == salute
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+1stTmplast name == salute
+1sttmp name == taunt
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+1stTmplast name == taunt
+1sttmp name == wave
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+1stTmplast name == wave
+1sttmp name == point
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+1stTmplast name == point
+1sttmp name == crstnd
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+1stTmplast name == crstnd
+1sttmp name == crwal
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+1stTmplast name == crwal
+1sttmp name == cratta
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+1stTmplast name == cratta
+1sttmp name == crpai
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 15
+Animation index = 15
+Animation index = 15
+Animation index = 15
+1stTmplast name == crpai
+1sttmp name == crdeat
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 16
+Animation index = 16
+Animation index = 16
+Animation index = 16
+Animation index = 16
+1stTmplast name == crdeat
+1sttmp name == death1
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+1stTmplast name == death1
+1sttmp name == death2
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+1stTmplast name == death2
+1sttmp name == death3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+1stTmplast name == death3
+1sttmp name == death3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 20
+Animations information
+Animation Index = 0
+Animation name = stand
+Animation startindex = 0
+Animation endindex = 39
+Animation Index = 1
+Animation name = ru
+Animation startindex = 40
+Animation endindex = 45
+Animation Index = 2
+Animation name = attac
+Animation startindex = 46
+Animation endindex = 53
+Animation Index = 3
+Animation name = pain1
+Animation startindex = 54
+Animation endindex = 57
+Animation Index = 4
+Animation name = pain2
+Animation startindex = 58
+Animation endindex = 61
+Animation Index = 5
+Animation name = pain3
+Animation startindex = 62
+Animation endindex = 65
+Animation Index = 6
+Animation name = jum
+Animation startindex = 66
+Animation endindex = 71
+Animation Index = 7
+Animation name = flip
+Animation startindex = 72
+Animation endindex = 83
+Animation Index = 8
+Animation name = salute
+Animation startindex = 84
+Animation endindex = 94
+Animation Index = 9
+Animation name = taunt
+Animation startindex = 95
+Animation endindex = 111
+Animation Index = 10
+Animation name = wave
+Animation startindex = 112
+Animation endindex = 122
+Animation Index = 11
+Animation name = point
+Animation startindex = 123
+Animation endindex = 134
+Animation Index = 12
+Animation name = crstnd
+Animation startindex = 135
+Animation endindex = 153
+Animation Index = 13
+Animation name = crwal
+Animation startindex = 154
+Animation endindex = 159
+Animation Index = 14
+Animation name = cratta
+Animation startindex = 160
+Animation endindex = 168
+Animation Index = 15
+Animation name = crpai
+Animation startindex = 169
+Animation endindex = 172
+Animation Index = 16
+Animation name = crdeat
+Animation startindex = 173
+Animation endindex = 177
+Animation Index = 17
+Animation name = death1
+Animation startindex = 178
+Animation endindex = 183
+Animation Index = 18
+Animation name = death2
+Animation startindex = 184
+Animation endindex = 189
+Animation Index = 19
+Animation name = death3
+Animation startindex = 190
+Animation endindex = 196
+Number of animations = 20
+Delete TmpMD2File
+Opened md2 file.
+MD2: Number of groups:198
+MD2: Frame Number:-1
+MD2: Frame name:stand01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:0
+MD2: Frame name:stand02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:1
+MD2: Frame name:stand03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:2
+MD2: Frame name:stand04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:3
+MD2: Frame name:stand05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:4
+MD2: Frame name:stand06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:5
+MD2: Frame name:stand07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:6
+MD2: Frame name:stand08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:7
+MD2: Frame name:stand09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:8
+MD2: Frame name:stand10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:9
+MD2: Frame name:stand11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:10
+MD2: Frame name:stand12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:11
+MD2: Frame name:stand13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:12
+MD2: Frame name:stand14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:13
+MD2: Frame name:stand15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:14
+MD2: Frame name:stand16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:15
+MD2: Frame name:stand17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:16
+MD2: Frame name:stand18
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:17
+MD2: Frame name:stand19
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:18
+MD2: Frame name:stand20
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:19
+MD2: Frame name:stand21
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:20
+MD2: Frame name:stand22
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:21
+MD2: Frame name:stand23
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:22
+MD2: Frame name:stand24
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:23
+MD2: Frame name:stand25
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:24
+MD2: Frame name:stand26
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:25
+MD2: Frame name:stand27
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:26
+MD2: Frame name:stand28
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:27
+MD2: Frame name:stand29
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:28
+MD2: Frame name:stand30
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:29
+MD2: Frame name:stand31
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:30
+MD2: Frame name:stand32
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:31
+MD2: Frame name:stand33
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:32
+MD2: Frame name:stand34
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:33
+MD2: Frame name:stand35
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:34
+MD2: Frame name:stand36
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:35
+MD2: Frame name:stand37
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:36
+MD2: Frame name:stand38
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:37
+MD2: Frame name:stand39
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:38
+MD2: Frame name:stand40
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:39
+MD2: Frame name:run1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:40
+MD2: Frame name:run2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:41
+MD2: Frame name:run3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:42
+MD2: Frame name:run4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:43
+MD2: Frame name:run5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:44
+MD2: Frame name:run6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:45
+MD2: Frame name:attack1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:46
+MD2: Frame name:attack2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:47
+MD2: Frame name:attack3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:48
+MD2: Frame name:attack4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:49
+MD2: Frame name:attack5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:50
+MD2: Frame name:attack6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:51
+MD2: Frame name:attack7
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:52
+MD2: Frame name:attack8
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:53
+MD2: Frame name:pain101
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:54
+MD2: Frame name:pain102
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:55
+MD2: Frame name:pain103
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:56
+MD2: Frame name:pain104
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:57
+MD2: Frame name:pain201
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:58
+MD2: Frame name:pain202
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:59
+MD2: Frame name:pain203
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:60
+MD2: Frame name:pain204
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:61
+MD2: Frame name:pain301
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:62
+MD2: Frame name:pain302
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:63
+MD2: Frame name:pain303
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:64
+MD2: Frame name:pain304
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:65
+MD2: Frame name:jump1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:66
+MD2: Frame name:jump2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:67
+MD2: Frame name:jump3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:68
+MD2: Frame name:jump4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:69
+MD2: Frame name:jump5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:70
+MD2: Frame name:jump6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:71
+MD2: Frame name:flip01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:72
+MD2: Frame name:flip02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:73
+MD2: Frame name:flip03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:74
+MD2: Frame name:flip04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:75
+MD2: Frame name:flip05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:76
+MD2: Frame name:flip06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:77
+MD2: Frame name:flip07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:78
+MD2: Frame name:flip08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:79
+MD2: Frame name:flip09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:80
+MD2: Frame name:flip10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:81
+MD2: Frame name:flip11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:82
+MD2: Frame name:flip12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:83
+MD2: Frame name:salute01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:84
+MD2: Frame name:salute02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:85
+MD2: Frame name:salute03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:86
+MD2: Frame name:salute04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:87
+MD2: Frame name:salute05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:88
+MD2: Frame name:salute06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:89
+MD2: Frame name:salute07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:90
+MD2: Frame name:salute08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:91
+MD2: Frame name:salute09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:92
+MD2: Frame name:salute10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:93
+MD2: Frame name:salute11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:94
+MD2: Frame name:taunt01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:95
+MD2: Frame name:taunt02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:96
+MD2: Frame name:taunt03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:97
+MD2: Frame name:taunt04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:98
+MD2: Frame name:taunt05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:99
+MD2: Frame name:taunt06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:100
+MD2: Frame name:taunt07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:101
+MD2: Frame name:taunt08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:102
+MD2: Frame name:taunt09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:103
+MD2: Frame name:taunt10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:104
+MD2: Frame name:taunt11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:105
+MD2: Frame name:taunt12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:106
+MD2: Frame name:taunt13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:107
+MD2: Frame name:taunt14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:108
+MD2: Frame name:taunt15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:109
+MD2: Frame name:taunt16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:110
+MD2: Frame name:taunt17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:111
+MD2: Frame name:wave01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:112
+MD2: Frame name:wave02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:113
+MD2: Frame name:wave03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:114
+MD2: Frame name:wave04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:115
+MD2: Frame name:wave05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:116
+MD2: Frame name:wave06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:117
+MD2: Frame name:wave07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:118
+MD2: Frame name:wave08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:119
+MD2: Frame name:wave09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:120
+MD2: Frame name:wave10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:121
+MD2: Frame name:wave11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:122
+MD2: Frame name:point01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:123
+MD2: Frame name:point02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:124
+MD2: Frame name:point03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:125
+MD2: Frame name:point04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:126
+MD2: Frame name:point05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:127
+MD2: Frame name:point06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:128
+MD2: Frame name:point07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:129
+MD2: Frame name:point08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:130
+MD2: Frame name:point09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:131
+MD2: Frame name:point10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:132
+MD2: Frame name:point11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:133
+MD2: Frame name:point12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:134
+MD2: Frame name:crstnd01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:135
+MD2: Frame name:crstnd02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:136
+MD2: Frame name:crstnd03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:137
+MD2: Frame name:crstnd04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:138
+MD2: Frame name:crstnd05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:139
+MD2: Frame name:crstnd06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:140
+MD2: Frame name:crstnd07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:141
+MD2: Frame name:crstnd08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:142
+MD2: Frame name:crstnd09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:143
+MD2: Frame name:crstnd10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:144
+MD2: Frame name:crstnd11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:145
+MD2: Frame name:crstnd12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:146
+MD2: Frame name:crstnd13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:147
+MD2: Frame name:crstnd14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:148
+MD2: Frame name:crstnd15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:149
+MD2: Frame name:crstnd16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:150
+MD2: Frame name:crstnd17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:151
+MD2: Frame name:crstnd18
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:152
+MD2: Frame name:crstnd19
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:153
+MD2: Frame name:crwalk1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:154
+MD2: Frame name:crwalk2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:155
+MD2: Frame name:crwalk3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:156
+MD2: Frame name:crwalk4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:157
+MD2: Frame name:crwalk5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:158
+MD2: Frame name:crwalk6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:159
+MD2: Frame name:crattak1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:160
+MD2: Frame name:crattak2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:161
+MD2: Frame name:crattak3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:162
+MD2: Frame name:crattak4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:163
+MD2: Frame name:crattak5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:164
+MD2: Frame name:crattak6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:165
+MD2: Frame name:crattak7
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:166
+MD2: Frame name:crattak8
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:167
+MD2: Frame name:crattak9
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:168
+MD2: Frame name:crpain1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:169
+MD2: Frame name:crpain2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:170
+MD2: Frame name:crpain3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:171
+MD2: Frame name:crpain4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:172
+MD2: Frame name:crdeath1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:173
+MD2: Frame name:crdeath2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:174
+MD2: Frame name:crdeath3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:175
+MD2: Frame name:crdeath4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:176
+MD2: Frame name:crdeath5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:177
+MD2: Frame name:death101
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:178
+MD2: Frame name:death102
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:179
+MD2: Frame name:death103
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:180
+MD2: Frame name:death104
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:181
+MD2: Frame name:death105
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:182
+MD2: Frame name:death106
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:183
+MD2: Frame name:death201
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:184
+MD2: Frame name:death202
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:185
+MD2: Frame name:death203
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:186
+MD2: Frame name:death204
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:187
+MD2: Frame name:death205
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:188
+MD2: Frame name:death206
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:189
+MD2: Frame name:death301
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:190
+MD2: Frame name:death302
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:191
+MD2: Frame name:death303
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:192
+MD2: Frame name:death304
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:193
+MD2: Frame name:death305
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:194
+MD2: Frame name:death306
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:195
+MD2: Frame name:death307
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:196
+MD2: Frame name:death308
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+Enter buildMD2Aniamtions
+BuildMD2Animations Start
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = pain1
+tmpName = pain1
+tmpName = pain1
+tmpName = pain1
+tmpName = pain2
+tmpName = pain2
+tmpName = pain2
+tmpName = pain2
+tmpName = pain3
+tmpName = pain3
+tmpName = pain3
+tmpName = pain3
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = crpai
+tmpName = crpai
+tmpName = crpai
+tmpName = crpai
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+BuildMD2Animations: number of animations = 20
+2ndTmplast name == 
+2ndTmp name == stand
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+1stTmplast name == stand
+1sttmp name == ru
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+1stTmplast name == ru
+1sttmp name == attac
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+1stTmplast name == attac
+1sttmp name == pain1
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 3
+Animation index = 3
+Animation index = 3
+Animation index = 3
+1stTmplast name == pain1
+1sttmp name == pain2
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 4
+Animation index = 4
+Animation index = 4
+Animation index = 4
+1stTmplast name == pain2
+1sttmp name == pain3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 5
+Animation index = 5
+Animation index = 5
+Animation index = 5
+1stTmplast name == pain3
+1sttmp name == jum
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+1stTmplast name == jum
+1sttmp name == flip
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+1stTmplast name == flip
+1sttmp name == salute
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+1stTmplast name == salute
+1sttmp name == taunt
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+1stTmplast name == taunt
+1sttmp name == wave
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+1stTmplast name == wave
+1sttmp name == point
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+1stTmplast name == point
+1sttmp name == crstnd
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+1stTmplast name == crstnd
+1sttmp name == crwal
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+1stTmplast name == crwal
+1sttmp name == cratta
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+1stTmplast name == cratta
+1sttmp name == crpai
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 15
+Animation index = 15
+Animation index = 15
+Animation index = 15
+1stTmplast name == crpai
+1sttmp name == crdeat
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 16
+Animation index = 16
+Animation index = 16
+Animation index = 16
+Animation index = 16
+1stTmplast name == crdeat
+1sttmp name == death1
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+1stTmplast name == death1
+1sttmp name == death2
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+1stTmplast name == death2
+1sttmp name == death3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+1stTmplast name == death3
+1sttmp name == death3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 20
+Animations information
+Animation Index = 0
+Animation name = stand
+Animation startindex = 0
+Animation endindex = 39
+Animation Index = 1
+Animation name = ru
+Animation startindex = 40
+Animation endindex = 45
+Animation Index = 2
+Animation name = attac
+Animation startindex = 46
+Animation endindex = 53
+Animation Index = 3
+Animation name = pain1
+Animation startindex = 54
+Animation endindex = 57
+Animation Index = 4
+Animation name = pain2
+Animation startindex = 58
+Animation endindex = 61
+Animation Index = 5
+Animation name = pain3
+Animation startindex = 62
+Animation endindex = 65
+Animation Index = 6
+Animation name = jum
+Animation startindex = 66
+Animation endindex = 71
+Animation Index = 7
+Animation name = flip
+Animation startindex = 72
+Animation endindex = 83
+Animation Index = 8
+Animation name = salute
+Animation startindex = 84
+Animation endindex = 94
+Animation Index = 9
+Animation name = taunt
+Animation startindex = 95
+Animation endindex = 111
+Animation Index = 10
+Animation name = wave
+Animation startindex = 112
+Animation endindex = 122
+Animation Index = 11
+Animation name = point
+Animation startindex = 123
+Animation endindex = 134
+Animation Index = 12
+Animation name = crstnd
+Animation startindex = 135
+Animation endindex = 153
+Animation Index = 13
+Animation name = crwal
+Animation startindex = 154
+Animation endindex = 159
+Animation Index = 14
+Animation name = cratta
+Animation startindex = 160
+Animation endindex = 168
+Animation Index = 15
+Animation name = crpai
+Animation startindex = 169
+Animation endindex = 172
+Animation Index = 16
+Animation name = crdeat
+Animation startindex = 173
+Animation endindex = 177
+Animation Index = 17
+Animation name = death1
+Animation startindex = 178
+Animation endindex = 183
+Animation Index = 18
+Animation name = death2
+Animation startindex = 184
+Animation endindex = 189
+Animation Index = 19
+Animation name = death3
+Animation startindex = 190
+Animation endindex = 196
+Number of animations = 20
+Delete TmpMD2File
+Opened md2 file.
+MD2: Number of groups:198
+MD2: Frame Number:-1
+MD2: Frame name:stand01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:0
+MD2: Frame name:stand02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:1
+MD2: Frame name:stand03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:2
+MD2: Frame name:stand04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:3
+MD2: Frame name:stand05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:4
+MD2: Frame name:stand06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:5
+MD2: Frame name:stand07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:6
+MD2: Frame name:stand08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:7
+MD2: Frame name:stand09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:8
+MD2: Frame name:stand10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:9
+MD2: Frame name:stand11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:10
+MD2: Frame name:stand12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:11
+MD2: Frame name:stand13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:12
+MD2: Frame name:stand14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:13
+MD2: Frame name:stand15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:14
+MD2: Frame name:stand16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:15
+MD2: Frame name:stand17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:16
+MD2: Frame name:stand18
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:17
+MD2: Frame name:stand19
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:18
+MD2: Frame name:stand20
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:19
+MD2: Frame name:stand21
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:20
+MD2: Frame name:stand22
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:21
+MD2: Frame name:stand23
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:22
+MD2: Frame name:stand24
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:23
+MD2: Frame name:stand25
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:24
+MD2: Frame name:stand26
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:25
+MD2: Frame name:stand27
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:26
+MD2: Frame name:stand28
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:27
+MD2: Frame name:stand29
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:28
+MD2: Frame name:stand30
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:29
+MD2: Frame name:stand31
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:30
+MD2: Frame name:stand32
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:31
+MD2: Frame name:stand33
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:32
+MD2: Frame name:stand34
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:33
+MD2: Frame name:stand35
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:34
+MD2: Frame name:stand36
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:35
+MD2: Frame name:stand37
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:36
+MD2: Frame name:stand38
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:37
+MD2: Frame name:stand39
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:38
+MD2: Frame name:stand40
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:39
+MD2: Frame name:run1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:40
+MD2: Frame name:run2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:41
+MD2: Frame name:run3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:42
+MD2: Frame name:run4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:43
+MD2: Frame name:run5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:44
+MD2: Frame name:run6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:45
+MD2: Frame name:attack1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:46
+MD2: Frame name:attack2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:47
+MD2: Frame name:attack3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:48
+MD2: Frame name:attack4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:49
+MD2: Frame name:attack5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:50
+MD2: Frame name:attack6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:51
+MD2: Frame name:attack7
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:52
+MD2: Frame name:attack8
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:53
+MD2: Frame name:pain101
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:54
+MD2: Frame name:pain102
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:55
+MD2: Frame name:pain103
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:56
+MD2: Frame name:pain104
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:57
+MD2: Frame name:pain201
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:58
+MD2: Frame name:pain202
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:59
+MD2: Frame name:pain203
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:60
+MD2: Frame name:pain204
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:61
+MD2: Frame name:pain301
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:62
+MD2: Frame name:pain302
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:63
+MD2: Frame name:pain303
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:64
+MD2: Frame name:pain304
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:65
+MD2: Frame name:jump1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:66
+MD2: Frame name:jump2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:67
+MD2: Frame name:jump3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:68
+MD2: Frame name:jump4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:69
+MD2: Frame name:jump5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:70
+MD2: Frame name:jump6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:71
+MD2: Frame name:flip01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:72
+MD2: Frame name:flip02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:73
+MD2: Frame name:flip03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:74
+MD2: Frame name:flip04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:75
+MD2: Frame name:flip05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:76
+MD2: Frame name:flip06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:77
+MD2: Frame name:flip07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:78
+MD2: Frame name:flip08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:79
+MD2: Frame name:flip09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:80
+MD2: Frame name:flip10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:81
+MD2: Frame name:flip11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:82
+MD2: Frame name:flip12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:83
+MD2: Frame name:salute01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:84
+MD2: Frame name:salute02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:85
+MD2: Frame name:salute03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:86
+MD2: Frame name:salute04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:87
+MD2: Frame name:salute05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:88
+MD2: Frame name:salute06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:89
+MD2: Frame name:salute07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:90
+MD2: Frame name:salute08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:91
+MD2: Frame name:salute09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:92
+MD2: Frame name:salute10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:93
+MD2: Frame name:salute11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:94
+MD2: Frame name:taunt01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:95
+MD2: Frame name:taunt02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:96
+MD2: Frame name:taunt03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:97
+MD2: Frame name:taunt04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:98
+MD2: Frame name:taunt05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:99
+MD2: Frame name:taunt06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:100
+MD2: Frame name:taunt07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:101
+MD2: Frame name:taunt08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:102
+MD2: Frame name:taunt09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:103
+MD2: Frame name:taunt10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:104
+MD2: Frame name:taunt11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:105
+MD2: Frame name:taunt12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:106
+MD2: Frame name:taunt13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:107
+MD2: Frame name:taunt14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:108
+MD2: Frame name:taunt15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:109
+MD2: Frame name:taunt16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:110
+MD2: Frame name:taunt17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:111
+MD2: Frame name:wave01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:112
+MD2: Frame name:wave02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:113
+MD2: Frame name:wave03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:114
+MD2: Frame name:wave04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:115
+MD2: Frame name:wave05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:116
+MD2: Frame name:wave06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:117
+MD2: Frame name:wave07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:118
+MD2: Frame name:wave08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:119
+MD2: Frame name:wave09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:120
+MD2: Frame name:wave10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:121
+MD2: Frame name:wave11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:122
+MD2: Frame name:point01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:123
+MD2: Frame name:point02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:124
+MD2: Frame name:point03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:125
+MD2: Frame name:point04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:126
+MD2: Frame name:point05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:127
+MD2: Frame name:point06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:128
+MD2: Frame name:point07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:129
+MD2: Frame name:point08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:130
+MD2: Frame name:point09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:131
+MD2: Frame name:point10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:132
+MD2: Frame name:point11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:133
+MD2: Frame name:point12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:134
+MD2: Frame name:crstnd01
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:135
+MD2: Frame name:crstnd02
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:136
+MD2: Frame name:crstnd03
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:137
+MD2: Frame name:crstnd04
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:138
+MD2: Frame name:crstnd05
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:139
+MD2: Frame name:crstnd06
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:140
+MD2: Frame name:crstnd07
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:141
+MD2: Frame name:crstnd08
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:142
+MD2: Frame name:crstnd09
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:143
+MD2: Frame name:crstnd10
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:144
+MD2: Frame name:crstnd11
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:145
+MD2: Frame name:crstnd12
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:146
+MD2: Frame name:crstnd13
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:147
+MD2: Frame name:crstnd14
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:148
+MD2: Frame name:crstnd15
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:149
+MD2: Frame name:crstnd16
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:150
+MD2: Frame name:crstnd17
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:151
+MD2: Frame name:crstnd18
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:152
+MD2: Frame name:crstnd19
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:153
+MD2: Frame name:crwalk1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:154
+MD2: Frame name:crwalk2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:155
+MD2: Frame name:crwalk3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:156
+MD2: Frame name:crwalk4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:157
+MD2: Frame name:crwalk5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:158
+MD2: Frame name:crwalk6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:159
+MD2: Frame name:crattak1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:160
+MD2: Frame name:crattak2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:161
+MD2: Frame name:crattak3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:162
+MD2: Frame name:crattak4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:163
+MD2: Frame name:crattak5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:164
+MD2: Frame name:crattak6
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:165
+MD2: Frame name:crattak7
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:166
+MD2: Frame name:crattak8
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:167
+MD2: Frame name:crattak9
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:168
+MD2: Frame name:crpain1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:169
+MD2: Frame name:crpain2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:170
+MD2: Frame name:crpain3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:171
+MD2: Frame name:crpain4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:172
+MD2: Frame name:crdeath1
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:173
+MD2: Frame name:crdeath2
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:174
+MD2: Frame name:crdeath3
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:175
+MD2: Frame name:crdeath4
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:176
+MD2: Frame name:crdeath5
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:177
+MD2: Frame name:death101
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:178
+MD2: Frame name:death102
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:179
+MD2: Frame name:death103
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:180
+MD2: Frame name:death104
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:181
+MD2: Frame name:death105
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:182
+MD2: Frame name:death106
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:183
+MD2: Frame name:death201
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:184
+MD2: Frame name:death202
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:185
+MD2: Frame name:death203
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:186
+MD2: Frame name:death204
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:187
+MD2: Frame name:death205
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:188
+MD2: Frame name:death206
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:189
+MD2: Frame name:death301
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:190
+MD2: Frame name:death302
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:191
+MD2: Frame name:death303
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:192
+MD2: Frame name:death304
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:193
+MD2: Frame name:death305
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:194
+MD2: Frame name:death306
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:195
+MD2: Frame name:death307
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+MD2: Frame Number:196
+MD2: Frame name:death308
+MD2: Number of Triangles:888
+MD2: Material Index: 0
+MD2: Material Loaded
+Enter buildMD2Aniamtions
+BuildMD2Animations Start
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = stand
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = ru
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = attac
+tmpName = pain1
+tmpName = pain1
+tmpName = pain1
+tmpName = pain1
+tmpName = pain2
+tmpName = pain2
+tmpName = pain2
+tmpName = pain2
+tmpName = pain3
+tmpName = pain3
+tmpName = pain3
+tmpName = pain3
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = jum
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = flip
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = salute
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = taunt
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = wave
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = point
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crstnd
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = crwal
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = cratta
+tmpName = crpai
+tmpName = crpai
+tmpName = crpai
+tmpName = crpai
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = crdeat
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death1
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death2
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+tmpName = death3
+BuildMD2Animations: number of animations = 20
+2ndTmplast name == 
+2ndTmp name == stand
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+Animation index = 0
+1stTmplast name == stand
+1sttmp name == ru
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+Animation index = 1
+1stTmplast name == ru
+1sttmp name == attac
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+Animation index = 2
+1stTmplast name == attac
+1sttmp name == pain1
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 3
+Animation index = 3
+Animation index = 3
+Animation index = 3
+1stTmplast name == pain1
+1sttmp name == pain2
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 4
+Animation index = 4
+Animation index = 4
+Animation index = 4
+1stTmplast name == pain2
+1sttmp name == pain3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 5
+Animation index = 5
+Animation index = 5
+Animation index = 5
+1stTmplast name == pain3
+1sttmp name == jum
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+Animation index = 6
+1stTmplast name == jum
+1sttmp name == flip
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+Animation index = 7
+1stTmplast name == flip
+1sttmp name == salute
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+Animation index = 8
+1stTmplast name == salute
+1sttmp name == taunt
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+Animation index = 9
+1stTmplast name == taunt
+1sttmp name == wave
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+Animation index = 10
+1stTmplast name == wave
+1sttmp name == point
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+Animation index = 11
+1stTmplast name == point
+1sttmp name == crstnd
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+Animation index = 12
+1stTmplast name == crstnd
+1sttmp name == crwal
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+Animation index = 13
+1stTmplast name == crwal
+1sttmp name == cratta
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+Animation index = 14
+1stTmplast name == cratta
+1sttmp name == crpai
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 15
+Animation index = 15
+Animation index = 15
+Animation index = 15
+1stTmplast name == crpai
+1sttmp name == crdeat
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 16
+Animation index = 16
+Animation index = 16
+Animation index = 16
+Animation index = 16
+1stTmplast name == crdeat
+1sttmp name == death1
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+Animation index = 17
+1stTmplast name == death1
+1sttmp name == death2
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+Animation index = 18
+1stTmplast name == death2
+1sttmp name == death3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+Animation index = 19
+1stTmplast name == death3
+1sttmp name == death3
+Set animations endindex...done
+strcpy name...done
+set start index...done
+ done creating new info
+Animation index = 20
+Animations information
+Animation Index = 0
+Animation name = stand
+Animation startindex = 0
+Animation endindex = 39
+Animation Index = 1
+Animation name = ru
+Animation startindex = 40
+Animation endindex = 45
+Animation Index = 2
+Animation name = attac
+Animation startindex = 46
+Animation endindex = 53
+Animation Index = 3
+Animation name = pain1
+Animation startindex = 54
+Animation endindex = 57
+Animation Index = 4
+Animation name = pain2
+Animation startindex = 58
+Animation endindex = 61
+Animation Index = 5
+Animation name = pain3
+Animation startindex = 62
+Animation endindex = 65
+Animation Index = 6
+Animation name = jum
+Animation startindex = 66
+Animation endindex = 71
+Animation Index = 7
+Animation name = flip
+Animation startindex = 72
+Animation endindex = 83
+Animation Index = 8
+Animation name = salute
+Animation startindex = 84
+Animation endindex = 94
+Animation Index = 9
+Animation name = taunt
+Animation startindex = 95
+Animation endindex = 111
+Animation Index = 10
+Animation name = wave
+Animation startindex = 112
+Animation endindex = 122
+Animation Index = 11
+Animation name = point
+Animation startindex = 123
+Animation endindex = 134
+Animation Index = 12
+Animation name = crstnd
+Animation startindex = 135
+Animation endindex = 153
+Animation Index = 13
+Animation name = crwal
+Animation startindex = 154
+Animation endindex = 159
+Animation Index = 14
+Animation name = cratta
+Animation startindex = 160
+Animation endindex = 168
+Animation Index = 15
+Animation name = crpai
+Animation startindex = 169
+Animation endindex = 172
+Animation Index = 16
+Animation name = crdeat
+Animation startindex = 173
+Animation endindex = 177
+Animation Index = 17
+Animation name = death1
+Animation startindex = 178
+Animation endindex = 183
+Animation Index = 18
+Animation name = death2
+Animation startindex = 184
+Animation endindex = 189
+Animation Index = 19
+Animation name = death3
+Animation startindex = 190
+Animation endindex = 196
+Number of animations = 20
+Delete TmpMD2File
+Build model packets

@@ -1,0 +1,186 @@
+.vu
+;--------------------------------------------------------------------------------------------
+;
+;	* float registers *
+;
+;	vf01 - vf04	: local_screen matrix
+;	vf05 - vf07	: local_light matrix
+;	vf08 - vf11	: local_color matrix
+;	vf17	: tex_01 gif tag 
+;	vf18	: tex_01 data
+;
+;	vf19	: gif tag 
+;	vf20	: source vertex
+;	vf21	: source normal
+;	vf22	: source color
+;
+;	* integer registers *
+;
+;	vi02	: pointer for xgkick
+;	vi03	: pointer for vertex data
+;	vi04	: pointer for normal data
+;	vi06	: pointer for color data
+;
+;	vi08	: store pointer for rgbaq
+;	vi09	: store pointer for xyz
+;	vi10	: nloop counter
+;	vi11	: mask
+;	vi21	: 255.0f [clamp]
+;
+;--------------------------------------------------------------------------------------------
+
+
+
+
+; load in matrices
+
+				nop								xtop		vi01								; load value of top register from vif 
+
+																								; load local_screen matrix
+				nop								lq			vf01, 0(vi01)
+				nop								lq			vf02, 1(vi01)
+				nop								lq			vf03, 2(vi01)
+				nop								lq			vf04, 3(vi01)
+
+																								; load local_light matrix (3 lights)
+				nop								lq			vf05, 4(vi01)
+				nop								lq			vf06, 5(vi01)
+				nop								lq			vf07, 6(vi01)
+
+																								; load light_color matrix (color of 3 lights+ambient)
+				nop								lq			vf08, 8(vi01)
+				nop								lq			vf09, 9(vi01)
+				nop								lq			vf10, 10(vi01)
+				nop								lq			vf11, 11(vi01)
+
+																								; first microprogram is complete
+				nop[e]							nop
+				nop								nop
+
+
+
+setup:
+				nop								xtop		vi01								; load value of top register from vif 
+
+				nop								lq			vf19, 0(vi01)						; load gif tag 
+
+																								; get nloop count
+				nop								ilw.x		vi10, 0(vi01)x						; load gif tag
+				nop								iaddiu		vi11, vi00, 0x7fff					; set mask
+				nop								nop
+				nop								nop
+				nop								iand		vi10, vi11, vi10					; (0x7fff & giftag)
+
+				nop								loi			255.0								; load 255.0 for clamping
+
+																								; offset into vu memory 		  
+				nop								iaddiu		vi03, vi01, 1						; ptr to vertex data
+				nop								iaddiu		vi04, vi01, 101						; ptr to normal data
+				nop								iaddiu		vi05, vi01, 201						; ptr to color data
+
+				nop								iaddiu		vi02, vi01, 301						; ptr for xgkick  (point to start of gif packet)
+
+																								; set first 2 qwords of gif packet
+				nop								sq			vf19, 0(vi02)						; store gif tag
+
+				nop								iaddiu		vi08, vi02, 1						; store ptr for calculated rgba
+				nop								iaddiu		vi09, vi02, 2						; store ptr for calculated xyz
+
+
+loop:
+				nop								lqi			vf20, (vi03++)						; load xyz
+				nop								lqi			vf21, (vi04++)						; load normal
+				nop								lqi			vf22, (vi05++)						; load rgb
+
+
+																								; local_screen matrix * xyz
+				mulax.xyzw	acc,  vf01, vf20x	nop
+				madday.xyzw	acc,  vf02, vf20y	nop
+				maddaz.xyzw	acc,  vf03, vf20z	nop
+				maddw.xyzw	vf20, vf04, vf00w	nop
+				nop								nop
+				nop								nop
+				nop								nop
+				nop								div			q, vf00w, vf20w						; get 1/w
+				nop								nop
+				nop								nop
+				nop								nop
+				nop								nop
+				nop								nop
+				nop								nop
+				mulq		vf20, vf20, q		nop												; multiply screen coord by 1/w
+				nop								nop
+				nop[d]								nop
+				nop								nop
+				ftoi0		vf20, vf20			nop												; convert xyz for gif packet
+
+
+
+																								; local_light matrix * normal (light effect)
+				mulax.xyzw	acc,  vf05, vf21x	nop
+				madday.xyzw	acc,  vf06, vf21y	nop
+				maddz.xyzw	vf21, vf07, vf21z	nop
+				nop								nop
+				nop								nop
+				nop								nop
+				maxx		vf21, vf21, vf00	nop												; set negative value to 0
+
+
+
+
+																								; light_color matrix * light effect result
+				nop								nop
+				nop								nop
+				nop								nop
+				mulax.xyzw	acc,  vf08, vf21x	nop
+				madday.xyzw	acc,  vf09, vf21y	nop
+				maddaz.xyzw	acc,  vf10, vf21z	nop
+				maddw.xyzw	vf21, vf11, vf00	nop
+				nop								nop
+				nop								nop
+				nop								nop
+				mul			vf21, vf21, vf22	nop												; light effect * rgb
+				nop								nop
+				nop								nop
+				nop								nop
+
+																								; clamp rgb at [255.0]
+				minii		vf21, vf21, i		nop
+				nop								nop
+				nop								nop
+				nop								nop
+				ftoi0		vf21, vf21			nop												; convert rgb for gif packet
+				nop								nop
+				nop								nop
+				nop[d]								nop
+
+
+
+				nop								iaddi		vi10, vi10, -1						; decrement loop counter
+
+				nop								nop
+				nop								nop
+				nop								sq			vf21, 0(vi08)						; store rgb
+				nop								sq			vf20, 0(vi09)						; store xyz
+
+				nop								iaddiu		vi08, vi08, 2						; increment rgb
+				nop								iaddiu		vi09, vi09, 2						; increment xyz
+
+				nop								ibne		vi10, vi00, loop					; loop check
+				nop								nop
+
+																								; send gif packet to gif
+				nop								xgkick		vi02
+
+																								; second microprogram is complete
+				nop[e]							nop
+				nop								nop
+
+																								; return to setup
+				nop								b			setup
+				nop								nop
+
+
+;--------------------------------------------eof----------------------------------------------
+
+

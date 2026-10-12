@@ -1,0 +1,211 @@
+/*
+ * WindowMaker Fomenu konfiguracioja 
+ * Verzio: 0.20.3
+ *
+ * Csanaki Csaba prew@mail.matav.hu
+ *
+ * Szintakszis:
+ *
+ * <Title> [SHORTCUT <Shortcut>] <Command> <Parameters>
+ *
+ * <Title> egy szoveg, amelyet cimkent kell hasznalni. Ha tartalmaz space-t,
+ * akkor idezojelbe ("... ...") kell tenni.	
+ * 
+ * SHORTCUT meghataroz egy shortcut-ot adott programokra. <Shortcut>-nak
+ * ugyanolyan megadasi szintakszisa van a 
+ * $HOME/GNUstep/Defaults/WindowMaker file-ban, mint a RootMenuKey 
+ * vagy a MiniaturizeKey.
+ *
+ * Nem lehet letrehozni shortcut-ot MENU vagy OPEN_MENU bejegyzesben.
+ * 
+ * <Command> az itt kovetkezo utasitasok valamelyike: 
+ *	MENU - kezdi a/az (al)menudefiniciot
+ *	END  - befejezi a/az (al)menudefiniciot
+ *	OPEN_MENU - menu megnyitas
+ *	WORKSPACE_MENU - a munkafelulet kezelesehez almenuket illeszt be
+ *	EXEC <program> - egy kulso programot indit el
+ *	SHEXEC <command> - executes a shell command (like gimp > /dev/null)
+ *	EXIT - kilepes az ablakmanagerbol
+ *	RESTART [<window manager>] - ujrainditja a WindowMaker-t vagy elindit
+ *                                   egy ablakmanagert
+ *	REFRESH - a kepernyo tartalmat frissiti
+ *	ARRANGE_ICONS - a munkafelulet ikonjait ujrarendezi
+ *	SHUTDOWN - minden alkalmazast bezar
+ *	SHOW_ALL - minden alkalmazast visszahoz a munkafeluletre
+ *	HIDE_OTHERS - a munkafeluleten (a pillanatnyilag aktiv kivetelevel)
+ *		      minden ablakot elrejt
+ *	SAVE_SESSION - elmenti a munkafelulet aktualis allapotat, amely
+ *		       magaba foglal minden futo alkalmazast, minden jellemzo-
+ *     		       jukkel (geometria; kepernyo pozicio;  munkafelulet, 
+ *		       melyen talalhatok; dock vagy clip amibol kiindultak, es
+ *		       ha minimalizalod, akkor arnyekos vagy rejtett). Tehat
+ *		       elmenti az aktualis beallitasokat, amik eppen haszna-
+ *		       latban van. Minden WindowMaker inditasakor ezzel a be-
+ *		       allitassal fog indulni, mindaddig mig egy ujabb 
+ *		       SAVE_SESSION vagy CLEAR_SESSION nem hasznalsz.
+ *		       Ha SaveSessionOnExit = Yes; a  WindowMaker domain 
+ *		       file-ban, akkor a mentes automatikusan megtortenik, ha
+ *		       kilepsz a WindowMaker-bol, felulirodik az eddig mentett
+ *		       SAVE_SESSION bejegyzes.
+ *	CLEAR_SESSION - torli az elozo session parametereket. Ennek nem lesz
+ *			semmilyen hatasa, ha a SaveSessionOnExit = True.
+ *	INFO - Info Panel megjelenitese
+ *
+ * OPEN_MENU szintakszisa:
+ *   1. File menu kezeles.
+ *	// megnyitja file.menu-t, melynek tartalmaznia kell egy ervenyes menu 
+ *      // file-t, es beszurja 
+ *	OPEN_MENU file.menu
+ *   2. Pipe menu kezeles.
+ *	// megnyitja a parancsot es hasznalja a stdout to construct menu-t.
+ *	// A parancs kimenetenek egy ervenyes menu leirasnak kell lennie.
+ *	// Space lehet a '|' es a parancs kozott.
+ *	OPEN_MENU | command
+ *   3. Konyvtar kezeles.
+ *	// Megnyit egy vagy tobb konyvtarat es letrehoz egy konyvtarat, 
+ *	// alkonyvtarat, vegrehajthato file-okat es azokat ABC sorrendbe
+ *      // rendezi.
+ *	OPEN_MENU /some/dir [/some/other/dir ...]
+ *   4. Konyvtar kezeles parancsal.
+ *	// Megnyit egy vagy tobb konyvtarat es letrehoz egy konyvtarat, 
+ *	// alkonyvtarat, vegrehajtja az adott parancsot a megfelelo 
+ *      // opcioval.
+ *	OPEN_MENU /some/dir [/some/other/dir ...] WITH command -options
+ *
+ * <Parameters> a vegrehajthato program
+ *
+ * ** EXEC parancssor leirasa
+ * %s - a megadott helyre beszurja a kijelolt szoveget. Ha nincs szoveg 
+ *      kijelolve, a parancs torlodik.
+ * %a(message) - megnyit egy beviteli mezot a megadott szoveggel
+ * %w - a megadott helyre beilleszti az aktualis ablak ID-jet. Ha nincs semmi 
+ *      kijelolve, akkor nem illeszt be semmit.
+ *
+ * A % illetve " jeleket hatastalanitani lehet a \ jellel.
+ * Peldaul: xterm -T "\"Hello Vilag!\""
+ *
+ * Te hasznalhatod escape karakter-nek a '\n'-t is!
+ *
+ * Minden MENU utasitashoz kell egy END utasitasnak tartoznia.
+ *
+ * Peldaul:
+ *
+ * "Teszt" MENU
+ *		// XTerminal
+ *	"XTerm" EXEC xterm
+ *		// XView
+ *	"XView apps" OPEN_MENU "/usr/openwin/bin"
+ *		// egyeb X11 alkalmazasok
+ *	"X11 apps" OPEN_MENU /usr/X11/bin $HOME/bin/X11
+ *		// egyeb hatter kep
+ *	"Background" OPEN_MENU $HOME/images /usr/share/images WITH wmsetbg -u -t
+ *		// megnyitja a style.menu-t az adott bejegyzesben
+ *	"Style" OPEN_MENU style.menu
+ * "Teszt" END
+ */
+
+#include "wmmacros"
+
+"Alkalmazasok" MENU
+	"Informacio" MENU
+	    		"Informacios..." INFO_PANEL
+			"Jogi..." LEGAL_PANEL
+			"Rendszer konzol" EXEC xconsole
+			"Rendszer kihasznaltsag" SHEXEC xosview || xload
+			"Processz lista" EXEC xterm -e top
+			"Manual bongeszo" EXEC xman
+	"Informacio" END
+	"XTerminal" EXEC xterm -sb 
+	"Rxvt" EXEC rxvt -bg black -fg white -fn fixed
+	"Munkafeluletek" WORKSPACE_MENU
+	"Alkalmazasok" MENU
+		"Grafikai" MENU
+			"Gimp" SHEXEC gimp >/dev/null
+			"XV" EXEC xv
+			"XPaint" EXEC xpaint
+			"XFig" EXEC xfig
+		"Grafikai" END
+		"X File Manager" EXEC xfm
+		"OffiX Files" EXEC files
+		"LyX" EXEC lyx
+		"Netscape" EXEC netscape 
+  		"Ghostview" EXEC ghostview %a(Enter file to view)
+		"Acrobat" EXEC /usr/local/Acrobat3/bin/acroread %a(Enter PDF to view)
+  		"TkDesk" EXEC tkdesk
+	"Alkalmazasok" END
+	"Szerkesztok" MENU
+		"XFte" EXEC xfte
+		"XEmacs" SHEXEC xemacs || emacs
+		"XJed" EXEC xjed 
+		"NEdit" EXEC nedit
+		"Xedit" EXEC xedit
+		"VI" EXEC xterm -e vi
+	"Szerkesztok" END
+	"Egyeb" MENU
+		"Xmcd" SHEXEC xmcd 2> /dev/null
+		"Xplaycd" EXEC xplaycd
+		"Xmixer" EXEC xmixer
+	"Egyeb" END
+	"Kellekek" MENU
+		"Szamologep" EXEC xcalc
+		"Ablak jellemzok" SHEXEC xprop | xmessage -center -title 'xprop' -file -
+		"Betutipus" EXEC xfontsel
+		"Terminal emulacio" EXEC xminicom
+		"Nagyito" EXEC xmag
+		"Colormap" EXEC xcmap
+		"XKill" EXEC xkill
+		"Ora" EXEC asclock -shape
+		"Vagolap" EXEC xclipboard
+	"Kellekek" END
+
+	"Valogatas" MENU
+		"Masolas" SHEXEC echo '%s' | wxcopy
+		"Level iras" EXEC xterm -name mail -T "Pine" -e pine %s
+		"Navigator" EXEC netscape %s
+		"Kereses a Manualban" SHEXEC MANUAL_SEARCH(%s)
+	"Valogatas" END
+
+	"Munkafelulet" MENU
+		"Elrejtes" HIDE_OTHERS
+		"Mindent mutat" SHOW_ALL
+		"Ikonok elrendezese" ARRANGE_ICONS
+		"Frissites" REFRESH
+		"Zarolas" EXEC xlock -allowroot -usefirst
+		"Session jellemzok mentese" SAVE_SESSION
+		"Session jellemzok torlese" CLEAR_SESSION
+	"Munkafelulet" END
+
+	"Megjelenites" MENU
+		"Temak" OPEN_MENU THEMES_DIR $HOME/GNUstep/Library/WindowMaker/Themes WITH setstyle
+		"Stilusok" OPEN_MENU STYLES_DIR $HOME/GNUstep/Library/WindowMaker/Styles WITH setstyle
+		"Ikon beallitasok" OPEN_MENU ICON_SETS_DIR $HOME/GNUstep/Library/WindowMaker/IconSets WITH seticons
+		"Hatter" MENU
+			"Szolid" MENU
+                        	"Fekete" WS_BACK '(solid, black)'
+                        	"Kek"  WS_BACK '(solid, "#505075")'
+					"Indigo" WS_BACK '(solid, "#243e6c")'
+					"Sotetkek" WS_BACK '(solid, "#180090")'
+                        	"Lila" WS_BACK '(solid, "#554466")'
+                        	"Buza"  WS_BACK '(solid, "wheat4")'
+                        	"Sotetszurke"  WS_BACK '(solid, "#333340")'
+                        	"Voros" WS_BACK '(solid, "#400020")'
+			"Szolid" END
+			"Gradiens" MENU
+				"Halvany" WS_BACK '(mdgradient, green, red, white, green)'
+				"Egkek" WS_BACK '(vgradient, blue4, white)'
+			"Gradiens" END
+			"Kepek" OPEN_MENU BACKGROUNDS_DIR $HOME/GNUstep/Library/WindowMaker/Backgrounds WITH wmsetbg -u -t
+		"Hatter" END
+		"Temak mentese" SHEXEC getstyle -t $HOME/GNUstep/Library/WindowMaker/Themes/"%a(Theme name)"
+		"Ikonbeallitasok mentese" SHEXEC geticonset $HOME/GNUstep/Library/WindowMaker/IconSets/"%a(IconSet name)"
+	"Megjelenites" END
+
+	"Kilepes"	MENU
+		"Ujrainditas" RESTART
+		"AfterStep inditasa" RESTART afterstep
+		"Kilepes..."  EXIT
+		"Kilepes a sessionbol..." SHUTDOWN
+	"Kilepes" END
+"Alkalmazasok" END
+
+

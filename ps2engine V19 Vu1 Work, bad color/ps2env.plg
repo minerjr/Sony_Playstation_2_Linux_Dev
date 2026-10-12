@@ -1,0 +1,99 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ps2env - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\minerjr\LOCALS~1\Temp\RSP32A.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/ps2env.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\minerjr\PS2Dev\ps2engine\addregisters.cpp"
+"C:\minerjr\PS2Dev\ps2engine\ai.cpp"
+"C:\minerjr\PS2Dev\ps2engine\audio.cpp"
+"C:\minerjr\PS2Dev\ps2engine\custommodel.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dma4kpage.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dmamemory.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dmapacket.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dmascheduler.cpp"
+"C:\minerjr\PS2Dev\ps2engine\graphics.cpp"
+"C:\minerjr\PS2Dev\ps2engine\input.cpp"
+"C:\minerjr\PS2Dev\ps2engine\joypadlib.c"
+"C:\minerjr\PS2Dev\ps2engine\main.cpp"
+"C:\minerjr\PS2Dev\ps2engine\matrix.cpp"
+"C:\minerjr\PS2Dev\ps2engine\matrixfunc.cpp"
+"C:\minerjr\PS2Dev\ps2engine\md2file.cpp"
+"C:\minerjr\PS2Dev\ps2engine\modelloader.cpp"
+"C:\minerjr\PS2Dev\ps2engine\ms3dfile.cpp"
+"C:\minerjr\PS2Dev\ps2engine\script.cpp"
+"C:\minerjr\PS2Dev\ps2engine\vumgr.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\minerjr\LOCALS~1\Temp\RSP32A.tmp" 
+Creating temporary file "C:\DOCUME~1\minerjr\LOCALS~1\Temp\RSP32B.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/ps2env.pdb" /debug /machine:I386 /out:"Debug/ps2env.exe" /pdbtype:sept 
+.\Debug\addregisters.obj
+.\Debug\ai.obj
+.\Debug\audio.obj
+.\Debug\custommodel.obj
+.\Debug\dma4kpage.obj
+.\Debug\dmamemory.obj
+.\Debug\dmapacket.obj
+.\Debug\dmascheduler.obj
+.\Debug\graphics.obj
+.\Debug\input.obj
+.\Debug\joypadlib.obj
+.\Debug\main.obj
+.\Debug\matrix.obj
+.\Debug\matrixfunc.obj
+.\Debug\md2file.obj
+.\Debug\modelloader.obj
+.\Debug\ms3dfile.obj
+.\Debug\script.obj
+.\Debug\vumgr.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\minerjr\LOCALS~1\Temp\RSP32B.tmp"
+<h3>Output Window</h3>
+Compiling...
+addregisters.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+ai.cpp
+audio.cpp
+custommodel.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+dma4kpage.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+dmamemory.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+dmapacket.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+dmascheduler.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+graphics.cpp
+input.cpp
+joypadlib.c
+c:\minerjr\ps2dev\ps2engine\joypadlib.c(11) : fatal error C1083: Cannot open include file: 'sys/ioctl.h': No such file or directory
+main.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+matrix.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+matrixfunc.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+md2file.cpp
+modelloader.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+ms3dfile.cpp
+fatal error C1083: Cannot open source file: 'C:\minerjr\PS2Dev\ps2engine\ms3dfile.cpp': No such file or directory
+script.cpp
+vumgr.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+Error executing cl.exe.
+
+
+
+<h3>Results</h3>
+ps2env.exe - 13 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,13 @@
+0//Day of week
+0//Timestamp day
+0//Timestamp hour
+2004//Timestamp year
+0//Action index
+0.0001//goodness
+0//duration
+0//event type
+0//priority
+0//altered
+0//mustdo
+NULL//npc name
+0//area index

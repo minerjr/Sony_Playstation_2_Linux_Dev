@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>5.3. Odtwarzanie VCD</title><link rel="stylesheet" href="default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.50.0"><link rel="home" href="index.html" title="MPlayer - Odtwarzacz filmów dla LINUKSA"><link rel="up" href="cd-dvd.html" title="Rozdzia&#322; 5. U&#380;ywanie CD/DVD"><link rel="previous" href="dvd.html" title="5.2. Odtwarzanie DVD"><link rel="next" href="ports.html" title="Rozdzia&#322; 6. Porty"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.3. Odtwarzanie VCD</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="dvd.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 5. U&#380;ywanie CD/DVD</th><td width="20%" align="right"> <a accesskey="n" href="ports.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="vcd"></a>5.3. Odtwarzanie VCD</h2></div></div><p>
+Pe&#322;na lista dost&#281;pnych opcji znajduje si&#281; na stronie man. Sk&#322;adnia dla
+standardowego Video CD (VCD) jest nast&#281;puj&#261;ca:
+<pre class="screen">mplayer vcd://<i><tt>&lt;&#347;cie&#380;ka&gt;</tt></i> [-cdrom-device <i><tt>&lt;urz&#261;dzenie&gt;</tt></i>]</pre>
+Przyk&#322;ad:
+<pre class="screen">mplayer vcd://2 -cdrom-device /dev/hdc</pre>
+Domy&#347;lnym urz&#261;dzeniem VCD jest <tt class="filename">/dev/cdrom</tt>. Je&#347;li
+Twoje ustawienia s&#261; inne, utwórz dowi&#261;zanie symboliczne
+lub podaj prawid&#322;owe urz&#261;dzenie w linii polece&#324; za pomoc&#261; opcji
+<tt class="option">-cdrom-device</tt>
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3><p>
+Przynajmniej nap&#281;dy CD-ROM SCSI firmy Plextor i niektóre modele Toshiby
+maj&#261; beznadziejn&#261; wydajno&#347;&#263; przy odczycie VCD. Jest to spowodowane
+niekompletn&#261; implementacj&#261; <tt>ioctl</tt>'a CDROMREADRAW dla
+tych urz&#261;dze&#324;. Je&#347;li masz jakie&#347; poj&#281;cie o programowaniu SCSI,
+<a href="../../tech/patches.txt" target="_top">pomó&#380; nam</a> zaimplementowa&#263; ogóln&#261;
+obs&#322;ug&#281; SCSI dla VCD.
+</p></div><p>
+W mi&#281;dzyczasie mo&#380;esz wyci&#261;ga&#263; dane z VCD za pomoc&#261;
+<a href="http://140.132.1.204/OS/Linux/packages/X/viewers/readvcd/" target="_top">readvcd</a>
+i odtwarza&#263; plik wynikowy za pomoc&#261; <span class="application">MPlayera</span>
+</p><p><b>Struktura VCD. </b>P&#322;yty VCD sk&#322;adaj&#261; si&#281; z jednej lub wi&#281;cej &#347;cie&#380;ek:</p><div class="itemizedlist"><ul type="disc"><li><p>
+Pierwsza &#347;cie&#380;ka jest ma&#322;&#261; &#347;cie&#380;k&#261; o g&#281;sto&#347;ci 2048 bajtów/sektor z danymi w
+systemie plików iso9660, zwykle zawieraj&#261;ca windowsowy odtwarzacz VCD i by&#263;
+mo&#380;e inne informacje (obrazy, tekst, itp.).
+</p></li><li><p>
+Druga i pozosta&#322;e &#347;cie&#380;ki o g&#281;sto&#347;ci 2324 bajtów/sektor zawieraj&#261; po jednym
+pakiecie czystego strumienia MPEG PS na sektor zamiast systemu plików.
+Podobnie, jak w przypadku &#347;cie&#380;ek audio CD, &#347;cie&#380;ki te <span class="bold"><b>nie
+mog&#261; by&#263; montowane</b></span> (Czy kiedykolwiek montowa&#322;e&#347; p&#322;yt&#281; audio CD by
+j&#261; odtworzy&#263;?). Bior&#261;c pod uwag&#281;, &#380;e filmy znajduj&#261; si&#281; na tej &#347;cie&#380;ce,
+powiniene&#347; spróbowa&#263; na pocz&#261;tek opcji <tt class="option">vcd://2</tt>.
+</p></li><li><p>
+Istniej&#261; równie&#380; p&#322;yty VCD bez pierwszej &#347;cie&#380;ki (pojedyncza &#347;cie&#380;ka i
+brak systemu plików w ogóle). Je równie&#380; da si&#281; odtwarza&#263;, ale nie da
+si&#281; ich montowa&#263;.
+</p></li></ul></div><p><b>O plikach .DAT. </b>
+Plik o rozmiarze ok. 600 MB widoczny na pierwszej &#347;cie&#380;ce zamontowanego VCD
+nie jest prawdziwym plikiem ! Jest on tzw. bramk&#261; ISO, utworzon&#261; by
+Windows móg&#322; obs&#322;ugiwa&#263; takie &#347;cie&#380;ki (Windows w ogóle nie zezwala aplikacjom
+na dost&#281;p do urz&#261;dze&#324; w trybie raw). Pod Linuksem nie mo&#380;esz kopiowa&#263; ani
+odtwarza&#263; tych plików (zawieraj&#261; &quot;&#347;mieci&quot;). Pod Windows jest to mo&#380;liwe, gdy&#380;
+jego sterownik iso9660 symuluje odczyt &#347;cie&#380;ek w trybie raw za pomoc&#261; tego
+pliku. By móc odtwarza&#263; pliki .DAT, musisz mie&#263; sterownik do j&#261;dra, który
+dostarczany jest z linuksow&#261; wersj&#261; PowerDVD. Posiada on zmodyfikowany sterownik
+systemu plików iso9660 (<tt class="filename">vcdfs/isofs-2.4.X.o</tt>), który jest w
+stanie symulowa&#263; odczyt &#347;cie&#380;ek w trybie raw za pomoc&#261; pliku .DAT. Je&#347;li
+podmontujesz p&#322;yt&#281; u&#380;ywaj&#261;c ich sterownika, mo&#380;esz kopiowa&#263;, a nawet odtwarza&#263;
+pliki .DAT za pomoc&#261; <span class="application">MPlayera</span>. Ale nie b&#281;dzie to
+dzia&#322;a&#322;o za pomoc&#261; standardowego sterownika iso9660 dostarczonego z j&#261;drem
+Linuksa! Zamiast tego u&#380;yj opcji <tt class="option">vcd://</tt>. Alternatyw&#261; dla
+kopiowania VCD jest nowy sterownik:
+<a href="http://www.elis.rug.ac.be/~ronsse/cdfs/" target="_top">cdfs</a> (nie jest
+cz&#281;&#347;ci&#261; oficjalnego j&#261;dra), który wy&#347;wietla sesje CD jako pliki obrazów, oraz
+<a href="http://cdrdao.sourceforge.net/" target="_top">cdrdao</a>, program do zgrywania
+p&#322;yt CD bit po bicie.
+</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="dvd.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="cd-dvd.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ports.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">5.2. Odtwarzanie DVD </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 6. Porty</td></tr></table></div></body></html>

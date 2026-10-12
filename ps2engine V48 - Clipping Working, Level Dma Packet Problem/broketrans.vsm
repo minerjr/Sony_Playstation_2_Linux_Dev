@@ -1,0 +1,258 @@
+.vu
+;--------------------------------------------------------------------------------------------
+;
+;	* float registers *
+;
+;	vf01 - vf04	: local_screen matrix
+;	vf05 - vf07	: local_light matrix
+;	vf08 - vf11	: local_color matrix
+;	vf17	: tex_01 gif tag 
+;	vf18	: tex_01 data
+;
+;	vf19	: gif tag 
+;	vf20	: source vertex
+;	vf21	: source normal
+;	vf22	: source color
+;	vf23	: source st
+;
+;	* integer registers *
+;
+;	vi02	: pointer for xgkick
+;	vi03	: pointer for vertex data
+;	vi04	: pointer for normal data
+;	vi05	: pointer for color data
+;	vi06	: pointer for st data
+;
+;	vi07	: store value for clipping
+
+;	vi08	: store pointer for rgbaq
+;	vi09	: store pointer for xyz
+;	vi10	: nloop counter
+;	vi11	: mask
+;	vi12	: 255.0f [clamp]
+;	vi13	: store pointer for st
+;	
+;	Modifed by David Froy 2004
+;
+;	Changes
+;		Changed organization of comments to be better visible
+;		Changed ftoi4 to ftoi0 in the view matrix calculations
+;		Added support for texture coordinates ST
+;--------------------------------------------------------------------------------------------
+
+
+
+
+; load in matrices
+
+		; load value of top register from vif 
+		nop								xtop		vi01								
+
+		; load local_screen matrix
+		nop								lq			vf01, 0(vi01)
+		nop								lq			vf02, 1(vi01)
+		nop								lq			vf03, 2(vi01)
+		nop								lq			vf04, 3(vi01)
+
+		; load local_light matrix (3 lights)
+		nop								lq			vf05, 4(vi01)
+		nop								lq			vf06, 5(vi01)
+		nop								lq			vf07, 6(vi01)
+
+		; load light_color matrix (color of 3 lights+ambient)
+		nop								lq			vf08, 8(vi01)
+		nop								lq			vf09, 9(vi01)
+		nop								lq			vf10, 10(vi01)
+		nop								lq			vf11, 11(vi01)
+
+		; first microprogram is complete
+		nop[e]							nop
+		nop								nop
+
+
+
+setup:
+		; load value of top register from vif 
+		nop								xtop		vi01								
+		; load gif tag 
+		nop[d]								lq			vf19, 0(vi01)						
+		; get nloop count
+		nop								ilw.x		vi10, 0(vi01)x						
+		; set mask
+		nop								iaddiu		vi11, vi00, 0x7fff					
+		nop								nop
+		nop								nop
+		; (0x7fff & giftag)
+		nop								iand		vi10, vi11, vi10					
+
+		; load 255.0 for clamping
+		nop								loi			255.0								
+
+		; offset into vu memory																								 		  
+		; ptr to vertex data
+		nop								iaddiu		vi03, vi01, 1						
+		; ptr to normal data
+		nop								iaddiu		vi04, vi01, 61						
+		; ptr to color data
+		nop								iaddiu		vi05, vi01, 121						
+		; ptr to st data
+		nop								iaddiu		vi06, vi01, 181						
+		; ptr for xgkick  (point to start of gif packet)
+		nop								iaddiu		vi02, vi01, 241						
+
+		; set first 2 qwords of gif packet																				
+		; store gif tag
+		nop								sq			vf19, 0(vi02)						
+
+		; store ptr for calculated st
+		nop								iaddiu		vi13, vi02, 1
+		; store ptr for calculated rgba
+		nop								iaddiu		vi08, vi02, 2						
+		; store ptr for calculated xyz
+		nop								iaddiu		vi09, vi02, 3						
+
+loop:
+		; load xyz
+		nop[d]								lqi			vf20, (vi03++)						
+		; load normal
+		nop								lqi			vf21, (vi04++)						
+		; load rgb
+		nop								lqi			vf22, (vi05++)						
+		; load st
+		nop								lqi			vf23, (vi06++)
+
+		; local_screen matrix * xyz																				
+		mulax.xyzw	acc,  vf01, vf20x	nop
+		madday.xyzw	acc,  vf02, vf20y	nop
+		maddaz.xyzw	acc,  vf03, vf20z	nop
+		maddw.xyzw	vf20, vf04, vf00w	nop
+		nop								nop
+		nop								nop
+		nop								nop
+
+		
+		; get 1/w
+		nop								div			q, vf00w, vf20w						
+		nop								nop
+		nop								nop
+		nop								nop
+		nop								nop
+		nop								nop
+		nop								nop
+		; multiply screen coord by 1/w
+		mulq		vf20, vf20, q		nop												
+		nop								nop
+		nop								nop
+		nop								nop
+
+		clipw.xyz	vf20xyz, vf20w		nop
+		nop								nop
+		nop								nop
+		nop								nop
+		nop								nop
+		nop								fcand         vi01,0x3ffff
+		nop								nop
+		nop								nop
+		nop								nop
+		nop								iaddiu      vi01,vi01,0x7fff
+		; convert xyz for gif packet
+		; Changed from ftoi4, due to the camera matrix
+		; allready bit shifting the vertex values
+		ftoi0		vf20, vf20			nop
+		;nop								mfir.w	vf20w, vi01
+		nop								nop
+		nop								nop
+		nop								nop
+		
+		
+
+		
+
+		; local_light matrix * normal (light effect)																								
+		mulax.xyzw	acc,  vf05, vf21x	nop
+		madday.xyzw	acc,  vf06, vf21y	nop
+		maddz.xyzw	vf21, vf07, vf21z	nop
+		nop								nop
+		nop								nop
+		nop								nop
+		; set negative value to 0
+		maxx		vf21, vf21, vf00	nop												
+
+
+
+
+		; light_color matrix * light effect result																								
+		nop								nop
+		nop								nop
+		nop								nop
+		mulax.xyzw	acc,  vf08, vf21x	nop
+		madday.xyzw	acc,  vf09, vf21y	nop
+		maddaz.xyzw	acc,  vf10, vf21z	nop
+		maddw.xyzw	vf21, vf11, vf00	nop
+		nop								nop
+		nop								nop
+		nop								nop
+		; light effect * rgb
+		mul			vf21, vf21, vf22	nop												
+		nop								nop
+		nop								nop
+		nop								nop
+
+		; clamp rgb at [255.0]																								
+		minii		vf21, vf21, i		nop
+		nop								nop
+		nop								nop
+		nop								nop
+		
+		;Convert ST for gif packet
+		;ftoi4		vf23, vf23			nop
+		;nop								nop
+		;nop								nop
+		;nop								nop
+		
+		; convert rgb for gif packet
+		ftoi0		vf21, vf21			nop												
+		nop								nop
+		nop								nop
+		nop								nop
+
+		
+
+		; decrement loop counter
+		nop								iaddi		vi10, vi10, -1						
+
+		nop								nop
+		nop								nop
+		; store st
+		nop								sq			vf23, 0(vi13)						
+		; store rgb
+		nop								sq			vf21, 0(vi08)						
+		; store xyz
+		nop								sq			vf20, 0(vi09)						
+
+		; increment st
+		nop								iaddiu		vi13, vi13, 3
+		; increment rgb
+		nop								iaddiu		vi08, vi08, 3						
+		; increment xyz
+		nop								iaddiu		vi09, vi09, 3						
+
+		; loop check
+		nop								ibne		vi10, vi00, loop					
+		nop								nop
+
+		; send gif packet to gif																								
+		nop								xgkick		vi02
+
+		; second microprogram is complete																								
+		nop[e]							nop
+		nop								nop
+
+		; return to setup
+		nop								b			setup
+		nop								nop
+
+
+;--------------------------------------------eof----------------------------------------------
+
+

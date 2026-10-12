@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="2: A brief overview of the basic sample">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id32') && !n4p){
+    location.replace('id32.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">2: A brief overview of the basic sample</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So you've seen the basic sample, a static coloured triangle in the middle of the screen. &nbsp;To do anything with it, we have to understand how. &nbsp;The process is very, very simple.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Using a C program, we generate a data file containing a single GIFpacket. &nbsp;This GIFpacket contains instructions on how to draw a triangle.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then we generate a code file which says nothing more than &quot;Send the GIFpacket that's in memory over to the GS and get it to draw it&quot; &nbsp;Then it loops back to the start to draw it again.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you're happy with GIFtags and what they do, you can skip the rest of this lesson. &nbsp;Move on to <A HREF="id29.htm" TARGET="_top"    TITLE="3: Making your data file"><U>3: Making your data file</U></A>. &nbsp;If not, grab hold of your GS User's Manual and your EE User's Manual, (Not any of the EE Core books) and read on. &nbsp;I have version 5.0 of each of these manuals, they came with my Linux kit. &nbsp;Thus, if you have a version other than 5.0, ignore my page references :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Firstly, consider what a triangle is. &nbsp;Amongst other things, it is a shape defined by 3 points (vertices), each joined to the other two, with the area between these three lines filled in. &nbsp;The GS (Graphics Synthesiser) is perfectly happy drawing a triangle if you give it the position and colour of each of the 3 vertices. &nbsp;You can think of the GS as a graphics card if you like, although the terminology doesn't sit well in the console world, as it implies the GS is an add-on part which could be changed.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">To tell the GS to draw our triangle, we need to send a few bytes of data, preceded by a GIFtag, which acts as a kind of header, telling the GS what data follows.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Section 3.2 (Page 38) of the GS User's Manual tell us about GS Primitives, including the triangle amongst others. &nbsp;It then goes on to describe an outline of a drawing procedure, and some examples of the drawing procedure for each primitive. &nbsp;If you haven't read Section 3.2 yet, read it now.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">In particular, the top of P42 shows an example of drawing a triangle. &nbsp;First we set the PRIM register, then we loop through the RGBAQ and XYZ2 registers for each vertex. &nbsp;After the third vertex, a drawing kick is performed for us, which renders the triangle. &nbsp;Page 116 has details of the PRIM register, and similarly RGBAQ is on P119, with XYZ2 on P137. &nbsp;Those pages tell you what format the data in those register is expected to be.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">What about the GIFtag itself? &nbsp;They're explained on P151 of the EE User's Manual. &nbsp;As it says there, it has a 128-bit fixed length. &nbsp;The interesting thing to note is the PRIM field from bits 57:47, which allows us to set the PRIM register right in the GIFtag.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Now we know what we need to accomplish. &nbsp;Send a GIFtag setting the PRIM register to draw a triangle, then send 3 vertices worth of co-ordinates and colour info.</FONT><BR>
+<bR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Filling in the GIFtag</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">NLOOP and NREG - This is where we tell the GS how much data to expect. &nbsp;NREG is the number of registers we are setting. &nbsp;We are going to set the RGBAQ and XYZ2 registers, so that's 2. &nbsp;NLOOP is the number of times we loop through those register. &nbsp;We are going to be sending 3 vertices, so we set that to 3. &nbsp;That means the GS will expect 3x2 QWords of data to follow (A QWord is a measure of data length = 16 bytes or 128 bits.)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">EOP - The explanation of this field is a little cryptic in the manual! &nbsp;I think it should stand for &quot;End of packet&quot;. &nbsp;If it were set to 0, the GS would expect a second GIFsegment to immediately follow the first. &nbsp;Set it to 1 and the GS knows that this is the last GIFsegment of the GIFpacket.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">PRE - Are we going to send PRIM information within the GIFtag itself? &nbsp;Yes we are, so set it to 1.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">PRIM - The PRIM field itself is split up into a number of sub-fields corresponding to the fields of the PRIM register (P116 of the GS User's Manual)</FONT><BR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">PRIM - Type of drawing primitive. &nbsp;We're drawing a triangle, so that's 011 (binary) = 3 (decimal)</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">IIP - Shading method. &nbsp;The triangle is displayed with a mix of colours, so that's Gouraud Shading = 1</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">TME - Texture Mapping? &nbsp;No thanks = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">FGE - Fogging? &nbsp;No thanks = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">ABE - Alpha Blending? &nbsp;No thanks = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">AA1 - Antialiasing? &nbsp;No thanks = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">FST - Method of specifying texture co-ordinates. &nbsp;We aren't using texture mapping, so it doesn't matter what we put in here</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">CTXT - Which context shall we use? &nbsp;Let's use the 1st context = 0. &nbsp;Contexts are generally used to allow the VU and CPU to operate on different parts of a scene at the same time without having to switch back and forth between different settings. &nbsp;You may find an imaginative way to use them in your VU demo.</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">FIX - Fragment value Control. &nbsp;Set that to 0 as well (Todo: <I>I don't actually know what this field does!</I>)</FONT></TD>
+ </TR>
+</TABLE>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>A word of warning: </I>I recently answered a question on the forums relating to using REGLIST mode instead of PACKED mode. &nbsp;In REGLIST mode, <I>the PRE and PRIM fields of the GIFtag are completely ignored!</I> &nbsp;That means that, to use REGLIST mode, you must explicitly set up the PRIM register yourself. &nbsp;Just something to bear in mind.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">FLG - What mode are we going to send data in? &nbsp;Let's use packed mode (See P153 of the EE User's Manual). &nbsp;Packed mode = 0.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">REGS - Which registers are we writing to? &nbsp;RGBAQ and XYZ2. &nbsp;Look on pages 119 and 137 of the GS Manual, on the right hand side it tells us the addresses of these registers - 0x01 and 0x05 respectively. &nbsp;However, the field, like all other, is read right-to-left, so we need 0x51 in here. &nbsp;Alternatively a list of all GS register addresses is on P158 of the GS Manual</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Phew, all that to set up 1 triangle? &nbsp;Yes, I'm afraid so. &nbsp;Now though, we only have to put the data we promised, i.e. 3 loops through of the RGBAQ and XYZ2 registers. &nbsp;Those of you who well versed in HTML will probably have done colours in RGB hex notation before, if not, just see the first two (hex) digits as the red component, the second two as the green component, the third two as the blue component, and the final 2 as the alpha component (which we aren't using yet, so we'll keep it as zero) To edit a colour to make it a little more blue, increment the 6th digit. &nbsp;To make it a lot more blue, increment the 5th digit.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, the data we send goes something like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">GIFtag (described above)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">RGBAQ: 0xFF000000 (A nice red)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ2: (2048 - 100, 2048 - 50, 1)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">RGBAQ: 0x00FF0000 (A nice green)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ2: (2048 + 100, 2048 - 50, 1)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">RGBAQ: 0x0000FF00 (A nice blue)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ2: (2048 + 100, 2048 + 50, 1)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">What are all those 2048's doing in the X and Y co-ordinates? &nbsp;The GS treats the centre of the screen as co-ordinates (20248, 2048), so the co-ordinates (2048 - 100, 2048 - 50) really means (-100, -50) relative to the centre of the screen.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Homework</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Before we see how the data file is actually generated, let's have a few little homework questions:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1) What (hex) digit should I increment to make a colour a little more red?</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2) Change the above XYZ2 values to make the triangle fill the top-right half of the screen, assuming the screen is 640x224 pixels large (Positive X is to the right, positive Y is *down*).</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">3) Change the NLOOP field of the GIFtag to allow for a second triangle, draw this somewhere in the bottom-left half of the screen.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">4) Create a second GIFsegment that allows for the drawing of a single blue point at (-50, 50) relative to the centre of the screen.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">5) Modify Q4 to draw 5 green points in a horizontal line, starting at (-50, 50), spaced 10 pixels apart.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you can answer these questions, then you can say you understand basic GIFtags. &nbsp;Don't worry if you don't get it yet, some people work better with the theory up front, but some have to fiddle with a practical to get the answers... if you're on the practical side then lesson 3 will be right up your street.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id28.htm" TARGET="_top"    TITLE="1: How does the harness work?"><U>1: How does the harness work?</U></A> Next - <A HREF="id29.htm" TARGET="_top"    TITLE="3: Making your data file"><U>3: Making your data file</U></A></FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Aside: GIFtags? GIFpackets? GIFsegments?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I'm probably guilty of abusing the terminology used in the manual somewhere along the line, so I'll try to clarify the terms I'm using here. &nbsp;A GIFtag is the 128-bit long header that tells the GS what data to expect next. &nbsp;It is followed by a data segment that has to be exactly the size and shape specified by the GIFtag. &nbsp;If the EOP field of the GIFtag is 0, then this data segment is immediately followed by another GIFtag, and another data segment, and so on until a GIFtag with the EOP field set to 1 is encountered. &nbsp;This collection of GIFtags and data segments is known as a GIFpacket. &nbsp;As far as I'm aware, there's no word for the part of a GIFpacket comprising a single GIFtag and the associated data segment. &nbsp;I'm going to call them GIFsegments. &nbsp;This is not an official term, so don't expect to see it anywhere else :)</FONT><BR>
+<bR>
+</BODY>
+</HTML>

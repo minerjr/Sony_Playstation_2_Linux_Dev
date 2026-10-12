@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>6.6. Windows</title><link rel="stylesheet" href="default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.50.0"><link rel="home" href="index.html" title="MPlayer - Le lecteur vidéo pour LINUX"><link rel="up" href="ports.html" title="Chapitre 6. Ports"><link rel="previous" href="qnx.html" title="6.5. QNX"><link rel="next" href="macos.html" title="6.7. Mac OS"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.6. Windows</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="qnx.html">Précédent</a> </td><th width="60%" align="center">Chapitre 6. Ports</th><td width="20%" align="right"> <a accesskey="n" href="macos.html">Suivant</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="windows"></a>6.6. Windows</h2></div></div><p>Oui, MPlayer tourne sous Windows via
+  <a href="http://www.cygwin.com/" target="_top">Cygwin</a> et
+  <a href="http://www.mingw.org/" target="_top">MinGW</a>.
+  Il n'a pas encore de GUI, mais la version en ligne de commande est presque
+  complètement opérationelle. Les <a href="../../tech/patches.txt" target="_top">Patches</a>
+  sont toujours les bienvenus. Vous devriez jeter un oeil à la liste de diffusion
+  <a href="http://mplayerhq.hu/mailman/listinfo/mplayer-cygwin/" target="_top">mplayer-cygwin</a>
+  pour obtenir de l'aide et les dernières informations.</p><p>Les meilleurs résultats sont obtenus avec le codec vidéo DirectX natif
+  (<tt class="option">-vo directx</tt>) et le pilote waveout natif de Windows
+  (<tt class="option">-ao win32</tt>) car OpenGL ne fonctionne pas et SDL est connu
+  pour distordre le son et l'image et planter sur certains systèmes. Vous pouvez
+  afficher la fenêtre par dessus les autres applications avec <tt class="option">-vo directx:ontop</tt>.
+  Si l'image est distordue, essayez de désactiver l'accélération matérielle avec
+  <tt class="option">-vo directx:noaccel</tt>. Téléchargez les
+  <a href="http://www.videolan.org/vlc/dx7headers.tgz" target="_top">fichiers d'entête DirectX 7</a>
+  pour compiler le pilote de sortie vidéo DirectX.</p><p>Vous pouvez utiliser les codecs Win32 et les codecs Real Win32 (pas les
+  codecs Real Linux) si vous le désirez. Placez les codecs quelque part dans
+  votre path ou passez
+  <tt class="option">--with-codecsdir=c:/chemin/de/vos/codecs</tt> (éventuellement
+  <tt class="option">--with-codecsdir=/chemin/de/vos/codecs</tt> uniquement sous Cygwin) à
+  <tt class="filename">configure</tt>. Nous avons eu quelques retours indiquant que
+  les DLLs Real doivent être accessibles en écriture pour l'utilisateur, mais
+  seulement sur certains systèmes. Essayez de les rendre accessibles en écriture
+  si vous avez des problèmes. Les DLLs QuickTime focntionnent aussi, mais vous
+  devrez les placer dans le répertoire système de Windows
+  (<tt class="filename">C:\Windows\system\</tt> ou similaire).</p><p>La console Cygwin/MinGW est plutôt lente. Il semble que rediriger la sortie
+  ou utiliser l'option <tt class="option">-quiet</tt> améliore les performances. Le
+  rendu direct (<tt class="option">-dr</tt>) peut également aider. Vous pouvez éviter le
+  tremblement de L'OSD en utilisant le double buffering avec l'option
+  <tt class="option">-double</tt>. Si la lecture est sale, essayez
+  <tt class="option">-autosync 100</tt>. Si certaines de ces options vous sont utiles,
+  vous pouvez les placer dans votre fichier de config.</p><p>Il existe des versions précompilées créées par Sascha Sommer disponibles sur
+  <a href="http://www.mplayerhq.hu/MPlayer/releases/win32-beta/" target="_top">notre page web</a>.
+  Joey Parrish a réalisé des
+  <a href="http://joey.nicewarrior.org/cygmp/" target="_top">paquets Windows non-officiels</a>
+  complets avec installeur.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="cygwin"></a>6.6.1. Cygwin</h3></div></div><p>
+Les versions de Cygwin antérieures à 1.5.0 n'incluent pas <tt class="filename">inttypes.h</tt>.
+Mettez cet
+<a href="http://www.mplayerhq.hu/MPlayer/releases/win32-beta/contrib/inttypes.h" target="_top">inttypes.h</a>
+dans <tt class="filename">/usr/include/</tt> pour que
+<span class="application">MPlayer</span> puisse compiler.</p><p>Les fichiers d'entête DirectX doivent être décompressés dans <tt class="filename">/usr/include/</tt>
+  ou dans <tt class="filename">/usr/local/include/</tt>.</p><p>Les instructions et les fichiers pour faire tourner SDL sous Cygwin peuvent être trouvés sur le
+  <a href="http://www.libsdl.org/extras/win32/cygwin/" target="_top">site de libsdl</a>.</p><p>Vous pouvez jouer des VCDs en lisant les fichiers <tt class="filename">.DAT</tt> ou <tt class="filename">.MPG</tt>
+  que Windows fait apparaître sur les VCDs. Cela fonctionne comme ça (changez la
+  lettre de votre lecteur CD-ROM):</p><pre class="screen">mplayer d:/mpegav/avseq01.dat</pre><pre class="screen">mplayer /cygdrive/d/MPEG2/AVSEQ01.MPG</pre><p>Les DVDs fonctionnent également, indiquez la lettre de votre périphérique
+  CDROM à <tt class="option">-dvd-device</tt>:</p><pre class="screen">mplayer dvd://&lt;titre&gt; -dvd-device '\\.\d:'</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="mingw"></a>6.6.2. MinGW</h3></div></div><p>Installer une version de MinGW qui puisse compiler MPlayer était considéré
+  comme compliqué, mais fonctionne désormais sans modifications. Installez simplement
+  MinGW 3.1.0 ou plus récent et MSYS 1.0.9 ou plus récent et dites au postinstall
+  de MSYS que MinGW est installé.</p><p>Si vous utilisez une version de MinGW antérieure à 3.1.0, vous devez
+  remplacer
+  <tt class="filename">/mingw/include/sys/types.h</tt> par
+  <a href="http://www.mplayerhq.hu/MPlayer/releases/win32-beta/contrib/types.h" target="_top"><tt class="filename">types.h</tt></a>.</p><p>Décompressez les fichiers d'entête de DirectX dans <tt class="filename">/mingw/include/</tt>.</p><p>Les VCDs et DVDs fonctionnent comme avec Cygwin (ajustez la lettre de votre
+  lecteur de CD-ROM/DVD-ROM):</p><pre class="screen">mplayer d:/mpegav/avseq01.dat</pre><pre class="screen">mplayer /d/MPEG2/AVSEQ01.MPG</pre><pre class="screen">mplayer dvd://&lt;titre&gt; -dvd-device /d/</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="qnx.html">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ports.html">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="macos.html">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">6.5. QNX </td><td width="20%" align="center"><a accesskey="h" href="index.html">Sommaire</a></td><td width="40%" align="right" valign="top"> 6.7. Mac OS</td></tr></table></div></body></html>

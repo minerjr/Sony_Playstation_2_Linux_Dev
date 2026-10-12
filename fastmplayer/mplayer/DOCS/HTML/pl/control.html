@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>3.2. Sterowanie</title><link rel="stylesheet" href="default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.50.0"><link rel="home" href="index.html" title="MPlayer - Odtwarzacz filmów dla LINUKSA"><link rel="up" href="usage.html" title="Rozdzia&#322; 3. Sposób u&#380;ycia"><link rel="previous" href="commandline.html" title="3.1. Linia polece&#324;"><link rel="next" href="streaming.html" title="3.3. Strumieniowanie z sieci i potoków"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.2. Sterowanie</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="commandline.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 3. Sposób u&#380;ycia</th><td width="20%" align="right"> <a accesskey="n" href="streaming.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="control"></a>3.2. Sterowanie</h2></div></div><p>
+<span class="application">MPlayer</span> posiada w pe&#322;ni konfigurowaln&#261;, opart&#261; na
+komendach warstw&#281; sterowania, która pozwala na sterowanie
+<span class="application">MPlayera</span> za pomoc&#261; klawiatury, myszki, joysticka lub
+zdalnego sterowania (za pomoc&#261; LIRC). Zajrzyj do strony man w celu przejrzenia
+pe&#322;nej listy skrótów klawiszowych.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="ctrl-cfg"></a>3.2.1. Konfiguracja sterowania</h3></div></div><p>
+<span class="application">MPlayer</span> pozwala Ci przypisa&#263; dowolny klawisz/przycisk
+do ka&#380;dej komendy za pomoc&#261; prostego pliku konfiguracyjnego. Sk&#322;adnia tego
+pliku to nazwa klawisza, po której znajduje si&#281; komenda. Domy&#347;lny plik
+konfiguracyjny znajduje si&#281; w <tt class="filename">$HOME/.mplayer/input.conf</tt>, ale
+mo&#380;na poda&#263; tak&#380;e inny za pomoc&#261; opcji
+<tt class="option">-input <i><tt>plik</tt></i></tt>
+(&#347;cie&#380;ki wzgl&#281;dne s&#261; wzgl&#281;dem <tt class="filename">$HOME/.mplayer</tt>).
+</p><div class="example"><p class="title"><b>Przyk&#322;ad 3.1. Przyk&#322;adowy plik konfiguracji sterowania</b></p><pre class="programlisting">
+##
+## Plik konfiguracji sterowania MPlayera
+##
+
+RIGHT seek +10
+LEFT seek -10
+- audio_delay 0.100
++ audio_delay -0.100
+q quit
+&gt; pt_step 1
+&lt; pt_step -1
+ENTER pt_step 1 1</pre></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="ctrl-cfg-keys"></a>3.2.1.1. Nazwy klawiszy</h4></div></div><p>
+Mo&#380;esz uzyska&#263; pe&#322;n&#261; list&#281; uruchamiaj&#261;c
+<b>mplayer -input keylist</b>.
+</p><div class="itemizedlist"><p class="title"><b>Klawiatura</b></p><ul type="disc"><li>Dowolny znak drukowalny</li><li><tt>SPACE</tt></li><li><tt>ENTER</tt></li><li><tt>TAB</tt></li><li><tt>CTRL</tt></li><li><tt>BS</tt></li><li><tt>DEL</tt></li><li><tt>INS</tt></li><li><tt>HOME</tt></li><li><tt>END</tt></li><li><tt>PGUP</tt></li><li><tt>PGDWN</tt></li><li><tt>ESC</tt></li><li><tt>RIGHT</tt></li><li><tt>LEFT</tt></li><li><tt>UP</tt></li><li><tt>DOWN</tt></li></ul></div><div class="itemizedlist"><p class="title"><b>Myszka (obs&#322;ugiwana tylko w Xach)</b></p><ul type="disc"><li>
+  <tt>MOUSE_BTN0</tt> (Lewy przycisk)</li><li>
+  <tt>MOUSE_BTN1</tt> (Prawy przycisk)</li><li>
+  <tt>MOUSE_BTN2</tt> (&#346;rodkowy przycisk)</li><li>
+  <tt>MOUSE_BTN3</tt> (Rolka)</li><li>
+  <tt>MOUSE_BTN4</tt> (Rolka)</li><li>...</li><li><tt>MOUSE_BTN9</tt></li></ul></div><div class="itemizedlist"><p class="title"><b>Joystick (obs&#322;uga musi by&#263; w&#322;&#261;czona podczas kompilacji)</b></p><ul type="disc"><li>
+  <tt>JOY_RIGHT</tt> or
+  <tt>JOY_AXIS0_PLUS</tt></li><li>
+  <tt>JOY_LEFT</tt> or
+  <tt>JOY_AXIS0_MINUS</tt></li><li>
+  <tt>JOY_UP</tt> or
+  <tt>JOY_AXIS1_MINUS</tt></li><li>
+  <tt>JOY_DOWN</tt> or
+  <tt>JOY_AXIS1_PLUS</tt></li><li><tt>JOY_AXIS2_PLUS</tt></li><li><tt>JOY_AXIS2_MINUS</tt></li><li>...</li><li><tt>JOY_AXIS9_PLUS</tt></li><li><tt>JOY_AXIS9_MINUS</tt></li></ul></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="ctrl-cfg-commands"></a>3.2.1.2. Komendy</h4></div></div><p>
+Mo&#380;esz uzyska&#263; pe&#322;n&#261; list&#281; komend uruchamiaj&#261;c
+<b>mplayer -input cmdlist</b>.
+</p><div class="itemizedlist"><ul type="disc"><li><p><tt>seek</tt> (int) warto&#347;&#263; [(int) type=0]</p><p>
+  Przeskok do pewnego miejsca w pliku.
+  Type=<tt>0</tt> to skok wzgl&#281;dny o +/- <span class="emphasis"><em>warto&#347;&#263;</em></span> sekund.
+  Type=<tt>1</tt> to skok do <span class="emphasis"><em>warto&#347;&#263;</em></span>% w filmie.
+  </p></li><li><p><tt>audio_delay</tt> (float) warto&#347;&#263;</p><p>
+  Zmienia opó&#378;nienie o <span class="emphasis"><em>warto&#347;&#263;</em></span> sekund.
+  </p></li><li><p><tt>quit</tt></p><p>
+  Wychodzi z <span class="application">MPlayera</span>
+  </p></li><li><p><tt>pause</tt></p><p>
+  Wstrzymuje/przywraca odtwarzanie
+  </p></li><li><p><tt>grap_frames</tt></p><p>
+  Nie mam poj&#281;cia ;)
+  </p></li><li><p><tt>pt_step</tt> (int) warto&#347;&#263; [(int) force=0]</p><p>
+  Przejd&#378; do nast&#281;pnego/poprzedniego wpisu w drzewie odtwarzania. Znak warto&#347;ci
+  wskazuje kierunek. Je&#347;li nie ma ju&#380; &#380;adnych innych wpisów w danym kierunku,
+  komenda ta nie zrobi nic, chyba, &#380;e argument force nie jest zerem.
+  </p></li><li><p><tt>pt_up_step</tt> (int) warto&#347;&#263; [(int) force=0]</p><p>
+  Podobnie, jak pt_step, ale skacze do nast&#281;pnego/poprzedniego wpisu w li&#347;cie
+  elementów nadrz&#281;dnych (parent list). Jest u&#380;yteczne do przerywania
+  wewn&#281;trznych p&#281;tli w drzewie odtwarzania.
+  </p></li><li><p><tt>alt_src_step</tt> (int) warto&#347;&#263;</p><p>
+  Gdy dost&#281;pnych jest wi&#281;cej ni&#380; jedno &#378;ród&#322;o, komenda ta wybiera
+  nast&#281;pne/poprzednie (obs&#322;ugiwane tylko przez playlist&#281; asx).
+  </p></li><li><p><tt>sub_delay</tt> (float) warto&#347;&#263; [(int) abs=0]</p><p>
+  Przesuwa opó&#378;nienie napisów o +/- <span class="emphasis"><em>warto&#347;&#263;</em></span> sekund lub
+  ustawia je na <span class="emphasis"><em>warto&#347;&#263;</em></span> sekund gdy abs nie jest równe 0.
+  </p></li><li><p><tt>osd</tt> [(int) level=-1]</p><p>
+  Prze&#322;&#261;cza tryb osd lub ostawia go na poziom <span class="emphasis"><em>level</em></span>
+  gdy <span class="emphasis"><em>level</em></span> &gt; 0.
+  </p></li><li><p><tt>volume</tt> (int) kierunek</p><p>Zwi&#281;ksza/zmniejsza poziom g&#322;o&#347;no&#347;ci
+  </p></li><li><tt>contrast</tt> (int) warto&#347;&#263; [(int) abs=0]
+  </li><li><tt>brightness</tt> (int) warto&#347;&#263; [(int) abs=0]
+  </li><li><tt>hue</tt> (int) warto&#347;&#263; [(int) abs=0]
+  </li><li><p><tt>saturation</tt> (int) warto&#347;&#263; [(int) abs=0]</p><p>
+  Ustawia/przestawia parametry video. Zasi&#281;g warto&#347;ci: od -100 do 100.
+  </p></li><li><p><tt>frame_drop</tt> [(int) type=-1]</p><p>
+  Prze&#322;&#261;cza/ustawia tryb opuszczania klatek.
+  </p></li><li><p><tt>sub_visibility</tt></p><p>
+  Zmienia widoczno&#347;&#263; napisów.
+  </p></li><li><p><tt>sub_pos</tt> (int) val</p><p>
+  Zmienia po&#322;o&#380;enie napisów.
+  </p></li><li><p><tt>vobsub_lang</tt></p><p>
+  Zmienia j&#281;zyk napisów VobSub.
+  </p></li><li><p><tt>vo_fullscreen</tt></p><p>
+  Prze&#322;&#261;cza tryb pe&#322;noekranowy.
+  </p></li><li><p><tt>tv_step_channel</tt> (int) kierunek</p><p>
+  Wybiera nast&#281;pny/poprzedni kana&#322; TV.
+  </p></li><li><p><tt>tv_step_norm</tt></p><p>
+  Zmienia norm&#281; TV.
+  </p></li><li><p><tt>tv_step_chanlist</tt></p><p>
+  Zmienia list&#281; kana&#322;ów.
+  </p></li><li><tt>gui_loadfile</tt></li><li><tt>gui_loadsubtitle</tt></li><li><tt>gui_about</tt></li><li><tt>gui_play</tt></li><li><tt>gui_stop</tt></li><li><tt>gui_playlist</tt></li><li><tt>gui_preferences</tt></li><li><p><tt>gui_skinbrowser</tt></p><p>
+  Akcje GUI
+  </p></li></ul></div></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="lirc"></a>3.2.2. Sterowanie poprzez LIRC</h3></div></div><p>
+Linux Infrared Remote Control - u&#380;yj &#322;atwego do w&#322;asnor&#281;cznego zbudowania
+odbiornika podczerwieni i (prawie) dowolnego pilota zdalnego sterowania i
+steruj nim swoim Linuksem!
+Wi&#281;cej o LIRC: <a href="http://www.lirc.org" target="_top">www.lirc.org</a>.
+</p><p>
+Je&#347;li zainstalowa&#322;e&#347; LIRC, configure automatycznie go wykryje. Je&#347;li wszystko
+pójdzie dobrze, <span class="application">MPlayer</span> wypisze komunikat typu
+&quot;<tt>Setting up lirc support...</tt>&quot; przy starcie.
+Je&#347;li wyst&#261;pi b&#322;&#261;d, powiadomi Ci&#281; o tym. Je&#347;li nic nie powie Ci na temat LIRC,
+to znaczy, &#380;e jego obs&#322;uga nie zosta&#322;a wkompilowana. To tyle ;)
+</p><p>
+Nazwa aplikacji dla <span class="application">MPlayer</span> to - hmm... zgadnij ;) -
+<tt class="filename">mplayer</tt>. Mo&#380;esz u&#380;ywa&#263; dowolnych komend, a nawet poda&#263;
+wi&#281;cej ni&#380; jedn&#261; komend&#281; na raz oddzielaj&#261;c je za pomoc&#261; <tt>\n</tt>.
+Nie zapomnij o w&#322;&#261;czeniu flagi repeat w <tt class="filename">.lircrc</tt> je&#347;li
+ma to sens (skoki, g&#322;o&#347;no&#347;&#263; itp). To jest fragment mojego
+<tt class="filename">.lircrc</tt>:
+</p><pre class="programlisting">
+begin
+     button = VOLUME_PLUS
+     prog = mplayer
+     config = volume 1
+     repeat = 1
+end
+
+begin
+    button = VOLUME_MINUS
+    prog = mplayer
+    config = volume -1
+    repeat = 1
+end
+
+begin
+    button = CD_PLAY
+    prog = mplayer
+    config = pause
+end
+
+begin
+    button = CD_STOP
+    prog = mplayer
+    config = seek 0 1\npause
+end</pre><p>
+Je&#347;li nie lubisz standardowej lokalizacji pliku lirc-config
+(<tt class="filename">~/.lircrc</tt>), u&#380;yj opcji <tt class="option">-lircconf
+<i><tt>nazwa_pliku</tt></i></tt> by poda&#263; inny plik.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="slave-mode"></a>3.2.3. Tryb s&#322;ugi</h3></div></div><p>
+Tryb s&#322;ugi pozwala Ci na utworzenie prostej nak&#322;adki na
+<span class="application">MPlayera</span>. Po jego w&#322;&#261;czeniu (opcja
+<tt class="option">-slave</tt>) <span class="application">MPlayer</span> b&#281;dzie czyta&#322;
+komendy oddzielone znakami nowej linii (\n) ze standardowego wej&#347;cia.
+</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="commandline.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="usage.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="streaming.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">3.1. Linia polece&#324; </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> 3.3. Strumieniowanie z sieci i potoków</td></tr></table></div></body></html>

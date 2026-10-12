@@ -1,0 +1,2 @@
+lib/img/trog.bmp
+lib/img/trog.bmp

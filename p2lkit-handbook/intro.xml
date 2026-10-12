@@ -1,0 +1,144 @@
+<chapter>
+ <title>Introduction to the Playstation 2 Linux kit</title>
+ <sect1>
+  <title>What is the Playstation 2 Linux kit?</title>
+  <para>
+   The Sony Playstation 2 Linux kit allows any owner of a consumer 
+   Playstation 2 unit to run Linux. The kit consists of an add on hard drive 
+   and ethernet combo as well as all of the software needed to install and
+   run a full Linux system. It not only allows you to run all of the familar
+   Linux applications like Apache, X Windows, telnet, mpg123, and the gimp,
+   it also allows you the ability to compile programs directly on the
+   Playstation 2 itself. Full access to the graphics and processing hardware
+   is supported and writing any application is possible.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Why did Sony release this kit?</title>
+  <para>
+   Several factors played into Sony's release of the Playstation 2 Linux kit:
+   <itemizedlist mark='opencircle'>
+    <listitem>
+     The Playstation 2 is notorious for being hard to program for due to the
+     complexity of the hardware involved in the console. Thus, there are 
+     relatively few people in the gaming industry that know how to utilize 
+     the full potential of the system.
+    </listitem>
+    <listitem>
+     The more people that know how to program for the Playstation 2, the
+     better. It wouldn't be surprising to see surge of students and 
+     hobbyists becoming PS3 graphics programmers in the coming years due to
+     the release of the PS2 Linux kit.
+    </listitem>
+    <listitem>
+     Graphics and game hobbyists have been reverse engineering and modifying 
+     consoles for years with the notion of homebrew game programming in mind.
+     This effort is partially wasted because the end goal for most hobbyists
+     is programming graphics for the console, not piracy.
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>
+   Sony has also setup a community website for the Playstation 2 Linux kit,
+   which can be found at 
+   <ulink url="http://www.playstation2-linux.com/">
+    http://www.playstation2-linux.com/</ulink>.
+  </para>
+ </sect1>
+ <sect1>
+  <title>How hard is it to use the kit?</title>
+  <para>
+   If you are a regular Linux user, the kit is very easy to use. Infact, the
+   kit operates just like a regular Linux system. You can login, change
+   directories, run shell scripts, and use all the regular unix commands.
+  </para>
+  <para>
+   If you are unfamiliar with Linux or Unix in general, the learning curve
+   is going to be steep. However, everybody has to start somewhere and setting
+   up a Linux system on a Playstation 2 is quite easy compared to setting a
+   similar system up on a PC. There are many books on learning Unix and many
+   websites describing how to configure Linux software.
+  </para>
+ </sect1>
+ <sect1>
+  <title>What could I use the kit for?</title>
+  <para>
+   The kit's purpose is multi-faceted, but is meant primarily for homebrew
+   game and application development. All the software that you need to create
+   a game is included with the system. Other possibilities for the kit exist,
+   some of which are:
+   <itemizedlist>
+    <listitem>
+     High performance computing
+    </listitem>
+    <listitem>
+     Parallel computing
+    </listitem>
+    <listitem>
+     Web Server/Firewall
+    </listitem>
+    <listitem>
+     Music Player
+    </listitem>
+    <listitem>
+     Linux gaming machine
+    </listitem>
+    <listitem>
+     Network file server
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>
+   If the application has anything to do with graphics or number 
+   crunching, the PS2 is usually a good fit.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Differences from a regular Linux distribution</title>
+  <para>
+   Since all Playstation 2 systems are identical, every Playstation 2
+   Linux install is the exact same. No need to worry about incompatible
+   hardware, or if the Linux kernel supports your particular graphics card
+   or motherboard.
+  </para>
+  <para>
+   The physical size of the entire Linux system is quite tiny and does not
+   require a large amount of resources or space to use. All you need is a 
+   Playstation 2, and the Linux kit (plus a Sync On Green monitor to perform 
+   the installation). The total cost for everything should be around $400 USD,
+   which is quite affordable considering what you would pay for a 
+   comparable PC setup.
+  </para>
+  <para>
+   The Playstation 2 Linux distribution is based on Kondara Linux 5.2, which
+   is subsequently based on RedHat Linux 5.2. Although this makes the PS2 Linux
+   distribution quite outdated, there are several efforts to provide updated
+   RPMs for the system.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Where can I get the kit?</title>
+  <para>
+   The Sony Playstation 2 Linux kit can be purchased from the official
+   Playstation.com websites.
+   <itemizedlist>
+    <listitem>
+     The <ulink url="http://www.us.playstation.com/product_detail/product_detail.jhtml?PRODID=337933&amp;CATID=405">
+     US Playstation 2 Linux kit</ulink>
+    </listitem>
+    <listitem>
+     The <ulink url="http://www.linuxplay.com/">
+     European/Australian Playstation 2 Linux kit</ulink>
+    </listitem>
+    <listitem>
+     The <ulink url="http://www.jp.playstation.com/linux/">
+     Japanese Playstation 2 Linux kit</ulink>
+    </listitem>
+    <listitem>
+     The <ulink url="http://nz.playstation.com/">
+     New Zealand Playstation 2 Linux kit</ulink>
+    </listitem>
+   </itemizedlist>
+  </para>
+ </sect1>
+</chapter>

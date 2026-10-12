@@ -1,0 +1,28 @@
+This is a general howto on how to use some of the added features that I created
+for this framework.
+
+Suported Image formats.
+8bit bmp
+24bit bmp
+24bit tga unconpressed.
+
+To load an image simply first create a Image object.
+ex.
+Image ImageName("name of image");
+
+This will create an image object and load the specified file into memory.
+
+Now you will need set the address of the image.
+ex.
+ImageName.setAddress(name of ps2 framework, 0 for the very first image\
+					    1 for any other one that
+					      comes after that.);
+
+The the framework is not a problem. Now the second parameter of the setAddress.
+There is a problem with how the ps2 texture memory works. The first image to 
+load needs its give 2k addres multiplied by 32 then you are good to go.
+Any other image after this inital address does not need to multiply
+the starting address by 32. This is just a cheap hack for now.
+Because each image is independent of each other they do not know which image
+is loaded first of not.
+

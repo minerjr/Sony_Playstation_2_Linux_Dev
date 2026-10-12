@@ -1,0 +1,133 @@
+BY: sparky
+DATE: 2003-Aug-28 15:00
+SUBJECT: RE: Suggestions on Clipping
+
+There are so many ways to do clipping so you'll have to choose one that works for your type of application. I'll try to discuss some of the essential differences.
+
+As you already commented on there's a version that only does trivial rejection. I'll go through this first.
+
+Triv rejection:
+
+the way a simple projection works is essentially
+xscr = X*ScaleX/Z + OffsetX
+yscr = Y*ScaleY/Z + OffsetY
+
+if we want to specify our camera as a fov and we assume the glass of the TV/screen is 4:3 area, then we'd calculate ScaleX and ScaleY like this:
+
+// fov is total field of view which is why
+// it's divided by 2
+ScaleX = screenWidth / 2*tan(fov/2)
+ScaleY = -screenHeight*(4/3) / 2*tan(fov/2)
+
+offsetX and offsetY are typically 2048 on ps2.
+
+This is all stuff that will fit into a matrix.
+
+Okay, let's say we've chosen a field of view fov which represents what we should see on the screen defined by screenWidth and screenHeight. We know the half size in 3d of our window at depth 1.0 is tan(fov/2).
+
+We want to know what size it would be if we enlarged this area to reach the guardband.
+
+since the pixel aspect of the guardband is obviously the same as that of the actual screen we get the following ratio:
+
+tan(fov_guard_horz/2)/tan(fov/2) = 4096/screenWidth
+
+which means:
+
+tan(fov_guard_horz/2) = 4096*tan(fov/2) / screenWidth
+
+
+tan(fov_guard_vert/2) = 4096*(tan(fov/2)*3/4)/screenHeight
+
+Now it's not important what fov_guard_horz and fov_guard_vert are, what's important is that we now know what the (half) width and height of the window in 3D should be at distance 1.0 for the expanded field of view.
+
+now to set the scales to make this new fov match a projection to -1; 1 like in opengl in both the vertical and horizontal direction we would set scaleX and scaleY to the following:
+
+newscaleX = 1 / tan(fov_guard_horz/2) = screenWidth / 4096*tan(fov/2)
+
+and
+
+newscaleY = 1 / tan(fov_guard_vert/2) = screenHeight / 4096*(tan(fov/2)*3/4)
+
+and offsetX and offsetY in this case would obviously become 0.0
+
+if you setup your projection matrix according to these values using the clip test you'll know if you went outside the guardband. This is how we designed the properties (-1; 1).
+
+Now this is where it gets beatiful notice what happens when you scale newscaleX and newscaleY by 2048.0 (half guardband width/height in pixels), we get the origional scaleX and scaleY which proves that we stayed true to the view we origionally wanted on screen but we get to clip everything that reaches outside the guardband using the simple clip test (done before the scale by 2048).
+
+The scale by 2048 and the offset by 2048 needs to be done after the CLIP test but it can be applied to the vertex before the mul by Q (Q is 1/W), all you need to do is scale X and Y of the vertex by 2048 and then add 2048*W to X and Y, then at the end mul by Q
+
+This covers the rejection in the XY plane. handling depth rejection is pretty straight forward but if you're unsure of it you can just ask. Otherwise I'll move on to true clipping.
+
+True clipping in homogenous space:
+
+If you choose to do your clipping in homogenous space then it's very important that you clip against the front plane first! or you'll get warped triangles.
+
+Now you can use a -1 to 1 in all directions if you want but I'll go by Foleys frustum which is a -1 to 1 in the X and Y direction but 0 to -1 in the Z direction. what you want is to be able to intersent an edge with the frustum.
+
+// front plane (Z has been manipulated to hit zero always before W does)
+0 = (Z1*(1-t) + Z2*t)/(W1*(1-t) + W2*t)
+
+reordering this it becomes:
+
+t = -Z1 / (Z2-Z1)
+
+// back plane
+-1 = (Z1*(1-t) + Z2*t)/(W1*(1-t) + W2*t)
+
+becomes:
+
+t = (-W1-Z1) / ((Z2-Z1) + (W2-W1))
+
+// left side
+-1 = (X1*(1-t) + X2*t)/(W1*(1-t) + W2*t)
+
+becomes:
+
+t = (-W1-X1) / ((X2-X1) + (W2-W1))
+
+which similarily means lower plane becomes
+
+t = (-W1-Y1) / ((Y2-Y1) + (W2-W1))
+
+
+Right plane is:
+
+1 = (X1*(1-t) + X2*t)/(W1*(1-t) + W2*t)
+
+and hence t is:
+
+t = (X1 - W1) / ((W2-W1) - (X2-X1))
+
+and for Y this is ofcourse
+
+t = (Y1 - W1) / ((W2-W1) - (Y2-Y1))
+
+
+You can ofcourse use t not only to get a new vertex at the intersection but also to generate new values for the interpolated color and ST coordinates.
+
+
+If you don't like clipping in homogenous space for various reasons, there is another alternative, you can clip in 3d space perhaps in the object coordinatesystem. Just have clip planes for the camera, in each frame transform them to the objects coordinatesystem and then do similar intersection test. It's pretty straight forward:
+
+if you have a plane (A,B,C,D) and two points p1 and p2 on each side then we need to know how to do the intersection test. btw testing which side the vertex is on is simple just do sign <-- A*p.x + B*p.y + C*p.z + D
+sign decides which side of the plane the vertex was on.
+
+Now moving on to the intersection calculation itself.
+
+If a point is on the plane we'll get sign equals zero. So we're looking for a way to decide when sign will b zero.
+
+Let's set v to p2-p1
+
+The line becomes, point_on_line(t) <-- v*t + p1
+if t is in the range (0; 1) then the points will be between p1 and p2.
+
+We want to solve the equation:
+
+A*(v.x*t + p1.x) + B*(v.y*t + p1.y) + C*((v.x*t + p1.x)) + D = 0
+
+which becomes:
+
+t = -(D + A*p1.x + B*p1.y + C*p1.z)/(A*v.x + B*v.y + C*v.z)
+
+note as eratos mentioned in general when dealing with true clipping if 1 vertex is on the outside and 2 vertices are on the inside then you'll need to do a split, which is the actual agony of dealing with clipping. Controlling lowlevel, something that has a dynamic nature.
+
+Sparky.

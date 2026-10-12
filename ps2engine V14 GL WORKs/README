@@ -1,0 +1,50 @@
+PS2Engine By David Froy 
+Version: V 0.14
+Date: April 12, 2004
+
+Features
+--------
+Dma Memory Manager
+Dma Scheduler
+Matrix Manager using OpenGl like commands
+Custom Models using Path 3(ie channel 2)
+Custom Models using openGl like commands
+Simple MD2 and MS3D loaders (to be replaced by proper, perspective correct version)
+VU Micro Code Manager
+
+
+Commands
+--------
+
+Class Name: Matrix_Manager
+--------------------------
+WARNING!!!! The ps2 uses transposed matrix, ie matrix[2][3] is actually matrix[3][2] on the ps2, keep in mind
+
+
+Constructors:
+ Matrix_Manager() - simply does a loadIdentity to all the matrixs
+
+Deconstors:
+ ~Matrix_Manager() - empty matrix deconstrutor
+
+Functions:
+int matrixMode(int tmpCurrentMode) - sets the current mode and returns the old mode, options are as follows
+	VIEW - view matrix
+	PROJECTION - projection matrix
+	CAMERA - camera matrix
+	LIGHT - light matrix
+	MODELVIEW - model matrix
+	COLOR - color matrix
+
+
+
+
+
+
+Todo
+----
+Add VU1 optimised code to custom model
+Add keyframe and skelaton model types
+Add graphics engine that hides most of the complexity
+Add sound engine
+Add proper input engine

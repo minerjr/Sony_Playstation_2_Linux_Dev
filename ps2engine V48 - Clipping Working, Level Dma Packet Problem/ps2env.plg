@@ -1,0 +1,208 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ps2env - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP25F.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR"Debug/" /Fp"Debug/ps2env.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\minerjr\PS2Dev\ps2engine\addregisters.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dma4kpage.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dmamemory.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dmapacket.cpp"
+"C:\minerjr\PS2Dev\ps2engine\dmascheduler.cpp"
+"C:\minerjr\PS2Dev\ps2engine\collision.cpp"
+"C:\minerjr\PS2Dev\ps2engine\gossipengine.cpp"
+"C:\minerjr\PS2Dev\ps2engine\timeline.cpp"
+"C:\minerjr\PS2Dev\ps2engine\timelineday.cpp"
+"C:\minerjr\PS2Dev\ps2engine\timelineevent.cpp"
+"C:\minerjr\PS2Dev\ps2engine\bitmap.cpp"
+"C:\minerjr\PS2Dev\ps2engine\customimage.cpp"
+"C:\minerjr\PS2Dev\ps2engine\custommodel.cpp"
+"C:\minerjr\PS2Dev\ps2engine\keyframe.cpp"
+"C:\minerjr\PS2Dev\ps2engine\level.cpp"
+"C:\minerjr\PS2Dev\ps2engine\matrix.cpp"
+"C:\minerjr\PS2Dev\ps2engine\matrixfunc.cpp"
+"C:\minerjr\PS2Dev\ps2engine\modelloader.cpp"
+"C:\minerjr\PS2Dev\ps2engine\q3bspfile.cpp"
+"C:\minerjr\PS2Dev\ps2engine\texture.cpp"
+"C:\minerjr\PS2Dev\ps2engine\vumgr.cpp"
+"C:\minerjr\PS2Dev\ps2engine\area.cpp"
+"C:\minerjr\PS2Dev\ps2engine\gameclock.cpp"
+"C:\minerjr\PS2Dev\ps2engine\npc.cpp"
+"C:\minerjr\PS2Dev\ps2engine\perftime.c"
+"C:\minerjr\PS2Dev\ps2engine\input.cpp"
+"C:\minerjr\PS2Dev\ps2engine\joypadlib.c"
+"C:\minerjr\PS2Dev\ps2engine\PS2Pad.cpp"
+"C:\minerjr\PS2Dev\ps2engine\main.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP25F.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP260.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/ps2env.pdb" /debug /machine:I386 /out:"Debug/ps2env.exe" /pdbtype:sept 
+.\Debug\audio.obj
+.\Debug\addregisters.obj
+.\Debug\dma4kpage.obj
+.\Debug\dmamemory.obj
+.\Debug\dmapacket.obj
+.\Debug\dmascheduler.obj
+.\Debug\acquaintance.obj
+.\Debug\action.obj
+.\Debug\actionlist.obj
+.\Debug\ai.obj
+.\Debug\collision.obj
+.\Debug\event.obj
+.\Debug\gossip.obj
+.\Debug\gossipengine.obj
+.\Debug\timeline.obj
+.\Debug\timelineday.obj
+.\Debug\timelineevent.obj
+.\Debug\bitmap.obj
+.\Debug\customimage.obj
+.\Debug\custommodel.obj
+.\Debug\graphics.obj
+.\Debug\keyframe.obj
+.\Debug\level.obj
+.\Debug\matrix.obj
+.\Debug\matrixfunc.obj
+.\Debug\md2file.obj
+.\Debug\modelloader.obj
+.\Debug\ms3dfile.obj
+.\Debug\q3bspfile.obj
+.\Debug\texture.obj
+.\Debug\vumgr.obj
+.\Debug\area.obj
+.\Debug\demon.obj
+.\Debug\gameclock.obj
+.\Debug\npc.obj
+.\Debug\perftime.obj
+.\Debug\timestamp.obj
+.\Debug\input.obj
+.\Debug\joypadlib.obj
+.\Debug\PS2Pad.obj
+.\Debug\main.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP260.tmp"
+<h3>Output Window</h3>
+Compiling...
+addregisters.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+dma4kpage.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+dmamemory.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+dmapacket.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+dmascheduler.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+collision.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+gossipengine.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+timeline.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+timelineday.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+timelineevent.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+bitmap.cpp
+C:\minerjr\PS2Dev\ps2engine\bitmap.cpp(78) : error C2065: 'memalign' : undeclared identifier
+C:\minerjr\PS2Dev\ps2engine\bitmap.cpp(147) : warning C4018: '<' : signed/unsigned mismatch
+C:\minerjr\PS2Dev\ps2engine\bitmap.cpp(165) : warning C4018: '<' : signed/unsigned mismatch
+customimage.cpp
+c:\minerjr\ps2dev\ps2engine\structs.h(1) : fatal error C1083: Cannot open include file: 'libvu0.h': No such file or directory
+custommodel.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+keyframe.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+level.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+matrix.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+matrixfunc.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+modelloader.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+q3bspfile.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+texture.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+vumgr.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+area.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+gameclock.cpp
+c:\minerjr\ps2dev\ps2engine\structs.h(1) : fatal error C1083: Cannot open include file: 'libvu0.h': No such file or directory
+npc.cpp
+c:\minerjr\ps2dev\ps2engine\matrixfunc.h(19) : fatal error C1083: Cannot open include file: 'ps2gs.h': No such file or directory
+perftime.c
+c:\minerjr\ps2dev\ps2engine\perftime.h(11) : fatal error C1083: Cannot open include file: 'asm/types.h': No such file or directory
+input.cpp
+c:\minerjr\ps2dev\ps2engine\joypadlib.h(14) : fatal error C1083: Cannot open include file: 'linux/ps2/pad.h': No such file or directory
+joypadlib.c
+c:\minerjr\ps2dev\ps2engine\joypadlib.c(11) : fatal error C1083: Cannot open include file: 'sys/ioctl.h': No such file or directory
+PS2Pad.cpp
+c:\minerjr\ps2dev\ps2engine\joypadlib.h(14) : fatal error C1083: Cannot open include file: 'linux/ps2/pad.h': No such file or directory
+main.cpp
+c:\minerjr\ps2dev\ps2engine\sps2inc.h(4) : fatal error C1083: Cannot open include file: 'sps2lib.h': No such file or directory
+Error executing cl.exe.
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP261.tmp" with contents
+[
+/nologo /o"Debug/ps2env.bsc" 
+.\Debug\audio.sbr
+.\Debug\addregisters.sbr
+.\Debug\dma4kpage.sbr
+.\Debug\dmamemory.sbr
+.\Debug\dmapacket.sbr
+.\Debug\dmascheduler.sbr
+.\Debug\acquaintance.sbr
+.\Debug\action.sbr
+.\Debug\actionlist.sbr
+.\Debug\ai.sbr
+.\Debug\collision.sbr
+.\Debug\event.sbr
+.\Debug\gossip.sbr
+.\Debug\gossipengine.sbr
+.\Debug\timeline.sbr
+.\Debug\timelineday.sbr
+.\Debug\timelineevent.sbr
+.\Debug\bitmap.sbr
+.\Debug\customimage.sbr
+.\Debug\custommodel.sbr
+.\Debug\graphics.sbr
+.\Debug\keyframe.sbr
+.\Debug\level.sbr
+.\Debug\matrix.sbr
+.\Debug\matrixfunc.sbr
+.\Debug\md2file.sbr
+.\Debug\modelloader.sbr
+.\Debug\ms3dfile.sbr
+.\Debug\q3bspfile.sbr
+.\Debug\texture.sbr
+.\Debug\vumgr.sbr
+.\Debug\area.sbr
+.\Debug\demon.sbr
+.\Debug\gameclock.sbr
+.\Debug\npc.sbr
+.\Debug\perftime.sbr
+.\Debug\timestamp.sbr
+.\Debug\input.sbr
+.\Debug\joypadlib.sbr
+.\Debug\PS2Pad.sbr
+.\Debug\main.sbr]
+Creating command line "bscmake.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP261.tmp"
+Creating browse info file...
+BSCMAKE: error BK1506 : cannot open file '.\Debug\addregisters.sbr': No such file or directory
+Error executing bscmake.exe.
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+ps2env.exe - 30 error(s), 2 warning(s)
+</pre>
+</body>
+</html>

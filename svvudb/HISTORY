@@ -1,0 +1,18 @@
+build 247
+Added the ability to save the contents of memory in ascii and binary
+form
+Added the GIF explorer which allows you to analyze GIF tags
+
+Build 224
+Added keyboard accelerators to windows client
+Made screen update a lot faster for windows client
+
+Build 222
+Added remote debugging support
+Added PC linux client
+Added windows client
+
+Build 138 Fixes a bug where a float value may overrun the buffer
+allocated for its string value.  Specifically, there was a value of W
+which was 198099571621059046912699662336.000000
+

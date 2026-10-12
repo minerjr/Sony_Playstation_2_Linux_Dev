@@ -1,0 +1,219 @@
+PS2 Register mapping
+
+original by vince_0x0f
+updated 2001-05-13 by Vzzrzzn
+
+This info is being collected from public documents and/or asm examples
+distributed by individuals. I find these source of informations legal.
+Here they are
+
+References:
+	Procedural Rendering on PS2 (Public Version) p.10, small picture
+	printf example, from Duke, a very welcome example indeed.
+	http://www.gamasutra.com/features/20010214/mallinson_02.htm ,
+		for VU0 and VU1 memory sizes
+
+If you find some of them to be illegal source of info, please tell me
+so that I can remove the releavant info as soon as possible. thanks.
+
+This list is in constant evolution, don't consider it error-free.
+
+Addr			Address Name		rw	Desc
+Timer 0
+--------------------------------------------------
+				T0_COUNT		Timer Count
+				T0_MODE 		Timer Mode
+				T0_COMP 		Timer Compare value
+				T0_HOLD 		Timer Pause
+
+Timer 1
+--------------------------------------------------
+				T1_COUNT		Timer Count
+				T1_MODE 		Timer Mode
+				T1_COMP 		Timer Compare value
+				T1_HOLD 		Timer Pause
+
+Timer 2
+--------------------------------------------------
+				T2_COUNT		Timer Count
+				T2_MODE 		Timer Mode
+				T2_COMP 		Timer Compare value
+
+Timer 3
+--------------------------------------------------
+				T3_COUNT		Timer Count
+				T3_MODE 		Timer Mode
+				T3_COMP 		Timer Compare value
+
+IPU Registers? (MPEG2 decoder)
+--------------------------------------------------
+				IPU_CMD
+				IPU_CTRL
+				IPU_??
+
+GIF Registers
+--------------------------------------------------
+1200_1000?		GIF_CTRL		GIF Control
+1200_1010		GIF_MODE
+1200_1020		GIF_STAT
+1200_1040		GIF_TAG0
+1200_1050		GIF_TAG1
+1200_1060		GIF_TAG2
+1200_1070		GIF_TAG3
+1200_1080		GIF_CNT
+1200_10a0		GIF_
+1200_10b0		GIF_
+
+VIF0 Registers
+--------------------------------------------------
+				VIF0_STAT		VIF0 Status
+				VIF0_
+				VIF0_
+				VIF0_
+				VIF0_CYCLE
+				VIF0_MODE
+				VIF0_NUM
+				VIF0_MASK
+				VIF0_CODE
+				VIF0_
+
+				VIF0_
+
+				VIF0_R0
+				VIF0_R1
+				VIF0_R2
+				VIF0_R3
+				VIF0_C0
+				VIF0_C1
+				VIF0_C2
+				VIF0_C3
+
+VIF1 Registers
+--------------------------------------------------
+				VIF1_STAT		VIF1 Status
+				VIF1_
+				VIF1_
+				VIF1_
+				VIF1_CYCLE
+				VIF1_MODE
+				VIF1_NUM
+				VIF1_MASK
+				VIF1_CODE
+				VIF1_
+				VIF1_
+
+
+
+
+
+
+It looks like a trend for DMA is to have a TAG when you send
+to a device and no tag when you receive from it.
+
+
+DMA CH0 Registers - Linked to VIF0
+--------------------------------------------------
+1000_8000		D0_CHCR 		DMA-0 Channel Control
+1000_8010		D0_MADR 		Memory Address?
+1000_8020		D0_SIZE 		Transfer Size (they call it D0_QWC)
+1000_8030		D0_TAG			DMA Tag (they call it D0_TADR)
+1000_8040		D0_??LO 		they call it D0_ASR0
+1000_8050		D0_??HI 		they call it D0_ASR1
+
+DMA CH1 Registers - Linked to VIF1
+--------------------------------------------------
+1000_9000		D1_CHCR 		DMA-1 Channel Control
+1000_9010		D1_MADR 		Memory Address?
+1000_9020		D1_SIZE 		Transfer Size (they call it D1_QWC)
+1000_9030		D1_TAG			DMA Tag (they call it D1_TADR)
+1000_9040		D1_??LO 		they call it D1_ASR0
+1000_9050		D1_??HI 		they call it D1_ASR1
+
+DMA CH2 Registers - Linked to GIF
+--------------------------------------------------
+1000_A000		D2_CHCR 		DMA-2 Channel Control
+1000_A010		D2_MADR 		Memory Address?
+1000_A020		D2_SIZE 		Transfer Size (they call it D2_QWC)
+1000_A030		D2_TAG			DMA Tag (they call it D2_TADR)
+1000_A040		D2_??LO 		they call it D2_ASR0
+1000_A050		D2_??HI 		they call it D2_ASR1
+
+DMA CH3 Registers - Linked to IPU (from IPU)?
+--------------------------------------------------
+1000_B000		D3_CHCR 		DMA-3 Channel Control
+1000_B010		D3_MADR 		Memory Address?
+1000_B020		D3_QWC			Transfer Size?
+
+DMA CH4 Registers - Linked to IPU (to IPU)?
+--------------------------------------------------
+1000_B400		D4_CHCR 		DMA-4 Channel Control
+1000_B410		D4_MADR 		Memory Address?
+1000_B420		D4_QWC			Transfer Size? (could call this D4_SIZE)
+1000_B430		D4_TADR 		DMA Tag? (could call this D4_TAG)
+
+DMA CH5 Registers - Linked to ?
+--------------------------------------------------
+1000_C000		D5_CHCR 		DMA-4 Channel Control
+1000_C010		D5_MADR 		Memory Address?
+1000_C020		D5_QWC			Transfer Size?
+
+DMA CH6 Registers - Linked to ?
+--------------------------------------------------
+1000_C400		D6_CHCR 		DMA-6 Channel Control
+1000_C410		D6_MADR 		Memory Address?
+1000_C420		D6_QWC			Transfer Size?
+1000_C430		D6_TADR 		DMA Tag?
+
+DMA CH7 Registers - Linked to ?
+--------------------------------------------------
+1000_C800		D7_CHCR 		DMA-7 Channel Control
+1000_C810		D7_MADR 		Memory Address?
+1000_C820		D7_QWC			Transfer Size?
+
+DMA CH8 Registers - Linked to SPR (transfer from Scratch Pad Registers -> to RAM probably)
+--------------------------------------------------
+1000_D000		D8_CHCR 		DMA-8 Channel Control
+1000_D010		D8_MADR 		Memory Address?
+1000_D020		D8_QWC			Transfer Size?
+				--
+				--
+				--
+				--
+1000_D080		D8_MCR? 		???
+
+DMA CH9 Registers - Linked to SPR (transfer to Scratch Pad Registers <- from RAM probably)
+--------------------------------------------------
+1000_D400		D9_CHCR 		DMA-9 Channel Control
+1000_D410		D9_MADR 		Memory Address?
+1000_D420		D9_QWC			Transfer Size?
+1000_D430		D9_TADR 		DMA Tag?
+				--
+				--
+				--
+				--
+1000_D480		D9_MCR? 		???
+
+DMA Control Registers
+--------------------------------------------------
+1000_E000		D_CTRL			DMA Control
+1000_E010		D_STAT			DMA Status
+1000_E020		D_PCR			PSX had it, why not PS2 ? ;)
+
+
+
+
+
+VU0 has 4k internal program memory, 4k internal data memory
+VU1 has 16k internal program memory, 16k internal data memory
+
+the following seem right
+
+Addr.							Device
+1100_0000		VU0 			Program Memory (ROM)
+1100_1000		VU0 			Memory (ROM)
+1100_2000		VU0 			VU0 Mirrored Memory
+1100_4000		VU0 			VU0 Mirrored Memory
+1100_6000		VU0 			VU0 Mirrored Memory
+1100_8000		VU1 			VU1 Program Memory (ROM)
+1100_C000		VU1 			VU1 Memory (ROM)
+

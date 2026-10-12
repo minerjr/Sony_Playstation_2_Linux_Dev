@@ -1,0 +1,17 @@
+/****************************************************************************\
+|* Framework for the PS2
+|* =====================
+|*
+\****************************************************************************/
+
+This is my attempt to put together some knowledge from around the net, from
+various examples on the playstation2-linux site, and from personal conversation
+into a useful framework to help develop programs for the PS2.
+
+To make the framework, type 'make' in the top-level directory, or to make an
+optimised library, type 'make opt'. In both cases, a test program will also
+be made as 'main'.
+
+Enjoy.
+
+Simon.

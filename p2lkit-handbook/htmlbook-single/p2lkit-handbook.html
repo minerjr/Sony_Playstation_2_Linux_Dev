@@ -1,0 +1,422 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>The Playstation 2 Linux Kit Handbook</title><meta name="generator" content="DocBook XSL Stylesheets V1.40"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" id="id2715491"><div class="titlepage"><div><h1 class="title"><a name="id2715491"></a>The Playstation 2 Linux Kit Handbook</h1></div><div><div class="legalnotice"><p class="legalnotice-title"><b>Copyright Notice</b></p><p class="copyright">Copyright © 2002 Manu Sporny  
+     <a href="mailto:msporny@xrhino.com" target="_top">msporny@xrhino.com</a>
+    Gray Carper
+     <a href="mailto:gcarper@xrhino.com" target="_top">gcarper@xrhino.com</a>
+    Jonathan Turner
+     <a href="mailto:jturner@xrhino.com" target="_top">jturner@xrhino.com</a>
+    </p><p>
+    Permission is granted to copy, distribute and/or modify this document under
+    the terms of the GNU Free Documentation License, Version 1.1 or any later
+    version published by the Free Software Foundation; with the Invariant 
+    Sections being Copyright, with no Front-Cover Texts and with no Back-Cover
+    Texts.
+   </p><p>
+    A copy of the GNU Free Documentation License is available on the World Wide
+    Web at <a href="http://www.gnu.org/copyleft/fdl.html" target="_top"> 
+    http://www.gnu.org/copyleft/fdl.html</a>.
+
+    You can also obtain it by writing to the
+    <div class="address"><br>
+     Free Software Foundation, Inc.<br>
+     59 Temple Place - Suite 330<br>
+     Boston <br>
+     MA <br>
+     02111-1307<br>
+     USA<br>
+    </div>
+   </p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="#id2717258">Introduction to the Playstation 2 Linux kit</a></dt><dd><dl><dt> <a href="#id2717266">What is the Playstation 2 Linux kit?</a></dt><dt> <a href="#id2717290">Why did Sony release this kit?</a></dt><dt> <a href="#id2717358">How hard is it to use the kit?</a></dt><dt> <a href="#id2717386">What could I use the kit for?</a></dt><dt> <a href="#id2717439">Differences from a regular Linux distribution</a></dt><dt> <a href="#id2717478">Where can I get the kit?</a></dt></dl></dd><dt>2 <a href="#id2723753">Hardware and software included with the kit</a></dt><dd><dl><dt> <a href="#id2723761">Ethernet Unit</a></dt><dt> <a href="#id2723791">Hard Disk Drive (HDD)</a></dt><dt> <a href="#id2723808">USB Keyboard, Mouse and VGA cable</a></dt><dt> <a href="#id2723846">Playstation 2 Linux software distribution</a></dt><dt> <a href="#id2723880">Hardware that you must purchase separately</a></dt></dl></dd><dt>3 <a href="#id2724066">Functional overview of the Playstation 2</a></dt><dd><dl><dt> <a href="#id2724074">Layout of the Playstation 2</a></dt><dt> <a href="#id2724126">R5900 Emotion Engine CPU core</a></dt><dd><dl><dt> <a href="#id2723553">Floating Point Unit (FPU)</a></dt><dt> <a href="#id2723600">Cache and Scratchpad RAM (SPR)</a></dt><dt> <a href="#id2723617">DMA, DRAM and Memory Management Unit (MMU)</a></dt><dt> <a href="#id2723648">Interrupt controller and Timers</a></dt></dl></dd><dt> <a href="#id2723666">Vector Processor Unit 0 (VPU0/VU0/COP1)</a></dt><dt> <a href="#id2717033">Vector Processor Unit 1 (VPU1/VU1/COP2)</a></dt><dt> <a href="#id2717105">Graphics Synthesizer (GS)</a></dt><dt> <a href="#id2717184">Image Processing Unit (IPU)</a></dt><dt> <a href="#id2717231">I/O Processor (IOP)</a></dt><dd><dl><dt> <a href="#id2718140">USB 1.0 Controller</a></dt><dt> <a href="#id2718165">Sony i.Link (Firewire) Controller</a></dt><dt> <a href="#id2718192">Sound Processing Unit (SPU2)</a></dt></dl></dd><dt> <a href="#id2718244">System bus controllers</a></dt><dd><dl><dt> <a href="#id2718265">System Interface (SIF) and System bus (SBUS) controllers</a></dt><dt> <a href="#id2718294">VPU Interface (VIF0 and VIF1)</a></dt><dt> <a href="#id2718310">Graphics Interface (GIF)</a></dt><dt> <a href="#id2718328">DMA Controller</a></dt><dt> <a href="#id2718358">RDRAM Controller</a></dt></dl></dd></dl></dd><dt>4 <a href="#id2718026">The PS2 Linux kernel</a></dt><dd><dl><dt> <a href="#id2718034">The MIPS kernel core</a></dt><dt> <a href="#id2718042">PS2 specific device drivers</a></dt><dd><dl><dt> <a href="#id2718050">Sony PS2 DVD drive</a></dt><dt> <a href="#id2718058">Playstation 2 Joypad support </a></dt><dt> <a href="#id2718067">Memory card device</a></dt><dt> <a href="#id2718076">Real-time clock</a></dt><dt> <a href="#id2718084">SPU sound driver</a></dt><dt> <a href="#id2717249">Ethernet driver (smap)</a></dt><dt> <a href="#id2718398">Graphics Synthesizer console</a></dt><dt> <a href="#id2718407">Sony PS2 USB controller</a></dt></dl></dd><dt> <a href="#id2718417">Kernel command line options</a></dt></dl></dd><dt>5 <a href="#id2724053">System Performance</a></dt><dd><dl><dt> <a href="#id2724060">Processors</a></dt><dd><dl><dt> <a href="#id2718389">Emotion Engine Core</a></dt><dt> <a href="#id2717965">Vector Units</a></dt><dt> <a href="#id2717974">Graphics Synthesizer</a></dt><dt> <a href="#id2717982">I/O Processor</a></dt></dl></dd><dt> <a href="#id2717992">System I/O</a></dt><dd><dl><dt> <a href="#id2717999">Memory bandwidth</a></dt><dt> <a href="#id2718007">Ethernet</a></dt><dt> <a href="#id2718016">Harddisk</a></dt><dt> <a href="#id2718024">USB</a></dt><dt> <a href="#id2717886">Firewire</a></dt></dl></dd></dl></dd><dt>6 <a href="#id2723256">Specific software for PS2 Linux</a></dt><dd><dl><dt> <a href="#id2723263">Vector Command Line (VCL)</a></dt><dt> <a href="#id2723272">Memory Card format (mcformat)</a></dt><dt> <a href="#id2723280">PS2 development libraries (libps2dev)</a></dt></dl></dd><dt>7 <a href="#id2723982">Online resources</a></dt><dd><dl><dt> <a href="#id2723989">playstation2-linux.com</a></dt></dl></dd></dl></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id2717258"></a>Chapter 1. Introduction to the Playstation 2 Linux kit</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt> <a href="#id2717266">What is the Playstation 2 Linux kit?</a></dt><dt> <a href="#id2717290">Why did Sony release this kit?</a></dt><dt> <a href="#id2717358">How hard is it to use the kit?</a></dt><dt> <a href="#id2717386">What could I use the kit for?</a></dt><dt> <a href="#id2717439">Differences from a regular Linux distribution</a></dt><dt> <a href="#id2717478">Where can I get the kit?</a></dt></dl></div><div class="sect1"><a name="id2717266"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717266"></a>What is the Playstation 2 Linux kit?</h2></div></div><p>
+   The Sony Playstation 2 Linux kit allows any owner of a consumer 
+   Playstation 2 unit to run Linux. The kit consists of an add on hard drive 
+   and ethernet combo as well as all of the software needed to install and
+   run a full Linux system. It not only allows you to run all of the familar
+   Linux applications like Apache, X Windows, telnet, mpg123, and the gimp,
+   it also allows you the ability to compile programs directly on the
+   Playstation 2 itself. Full access to the graphics and processing hardware
+   is supported and writing any application is possible.
+  </p></div><div class="sect1"><a name="id2717290"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717290"></a>Why did Sony release this kit?</h2></div></div><p>
+   Several factors played into Sony's release of the Playstation 2 Linux kit:
+   <div class="itemizedlist"><ul><li style="list-style-type: opencircle"><a name="id2717310"></a>
+     The Playstation 2 is notorious for being hard to program for due to the
+     complexity of the hardware involved in the console. Thus, there are 
+     relatively few people in the gaming industry that know how to utilize 
+     the full potential of the system.
+    </li><li style="list-style-type: opencircle"><a name="id2717319"></a>
+     The more people that know how to program for the Playstation 2, the
+     better. It wouldn't be surprising to see surge of students and 
+     hobbyists becoming PS3 graphics programmers in the coming years due to
+     the release of the PS2 Linux kit.
+    </li><li style="list-style-type: opencircle"><a name="id2717328"></a>
+     Graphics and game hobbyists have been reverse engineering and modifying 
+     consoles for years with the notion of homebrew game programming in mind.
+     This effort is partially wasted because the end goal for most hobbyists
+     is programming graphics for the console, not piracy.
+    </li></ul></div>
+  </p><p>
+   Sony has also setup a community website for the Playstation 2 Linux kit,
+   which can be found at 
+   <a href="http://www.playstation2-linux.com/" target="_top">
+    http://www.playstation2-linux.com/</a>.
+  </p></div><div class="sect1"><a name="id2717358"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717358"></a>How hard is it to use the kit?</h2></div></div><p>
+   If you are a regular Linux user, the kit is very easy to use. Infact, the
+   kit operates just like a regular Linux system. You can login, change
+   directories, run shell scripts, and use all the regular unix commands.
+  </p><p>
+   If you are unfamiliar with Linux or Unix in general, the learning curve
+   is going to be steep. However, everybody has to start somewhere and setting
+   up a Linux system on a Playstation 2 is quite easy compared to setting a
+   similar system up on a PC. There are many books on learning Unix and many
+   websites describing how to configure Linux software.
+  </p></div><div class="sect1"><a name="id2717386"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717386"></a>What could I use the kit for?</h2></div></div><p>
+   The kit's purpose is multi-faceted, but is meant primarily for homebrew
+   game and application development. All the software that you need to create
+   a game is included with the system. Other possibilities for the kit exist,
+   some of which are:
+   <div class="itemizedlist"><ul><li><a name="id2717405"></a>
+     High performance computing
+    </li><li><a name="id2717409"></a>
+     Parallel computing
+    </li><li><a name="id2717414"></a>
+     Web Server/Firewall
+    </li><li><a name="id2717419"></a>
+     Music Player
+    </li><li><a name="id2717423"></a>
+     Linux gaming machine
+    </li><li><a name="id2717428"></a>
+     Network file server
+    </li></ul></div>
+  </p><p>
+   If the application has anything to do with graphics or number 
+   crunching, the PS2 is usually a good fit.
+  </p></div><div class="sect1"><a name="id2717439"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717439"></a>Differences from a regular Linux distribution</h2></div></div><p>
+   Since all Playstation 2 systems are identical, every Playstation 2
+   Linux install is the exact same. No need to worry about incompatible
+   hardware, or if the Linux kernel supports your particular graphics card
+   or motherboard.
+  </p><p>
+   The physical size of the entire Linux system is quite tiny and does not
+   require a large amount of resources or space to use. All you need is a 
+   Playstation 2, and the Linux kit (plus a Sync On Green monitor to perform 
+   the installation). The total cost for everything should be around $400 USD,
+   which is quite affordable considering what you would pay for a 
+   comparable PC setup.
+  </p><p>
+   The Playstation 2 Linux distribution is based on Kondara Linux 5.2, which
+   is subsequently based on RedHat Linux 5.2. Although this makes the PS2 Linux
+   distribution quite outdated, there are several efforts to provide updated
+   RPMs for the system.
+  </p></div><div class="sect1"><a name="id2717478"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717478"></a>Where can I get the kit?</h2></div></div><p>
+   The Sony Playstation 2 Linux kit can be purchased from the official
+   Playstation.com websites.
+   <div class="itemizedlist"><ul><li><a name="id2717494"></a>
+     The <a href="http://www.us.playstation.com/product_detail/product_detail.jhtml?PRODID=337933&amp;CATID=405" target="_top">
+     US Playstation 2 Linux kit</a></li><li><a name="id2717507"></a>
+     The <a href="http://www.linuxplay.com/" target="_top">
+     European/Australian Playstation 2 Linux kit</a></li><li><a name="id2717521"></a>
+     The <a href="http://www.jp.playstation.com/linux/" target="_top">
+     Japanese Playstation 2 Linux kit</a></li><li><a name="id2717536"></a>
+     The <a href="http://nz.playstation.com/" target="_top">
+     New Zealand Playstation 2 Linux kit</a></li></ul></div>
+  </p></div></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id2723753"></a>Chapter 2. Hardware and software included with the kit</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt> <a href="#id2723761">Ethernet Unit</a></dt><dt> <a href="#id2723791">Hard Disk Drive (HDD)</a></dt><dt> <a href="#id2723808">USB Keyboard, Mouse and VGA cable</a></dt><dt> <a href="#id2723846">Playstation 2 Linux software distribution</a></dt><dt> <a href="#id2723880">Hardware that you must purchase separately</a></dt></dl></div><div class="sect1"><a name="id2723761"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723761"></a>Ethernet Unit</h2></div></div><p>
+   A 10/100 Mbit ethernet unit ships with the Playstation 2 Linux kit. The
+   unit is compatible with any 10/100 Base-T network/hub. Along with the
+   standard RJ-45 jack on the back of the unit (with link and activity LEDs),
+   the ethernet unit houses three other connections. The Sony PS2 Hard Disk
+   Drive (HDD) power and IDE data connections are kept opposite the RJ-45
+   jack as well as a proprietary PC card connector which is used to connect 
+   the unit to the Playstation 2.
+  </p><p>
+   The ethernet unit that ships with the Linux kit resembles the consumer one
+   that will be sold in the US starting in August 2002. The one item that is
+   missing is the 56k modem port.
+  </p></div><div class="sect1"><a name="id2723791"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723791"></a>Hard Disk Drive (HDD)</h2></div></div><p>
+   The hard disk drive (HDD) unit that ships with the Playstation 2 is a
+   standard IDE drive with specialized firmware to make it work in a
+   Playstation 2. It is a 40 GB drive manufactured by Western Digital for
+   Sony.
+  </p></div><div class="sect1"><a name="id2723808"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723808"></a>USB Keyboard, Mouse and VGA cable</h2></div></div><p>
+   A Sony Playstation 2 USB keyboard is included in the Playstation 2 Linux 
+   kit. The keyboard is a standard black 104-key keyboard. There is a 
+   pass-through port for chaining another USB device off of the keyboard,
+   such as a USB mouse or camera.
+  </p><p>
+   The Sony Playstation 2 USB mouse is of the standard two button mechanical
+   variety. It is black in color and has a nice PS2 logo on the top. 
+  </p><p>
+   The kit also comes with a VGA break-out cable for hooking the Playstation
+   2 to a VGA monitor. By default, the linux installer will only work with a
+   Sync on Green VGA monitor. After the installation is complete, you can
+   instruct the bootloader to only use NTSC or PAL for display (so you don't
+   need to have a monitor nearby). The cable also has two RCA jacks for left
+   and right stereo. It plugs directly into the Playstation 2 video port
+   located at the back left of the machine.
+  </p></div><div class="sect1"><a name="id2723846"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723846"></a>Playstation 2 Linux software distribution</h2></div></div><p>
+   The PS2 Linux kit ships with a version of Kondara Linux, which is based
+   on RedHat Linux 5.2. The distribution's installer (anaconda) has been 
+   tailored towards the Playstation 2's hardware making installation a 
+   relatively straight forward process.
+  </p><p>
+   There are two DVD discs in the distribution, the first one is primarily
+   a bootloader and rescue disc, the second is the software distribution.
+   There are 581 binary RPM packages that are included with the system along
+   with 389 source RPM packages.
+  </p><p>
+   The distribution is a relatively complete one, including a tailored 
+   X-Windows server, most common server packages and user applications.
+  </p></div><div class="sect1"><a name="id2723880"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723880"></a>Hardware that you must purchase separately</h2></div></div><p>
+   You must have purchased a Playstation 2 unit ($199 as of August 2002) and 
+   a memory card ($25 as of August 2002) before you are able to use the 
+   Playstation 2 Linux kit.
+  </p></div></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id2724066"></a>Chapter 3. Functional overview of the Playstation 2</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt> <a href="#id2724074">Layout of the Playstation 2</a></dt><dt> <a href="#id2724126">R5900 Emotion Engine CPU core</a></dt><dd><dl><dt> <a href="#id2723553">Floating Point Unit (FPU)</a></dt><dt> <a href="#id2723600">Cache and Scratchpad RAM (SPR)</a></dt><dt> <a href="#id2723617">DMA, DRAM and Memory Management Unit (MMU)</a></dt><dt> <a href="#id2723648">Interrupt controller and Timers</a></dt></dl></dd><dt> <a href="#id2723666">Vector Processor Unit 0 (VPU0/VU0/COP1)</a></dt><dt> <a href="#id2717033">Vector Processor Unit 1 (VPU1/VU1/COP2)</a></dt><dt> <a href="#id2717105">Graphics Synthesizer (GS)</a></dt><dt> <a href="#id2717184">Image Processing Unit (IPU)</a></dt><dt> <a href="#id2717231">I/O Processor (IOP)</a></dt><dd><dl><dt> <a href="#id2718140">USB 1.0 Controller</a></dt><dt> <a href="#id2718165">Sony i.Link (Firewire) Controller</a></dt><dt> <a href="#id2718192">Sound Processing Unit (SPU2)</a></dt></dl></dd><dt> <a href="#id2718244">System bus controllers</a></dt><dd><dl><dt> <a href="#id2718265">System Interface (SIF) and System bus (SBUS) controllers</a></dt><dt> <a href="#id2718294">VPU Interface (VIF0 and VIF1)</a></dt><dt> <a href="#id2718310">Graphics Interface (GIF)</a></dt><dt> <a href="#id2718328">DMA Controller</a></dt><dt> <a href="#id2718358">RDRAM Controller</a></dt></dl></dd></dl></div><div class="sect1"><a name="id2724074"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2724074"></a>Layout of the Playstation 2</h2></div></div><p>
+   The Playstation 2 is a very complex beast, composed of several different 
+   types of specialized processors that are designed to operate in parallel.
+   Most of the processors can access other parts of the system independently 
+   and thus a great deal of the work in the PS2 can be performed unattended 
+   by the main processor.
+  </p><div class="figure"><p><a name="id2724092"></a><b>Figure 3.1. Block diagram of the Playstation 2</b></p><p><img src="figures/PS2BlockDiagram.png"></p></div><p>
+   The diagram above shows the functional layout of the Playstation 2. The
+   system can be broken down into three groups; graphics, control, and I/O.
+   Most control and calculations happen in the Emotion Engine (EE), graphics 
+   rendering is done mostly in the Graphics Synthesizer (GS), and I/O is
+   handled by the I/O Processor (IOP).
+  </p></div><div class="sect1"><a name="id2724126"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2724126"></a>R5900 Emotion Engine CPU core</h2></div></div><div class="figure"><p><a name="id2724101"></a><b>Figure 3.2. Block diagram of the Playstation 2 - Emotion Engine Core</b></p><p><img src="figures/PS2BD-EEcore.png"></p></div><p>
+   The main CPU in the Playstation 2 is one developed by Toshiba, exclusively
+   for the console. It is a 128-bit MIPS ISA level III compliant processor.
+   The Emotion Engine (EE) is the chip that manages most of the other
+   processors in the system, performing the role of a traditional CPU.
+  </p><p>
+   Some of its more advanced features include:
+   <div class="itemizedlist"><ul><li><a name="id2723517"></a>
+     32 128-bit wide general purpose registers
+    </li><li><a name="id2723522"></a>
+     32 32-bit wide floating point registers
+    </li><li><a name="id2723527"></a>
+     128-bit wide data path connected to a 128-bit wide system bus
+    </li><li><a name="id2723532"></a>
+     2-way superscalar pipeline, capable of processing two 64-bit MIPS III
+     instructions per cycle.
+    </li><li><a name="id2723539"></a>
+     MIPS IV parallel multimedia instructions capable of doing one 128, two 
+     64, four 32, eight 16 or sixteen 8-bit operations per instruction.
+    </li><li><a name="id2723546"></a>
+     2 micro-programmable vector processors capable of ~2.8GFlops each.
+    </li></ul></div>
+  </p><div class="sect2"><a name="id2723553"></a><div class="titlepage"><div><h3 class="title"><a name="id2723553"></a>Floating Point Unit (FPU)</h3></div></div><div class="figure"><p><a name="id2723560"></a><b>Figure 3.3. Block diagram of the Playstation 2 - Floating Point Unit</b></p><p><img src="figures/PS2BD-FPU.png"></p></div><p>
+    The floating point unit included in the EE core is a high performance
+    single-precision floating-point unit. The designers of the FPU
+    decided to not make it IEEE compliant and save some silicon. All this
+    means is that the floating point numbers generated do not comply -exactly-
+    to the IEEE spec, but the numbers should be close enough for most
+    programmers. The FPU contains one multiply-add unit and one floating point
+    divide unit.
+   </p></div><div class="sect2"><a name="id2723600"></a><div class="titlepage"><div><h3 class="title"><a name="id2723600"></a>Cache and Scratchpad RAM (SPR)</h3></div></div><p>
+    Due to the requirement of low manufacturing cost, the EE contains a very
+    limited on-chip cache. 8KB of data cache and 16KB of instruction cache 
+    are included on-chip. There is also another cache specified as the
+    Scratchpad that is used as a low-latency working area.
+   </p></div><div class="sect2"><a name="id2723617"></a><div class="titlepage"><div><h3 class="title"><a name="id2723617"></a>DMA, DRAM and Memory Management Unit (MMU)</h3></div></div><p>
+    The memory management unit, RDRAM controller and DMA controller handle all
+    memory access within the system. The Playstation 2 is rated at performing
+    a peak theoretical bandwidth of 3.2 GBps. 
+   </p><p>
+    The DMA controller is a 10 channel controller that can DMA data between
+    main memory and an I/O device (such as the IPU) as well as memory and 
+    scratchpad RAM.
+   </p><p>
+    The MMU is capable of doing 32-bit physical/logical address space 
+    conversion and has a 48-entry TLB to speed lookups.
+   </p></div><div class="sect2"><a name="id2723648"></a><div class="titlepage"><div><h3 class="title"><a name="id2723648"></a>Interrupt controller and Timers</h3></div></div><p>
+    The PS2 provides an interrupt for every device in the system as well as
+    a special interrupt for the DMA controller. Four 16-bit timers are provided
+    for high precision, processor cycle-level timing.
+   </p></div></div><div class="sect1"><a name="id2723666"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723666"></a>Vector Processor Unit 0 (VPU0/VU0/COP1)</h2></div></div><div class="figure"><p><a name="id2723674"></a><b>Figure 3.4. Block diagram of the Playstation 2 - Vector Processing Units</b></p><p><img src="figures/PS2BD-VPUs.png"></p></div><p>
+   Vector Unit 0 (VU0) is one of the EE co-processors and is used primarily
+   for geometry processing. Both vector units are micro-programmable 
+   processors with their own instruction and data space.
+  </p><p>
+   The main features of VU0 include:
+   <div class="itemizedlist"><ul><li><a name="id2723712"></a>
+     32 32-bit floating point registers
+    </li><li><a name="id2723717"></a>
+     16 16-bit integer registers
+    </li><li><a name="id2723722"></a>
+     4KB of micro-memory for instructions
+    </li><li><a name="id2723727"></a>
+     4KB of micro-memory for data
+    </li><li><a name="id2723732"></a>
+     4 32-bit single precision floating point multiply-add units
+    </li><li><a name="id2723737"></a>
+     1 32-bit single precision floating point divide unit
+    </li><li><a name="id2723742"></a>
+     Macro and micro-mode operation (explained below)
+    </li></ul></div>
+  </p><p>
+   VU0 can run in two modes; macro-mode and micro-mode. In macro-mode, the
+   EE can call VU0 instructions directly and fetch the results. In micro-mode,
+   a small vector unit micro-program is uploaded by the EE and subsequently
+   executed. An example would be the VU0 processing physics effects on 
+   particles before they are sent to VU1 for the rendering phase. After the
+   micro-program has run, the EE can then retrieve the results of the 
+   micro-program.
+  </p></div><div class="sect1"><a name="id2717033"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717033"></a>Vector Processor Unit 1 (VPU1/VU1/COP2)</h2></div></div><p>
+   Vector Unit 1 (VU1) is one of the EE co-processors and is used primarily
+   for graphics pre-processing for the GS. Both vector units are 
+   micro-programmable processors with their own instruction and data space.
+  </p><p>
+   The main features of VU1 include:
+  
+   <div class="itemizedlist"><ul><li><a name="id2717057"></a>
+     32 32-bit floating point registers
+    </li><li><a name="id2717062"></a>
+     16 16-bit integer registers
+    </li><li><a name="id2717066"></a>
+     16KB of micro-memory for instructions
+    </li><li><a name="id2717071"></a>
+     16KB of micro-memory for data
+    </li><li><a name="id2717076"></a>
+     4 32-bit single precision floating point multiply-add units
+    </li><li><a name="id2717082"></a>
+     1 32-bit single precision floating point divide unit
+    </li></ul></div>
+  </p><p>
+   The main difference between VU0 and VU1 is the micro-memory available and
+   their purpose. VU1 has 16KB more internal instruction and data space, versus
+   just 4KB for VU0. VU1 is primarily used for pre-processing of geometry,
+   texture and other graphics data before it is sent to the GS. VU0's primary
+   purpose is to pre-process geometry or aid the EE with physics or other 
+   heavy floating point calculations. An example of VU1s use would be 
+   performing the perspective transform for all verticies before they are
+   sent to the GS.
+  </p></div><div class="sect1"><a name="id2717105"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717105"></a>Graphics Synthesizer (GS)</h2></div></div><div class="figure"><p><a name="id2717112"></a><b>Figure 3.5. Block diagram of the Playstation 2 - Graphics Synthesizer</b></p><p><img src="figures/PS2BD-GS.png"></p></div><p>
+   The Graphics Synthesizer (GS) is responsible for rendering all graphics
+   primitives to the screen. It is capable of rendering between 25-75 million
+   triangles per second at a fill-rate of about 2.4 Gigapixels per second. 
+   The GS can also output images in NTSC, PAL, VESA and DTV formats 
+   (either interlaced or non-interlaced). Some of its features include:
+   <div class="itemizedlist"><ul><li><a name="id2717149"></a>
+     32-bit color operation (Red, Green, Blue, and Alpha)
+    </li><li><a name="id2717154"></a>
+     Point, Line, Line Strip, Triangle, Triangle Strip, Triangle Fan and
+     Sprite primitives. 
+    </li><li><a name="id2717160"></a>
+     4, 8, 16, 24 and 32-bit texture modes
+    </li><li><a name="id2717165"></a>
+     16, 24 and 32-bit Z buffer
+    </li><li><a name="id2717170"></a>
+     Alpha blending, edge anti-aliasing (lines and triangles), fogging, 
+     scissoring and two context drawing environment.
+    </li><li><a name="id2717173"></a>
+     Unified memory with 38.4GB/s of bandwidth to the framebuffer, 9.6GB/s
+     of bandwidth to the texture buffer, and 1.2GB/s of bandwidth to main
+     RAM.
+    </li></ul></div>
+  </p></div><div class="sect1"><a name="id2717184"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717184"></a>Image Processing Unit (IPU)</h2></div></div><div class="figure"><p><a name="id2717191"></a><b>Figure 3.6. Block diagram of the Playstation 2 - Image Processing Unit</b></p><p><img src="figures/PS2BD-IPU.png"></p></div><p>
+   The Image Processing Unit is part of the Emotion Engine and performs
+   MPEG-2 macro block decoding, color space conversion and vector
+   quantization for 2D graphics data. This graphics data can be frames
+   from an MPEG-2 movie or compressed textures for 3D models.
+  </p><p>
+   There really isn't much more to the IPU, it decodes image data very 
+   quickly and thats about it.
+  </p></div><div class="sect1"><a name="id2717231"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717231"></a>I/O Processor (IOP)</h2></div></div><div class="figure"><p><a name="id2717238"></a><b>Figure 3.7. Block diagram of the Playstation 2 - I/O Processor</b></p><p><img src="figures/PS2BD-IOP.png"></p></div><p>
+   The I/O Processor on the Playstation 2 is actually the Playstation 1 main
+   processor with several extensions to handle USB, Firewire, sound, and the
+   other new peripherals introduced by the Playstation 2. It is a standard
+   MIPS R3000R processor without a MMU and 2MB of local memory. All external
+   I/O such as memory card access, USB control, Firewire devices and sound
+   playback is handled via the IOP. Some of its features include:
+   <div class="itemizedlist"><ul><li><a name="id2718105"></a>
+     MIPS R3000R processor running at 33.86Mhz or 36.86Mhz
+    </li><li><a name="id2718110"></a>
+     2MB of local memory
+    </li><li><a name="id2718114"></a>
+     Sound Processing Unit with 48 channels
+    </li><li><a name="id2718119"></a>
+     Industry standard USB 1.0, Sony i.Link (IEEE 1394 Firewire) support
+    </li><li><a name="id2718125"></a>
+     Serial interface to MagicGate interface (Memory cards and controllers)
+    </li></ul></div>
+  </p><p>
+   Unfortunately, access to the entire IOP is not available to general users 
+   due to Sony's need to protect their Intellectual Property from pirates and 
+   other nefarious individuals.
+  </p><div class="sect2"><a name="id2718140"></a><div class="titlepage"><div><h3 class="title"><a name="id2718140"></a>USB 1.0 Controller</h3></div></div><p>
+    A relatively gutsy move for Sony at the time was integrating two standard
+    USB ports into the Playstation 2. These are standard USB 1.0 compliant
+    ports and will accept any USB 1.0 compliant device. This includes USB
+    cameras, keyboards, mice, storage devices, speakers, etc.
+   </p><p>
+    The USB devices are available to the PS2 Linux kit via the standard Linux
+    USB device filesystem.
+   </p></div><div class="sect2"><a name="id2718165"></a><div class="titlepage"><div><h3 class="title"><a name="id2718165"></a>Sony i.Link (Firewire) Controller</h3></div></div><p>
+    Another very gutsy move by SCE was to include a i.Link (Firewire) port with
+    the Playstation 2. Sadly, this gamble seems to not have paid off
+    as much as Sony would have liked it to. Only a select few games use the
+    i.Link port. Gran Turismo 3 is probably the most successful PS2 title
+    to use them for networked gameplay.
+   </p><p>
+    Unfortunately, the i.Link port is not accessible via the PS2 Linux kit. 
+    The IOP controls access via i.Link and the software calls in the closed 
+    source SBIOS do not exist for i.Link access.
+   </p></div><div class="sect2"><a name="id2718192"></a><div class="titlepage"><div><h3 class="title"><a name="id2718192"></a>Sound Processing Unit (SPU2)</h3></div></div><p>
+    The Sound Processing Unit (SPU2) handles all sound mixing and playback. It
+    is a relatively advanced sound processor capable of a variety of sound
+    effects, playback styles and output styles. SPU2 is actually composed of
+    two sound processing cores (CORE0 and CORE1) each with 24-audio channels
+    each. Both SPU cores are identical.
+   </p><p>
+    Some SPU2's features include:
+    <div class="itemizedlist"><ul><li><a name="id2718218"></a>
+      48-channels of audio in ADPCM format
+     </li><li><a name="id2718222"></a>
+      Software-programmable voices w/ real-time digital effect processing
+      including pitch transformation and modulation, envelope processing and
+      mixing.
+     </li><li><a name="id2718230"></a>
+      2MB of dedicated RAM for sound data
+     </li><li><a name="id2718235"></a>
+      48Khz digital optical output as well as regular analog out
+     </li></ul></div>
+   </p></div></div><div class="sect1"><a name="id2718244"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2718244"></a>System bus controllers</h2></div></div><p>
+   Due to the parallel nature of the Playstation 2's many processors, 
+   communication between components is quite a complicated process. The system
+   must guarantee a certain order of transmission from one part of the system
+   to the other as well as provide a means to decide which transfer is most
+   important. Like the rest of the system, the mechanism for arbitrating what
+   data goes where is well designed and encapsulated in each of the bus
+   interfaces.
+  </p><div class="sect2"><a name="id2718265"></a><div class="titlepage"><div><h3 class="title"><a name="id2718265"></a>System Interface (SIF) and System bus (SBUS) controllers</h3></div></div><p>
+    The System Interface (SIF) and System Bus (SBUS) controllers connect the 
+    IOP to the main bus and control all data going to and coming from the 
+    IOP.
+   </p><p>
+    The SIF is comprised of a 8 quad-word FIFO and is used to transfer data
+    to/from the IOP.
+   </p><p>
+    The SBUS is the bus between the SIF and the IOP. 
+    (THIS SECTION NEEDS MORE DOCUMENTATION - msporny)
+   </p></div><div class="sect2"><a name="id2718294"></a><div class="titlepage"><div><h3 class="title"><a name="id2718294"></a>VPU Interface (VIF0 and VIF1)</h3></div></div><p>
+    The Vector Processor Interface (VIF) handles communication between each
+    VU and main memory. Its main purpose is to decompress incoming data to 
+    each VPU (such as vertex data). 
+   </p></div><div class="sect2"><a name="id2718310"></a><div class="titlepage"><div><h3 class="title"><a name="id2718310"></a>Graphics Interface (GIF)</h3></div></div><p>
+    The Graphics Interface (GIF) unpacks and formats incoming data from 
+    main memory into a form that the GS can understand. An example would be
+    packed vertex and color data that is unpacked into draw commands that
+    will display a triangle on the screen of a specified color.
+   </p></div><div class="sect2"><a name="id2718328"></a><div class="titlepage"><div><h3 class="title"><a name="id2718328"></a>DMA Controller</h3></div></div><p>
+    The DMA controller for the PS2 is an integral part of the system. All
+    the system processors depend on the DMA controller to handle transferring
+    data around the system. Once one of the main processors such as the EE or
+    VPUs format data in a format that another processor can understand it, the
+    DMA controller handles the monotonous task of physically feeding the data
+    to the targeted processor.
+   </p><p>
+    An example of this would be the Emotion Engine creating a list of polygons
+    to be rendered to the screen. The display data is then DMA'ed to the 
+    GIF via the DMA Controller, which then sends it to the Graphics 
+    Synthesizer to become displayed to the screen.
+   </p></div><div class="sect2"><a name="id2718358"></a><div class="titlepage"><div><h3 class="title"><a name="id2718358"></a>RDRAM Controller</h3></div></div><p>
+    The RDRAM controller handles all transfer of data to and from main memory.
+    While a programmer does not have access to the controller, it is important
+    to note that it actually is there.
+   </p></div></div></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id2718026"></a>Chapter 4. The PS2 Linux kernel</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt> <a href="#id2718034">The MIPS kernel core</a></dt><dt> <a href="#id2718042">PS2 specific device drivers</a></dt><dd><dl><dt> <a href="#id2718050">Sony PS2 DVD drive</a></dt><dt> <a href="#id2718058">Playstation 2 Joypad support </a></dt><dt> <a href="#id2718067">Memory card device</a></dt><dt> <a href="#id2718076">Real-time clock</a></dt><dt> <a href="#id2718084">SPU sound driver</a></dt><dt> <a href="#id2717249">Ethernet driver (smap)</a></dt><dt> <a href="#id2718398">Graphics Synthesizer console</a></dt><dt> <a href="#id2718407">Sony PS2 USB controller</a></dt></dl></dd><dt> <a href="#id2718417">Kernel command line options</a></dt></dl></div><div class="sect1"><a name="id2718034"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2718034"></a>The MIPS kernel core</h2></div></div></div><div class="sect1"><a name="id2718042"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2718042"></a>PS2 specific device drivers</h2></div></div><div class="sect2"><a name="id2718050"></a><div class="titlepage"><div><h3 class="title"><a name="id2718050"></a>Sony PS2 DVD drive</h3></div></div></div><div class="sect2"><a name="id2718058"></a><div class="titlepage"><div><h3 class="title"><a name="id2718058"></a>Playstation 2 Joypad support </h3></div></div></div><div class="sect2"><a name="id2718067"></a><div class="titlepage"><div><h3 class="title"><a name="id2718067"></a>Memory card device</h3></div></div></div><div class="sect2"><a name="id2718076"></a><div class="titlepage"><div><h3 class="title"><a name="id2718076"></a>Real-time clock</h3></div></div></div><div class="sect2"><a name="id2718084"></a><div class="titlepage"><div><h3 class="title"><a name="id2718084"></a>SPU sound driver</h3></div></div></div><div class="sect2"><a name="id2717249"></a><div class="titlepage"><div><h3 class="title"><a name="id2717249"></a>Ethernet driver (smap)</h3></div></div></div><div class="sect2"><a name="id2718398"></a><div class="titlepage"><div><h3 class="title"><a name="id2718398"></a>Graphics Synthesizer console</h3></div></div></div><div class="sect2"><a name="id2718407"></a><div class="titlepage"><div><h3 class="title"><a name="id2718407"></a>Sony PS2 USB controller</h3></div></div></div></div><div class="sect1"><a name="id2718417"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2718417"></a>Kernel command line options</h2></div></div></div></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id2724053"></a>Chapter 5. System Performance</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt> <a href="#id2724060">Processors</a></dt><dd><dl><dt> <a href="#id2718389">Emotion Engine Core</a></dt><dt> <a href="#id2717965">Vector Units</a></dt><dt> <a href="#id2717974">Graphics Synthesizer</a></dt><dt> <a href="#id2717982">I/O Processor</a></dt></dl></dd><dt> <a href="#id2717992">System I/O</a></dt><dd><dl><dt> <a href="#id2717999">Memory bandwidth</a></dt><dt> <a href="#id2718007">Ethernet</a></dt><dt> <a href="#id2718016">Harddisk</a></dt><dt> <a href="#id2718024">USB</a></dt><dt> <a href="#id2717886">Firewire</a></dt></dl></dd></dl></div><div class="sect1"><a name="id2724060"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2724060"></a>Processors</h2></div></div><div class="sect2"><a name="id2718389"></a><div class="titlepage"><div><h3 class="title"><a name="id2718389"></a>Emotion Engine Core</h3></div></div></div><div class="sect2"><a name="id2717965"></a><div class="titlepage"><div><h3 class="title"><a name="id2717965"></a>Vector Units</h3></div></div></div><div class="sect2"><a name="id2717974"></a><div class="titlepage"><div><h3 class="title"><a name="id2717974"></a>Graphics Synthesizer</h3></div></div></div><div class="sect2"><a name="id2717982"></a><div class="titlepage"><div><h3 class="title"><a name="id2717982"></a>I/O Processor</h3></div></div></div></div><div class="sect1"><a name="id2717992"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2717992"></a>System I/O</h2></div></div><div class="sect2"><a name="id2717999"></a><div class="titlepage"><div><h3 class="title"><a name="id2717999"></a>Memory bandwidth</h3></div></div></div><div class="sect2"><a name="id2718007"></a><div class="titlepage"><div><h3 class="title"><a name="id2718007"></a>Ethernet</h3></div></div></div><div class="sect2"><a name="id2718016"></a><div class="titlepage"><div><h3 class="title"><a name="id2718016"></a>Harddisk</h3></div></div></div><div class="sect2"><a name="id2718024"></a><div class="titlepage"><div><h3 class="title"><a name="id2718024"></a>USB</h3></div></div></div><div class="sect2"><a name="id2717886"></a><div class="titlepage"><div><h3 class="title"><a name="id2717886"></a>Firewire</h3></div></div></div></div></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id2723256"></a>Chapter 6. Specific software for PS2 Linux</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt> <a href="#id2723263">Vector Command Line (VCL)</a></dt><dt> <a href="#id2723272">Memory Card format (mcformat)</a></dt><dt> <a href="#id2723280">PS2 development libraries (libps2dev)</a></dt></dl></div><div class="sect1"><a name="id2723263"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723263"></a>Vector Command Line (VCL)</h2></div></div></div><div class="sect1"><a name="id2723272"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723272"></a>Memory Card format (mcformat)</h2></div></div></div><div class="sect1"><a name="id2723280"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723280"></a>PS2 development libraries (libps2dev)</h2></div></div></div></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id2723982"></a>Chapter 7. Online resources</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt> <a href="#id2723989">playstation2-linux.com</a></dt></dl></div><div class="sect1"><a name="id2723989"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2723989"></a>playstation2-linux.com</h2></div></div></div></div></div></body></html>

@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="8: Whats in that last QWord?">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id38') && !n4p){
+    location.replace('id38.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">8: What's in that last QWord?</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The harness uses the very last word of data memory to give us a helping hand. &nbsp;The four fields each contain a little bonus present to help us out with some things that the VU simply can't do by itself.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The last QWord, numbered 1023, is updated every frame with the following information in each field:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">x - The address of the on-screen 640x224 framebuffer</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">y - The address of the off-screen 640x224 framebuffer (The harness uses double buffering by default)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">z - A random number</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">w - Information on what buttons are being pressed on the controllers</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The first 2 fields aren't that interesting for now, but we can do some pretty effects with them later &nbsp;However, they can be quite complicated, so I'm leaving them for a future lesson.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The last two are very interesting though, and we'll talk about them in this lesson.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Why use the random number here?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">First, a digression into random numbers. &nbsp;Computers can't actually generate random numbers, they generate <I>pseudo-</I>random numbers. &nbsp;What this means is that although the numbers look random to us, they actually fit a predefined sequence. &nbsp;Thus, if you set the random number generator off twice using the same seed both times, <I>you will get the same 'random' sequence of numbers!</I> &nbsp;For this reason, the two ways of generating random numbers available to us in writing VU demos have different uses.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">To use a random number generated for us by the harness, we only need use one single instruction:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">ilw.z iRandom, 1023(vi00)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There we are, the iRandom register now contains a random number. &nbsp;The key point here is that this random number is unpredictable. &nbsp;We don't know what seed was used to generate the random number sequence, and we don't know how long the sequence has gone on for, because other people's demos might already have been executed by the harness.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">We can generate random numbers ourselves, but we'd have to seed the generator ourselves and use those RINIT, RGET, and RNEXT instructions. &nbsp;The catch here is that the generator is predictable, if we use the same seed each time for our random numbers, we'll get the same sequence, and our demo will run exactly the same way every time. &nbsp;This may be what you want, or it may not. &nbsp;(Of course, there's nothing stopping you using the random number from the harness to seed your own generator... :)</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>What about the pad info?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you want to follow the path that others have tried, and make a game out of your VU demo, you're certainly going to have to read the controllers to see if your player is pressing any of the buttons. &nbsp;Have a quick look at bjt's Plasmaroids demo, the VU Tunnel demo, and Space inVUders to see what you're up against, then get back here to learn how they work. &nbsp;(Note: I'm not trying to put you off writing a game, in fact I've spent far too long playing Plasmaroids myself! &nbsp;However, notice that none of the competition winners have been games, no matter how fun they are to play.)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Put this at the start of your VCL file:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kSquare .assign H'7FFF</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kCross .assign H'4000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kTriangle .assign H'1000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kCircle .assign H'2000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kR1 .assign H'0800</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kR2 .assign H'0200</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kStart .assign H'0008</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kLeft .assign H'0080</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kDown .assign H'0040</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kUp .assign H'0010</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kRight .assign H'0020</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>Note: When using VCL with gasp, some versions (including the one on the kit) don't handle the hex notation 0x123 properly. &nbsp;They do however handle the notation H'123 properly. &nbsp;That's why I've used the H' prefix above to denote hex values. &nbsp;For future reference, GASP also doesn't like numebrs like 0.005235, it prefers 5.235e-2. &nbsp;Just so you know.</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">These constants have come straight out of the harness source, putting this at the start of your code will make things easier to read. &nbsp;Notice that I haven't given any numbers for L1, L2 or Select, as these are used by the harness to switch demos or display help text, so we can't use them in our demos. &nbsp;Also note that the Left, Down Up and Right refer to the D-pad, or the left analogue stick when the analogue button is pressed. &nbsp;The right analogue stick is not available, nor are the L3 and R3 buttons.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Now, how do we check whether a key is pressed? &nbsp;It goes a little something like this - First we load the pad info into a register.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">ilw.w iPad, 1023(vi00)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then we load the value we're checking for (Cross for example) into another register</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">iaddiu iMask, vi00, kCross</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then we logically AND them together:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">iand iCheck, iPad, iMask</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">And check the result. &nbsp;iCheck will be zero if the button is pressed, and 1 if it is not pressed. &nbsp;That sound's a little backwards to me, but we have to live with it :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>Note: I confused at least one person with the above statement. &nbsp;The IAND instruction behaves exactly like you would expect - a bit in iCheck is 1 if both the coressponding bits in iPad and iMask are 1. &nbsp;It's the *data* provided by the harness in the iPad register that is backwards - i.e. 0 if the button is pressed, and 1 if the button is *not* pressed.</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Putting it all together results in a code block like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ilw.w iPad, 1023(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iMask, vi00, kCross</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iand iCheck, iPad, iMask</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibeq iCheck, vi00, CROSS_IS_PRESSED:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b CROSS_IS_NOT_PRESSED:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">CROSS_IS_PRESSED:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if Cross is pressed</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b ONWARDS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">CROSS_IS_NOT_PRESSED:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is only executed if Cross is not pressed</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">ONWARDS:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;This code is executed regardless of whether Cross is pressed.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The code could be even more readable if we put a kLastQWord .assign 1023, and used that name rather than its value in the first line.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There is one gotcha. &nbsp;The mask for checking whether Square is pressed or not should be 0x8000. &nbsp;Why have I lied to you and told you it's 0x7FFF then? &nbsp;The answer is that 0x8000 is a 16-bit number, and the iaddiu instruction only has enough room to add a 15-bit number. &nbsp;So, what we have to do is load 0x7FFF into the iMask register, and then add 1 to it to make it 0x8000. &nbsp;So, to change the above code to check for Square instead of cross, you need to change</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iMask, vi00, kCross</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">into</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iMask, vi00, kSquare</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iMask, iMask, 1 ; This instruction only needed for Square.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Homework</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">OK, let's get some code up and running using these extra bits of info...</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1) &nbsp;Go right back to the code in <A HREF="id30.htm" TARGET="_top"    TITLE="4: Making your code file"><U>4: Making your code file</U></A>, where we moved one vertex of the triangle horizontally. &nbsp;Make it so that the vertex stays still unless you press any of the D-pad buttons. &nbsp;Move the vertex in the direction corresponding to the keys being pressed. &nbsp;(So, check for up being pressed, and if it is, decrement the Y co-ordinate)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2) &nbsp;Expand on Q2 to move the entire triangle instead of a single vertex if Square is being held down. &nbsp;(<I>Hint, check to see whether Square is pressed first, then decide what to move</I>)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">3) &nbsp;Read in a random number, and if it's bigger than a limit you set, move the vertex left, if not, don't move it all. &nbsp;You should get some jagged movement of the vertex.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">4) &nbsp;Expand Q3 to read in two random numbers, and code them somehow into a direction and a value for a counter, which you will decrement each frame. &nbsp;Move the vertex in the random direction selected, until the counter reaches zero. &nbsp;Then pick a new direction and counter. &nbsp;For instance, the vertex could move right for 10 frames, then up for 5 frames, then diagonally down-left for 16 frames... all based on random numbers.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">5) &nbsp;How about using VU code to generate a GIFpacket of 100 random points of random colours scattered all over the screen?</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id35.htm" TARGET="_top"    TITLE="7: Some Maths"><U>7: Some Maths</U></A> Next - <A HREF="id39.htm" TARGET="_top"    TITLE="9: Uploading Image data"><U>9: Uploading Image data</U></A></FONT><BR>
+<bR>
+</BODY>
+</HTML>

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>7.1. Encodage MPEG-4 (&quot;DivX&quot;) 2 ou 3-passes</title><link rel="stylesheet" href="default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.50.0"><link rel="home" href="index.html" title="MPlayer - Le lecteur vidéo pour LINUX"><link rel="up" href="mencoder.html" title="Chapitre 7. Encodage avec MEncoder"><link rel="previous" href="mencoder.html" title="Chapitre 7. Encodage avec MEncoder"><link rel="next" href="menc-feat-mpeg.html" title="7.2. Encodage au format MPEG"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">7.1. Encodage MPEG-4 (&quot;DivX&quot;) 2 ou 3-passes</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="mencoder.html">Précédent</a> </td><th width="60%" align="center">Chapitre 7. Encodage avec MEncoder</th><td width="20%" align="right"> <a accesskey="n" href="menc-feat-mpeg.html">Suivant</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="menc-feat-divx4"></a>7.1. Encodage MPEG-4 (&quot;DivX&quot;) 2 ou 3-passes</h2></div></div><p><b>Encodage 2-passes. </b>
+le nom vient du fait que cette méthode encode le fichier <span class="emphasis"><em>deux fois</em></span>.
+Le premier encodage (passe doublée) créé quelques fichiers temporaires (<tt class="filename">*.log</tt>)
+avec une taille de quelques méga-octets, ne les détruisez pas tout de suite (vous pouvez
+effacer l'AVI). Dans la seconde passe, la fichier de sortie 2-passes est créé, en
+utilisant les données bitrate des fichiers temporaires. Le fichier résultant aura une
+image de bien meilleur qualité. Si c'est la première fois que vous entendez parler de
+ça, vous devriez consulter les guides disponibles sur le Net.
+</p><p>
+Cet exemple montre comment encoder un DVD en AVI MPEG-4 (&quot;DIVX&quot;) AVI 2-passes.
+Seules deux commandes sont requises:
+<pre class="screen">rm frameno.avi</pre>
+enlevez ce fichier, qui peut provenir d'un encodage 3-passes précédent (il interfère avec l'actuel)
+<pre class="screen">
+mencoder dvd://2 -ovc lavc -lavcopts vcodec=mpeg4:vpass=1 -oac copy -o film.avi
+mencoder dvd://2 -ovc lavc -lavcopts vcodec=mpeg4:vpass=2 -oac copy -o film.avi
+</pre>
+</p><p><b>Encodage 3-passes. </b>
+c'est une extension de l'encodage 2-passes, où l'encodage audio prends place dans une
+passe séparée. Cette méthode permet l'estimation du bitrate vidéo recommandé de façon
+à tenir sur un CD. De plus, l'audio n'est encodé qu'une fois, au contraire du mode
+2-passes. Le principe:
+</p><div class="procedure"><ol type="1"><li><p>
+Supprimez les fichiers temporaires conflictuels:
+  <pre class="screen">rm frameno.avi</pre>
+  </p></li><li><p>
+  <span class="emphasis"><em>Première passe:</em></span>
+
+  <pre class="screen">mencoder <i><tt>fichier/DVD</tt></i> -ovc frameno -oac mp3lame -lameopts vbr=3 -o frameno.avi</pre>
+  
+  Un fichier avi audio sera créé, contenant
+  <span class="bold"><b>uniquement</b></span> le flux audio demandé. N'oubliez pas
+  <tt class="option">-lameopts</tt>, si vous en avez besoin. Si vous encodez un long film,
+  <span class="application">MEncoder</span> affiche le bitrate recommandé pour les tailles
+  650Mo, 700Mo, et 800Mo, après la fin de cette passe.
+  </p></li><li><p>
+  <span class="emphasis"><em>Seconde passe:</em></span>
+  <pre class="screen">
+mencoder <i><tt>fichier/DVD</tt></i> -oac copy -ovc lavc -lavcopts vcodec=mpeg4:vpass=1:vbitrate=<i><tt>bitrate</tt></i></pre>
+Ceci est la première passe de l'encodage vidéo. Éventuellement spécifiez le bitrate
+vidéo que MEncoder a affiché à la fin de la passe précédente.
+  </p></li><li><p>
+  <span class="emphasis"><em>Troisième passe:</em></span>
+<pre class="screen">
+mencoder <i><tt>fichier/DVD</tt></i> -oac copy -pass 2 \
+         -ovc divx4 -divx4opts br=<i><tt>bitrate</tt></i>
+</pre>
+Ceci est la seconde passe de l'encodage vidéo. Spécifiez le même bitrate vidéo que
+celui de la passe précédente à moins que vous ne sachiez réellement ce que vous faites.
+Dans cette passe, l'audio de <tt class="filename">frameno.avi</tt> sera inséré dans le
+fichier de destination... et tout est prêt!
+</p></li></ol></div><div class="example"><p class="title"><b>Exemple 7.1. Exemple d'encodage 3-passes</b></p><p>
+<pre class="screen">rm frameno.avi</pre>
+enlevez ce fichier, qui peut provenir d'un encodage 3-passes précédent (il interfère
+avec l'actuel)
+<pre class="screen">
+mencoder dvd://2 -ovc frameno -o frameno.avi -oac mp3lame -lameopts vbr=3
+mencoder dvd://2 -ovc lavc -lavcopts vcodec=mpeg4:vpass=1 -oac copy -o film.avi
+mencoder dvd://2 -ovc lavc -lavcopts vcodec=mpeg4:vpass=2 -oac copy -o film.avi
+</pre>
+</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="mencoder.html">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="mencoder.html">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="menc-feat-mpeg.html">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 7. Encodage avec MEncoder </td><td width="20%" align="center"><a accesskey="h" href="index.html">Sommaire</a></td><td width="40%" align="right" valign="top"> 7.2. Encodage au format MPEG</td></tr></table></div></body></html>

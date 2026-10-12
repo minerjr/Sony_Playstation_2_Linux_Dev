@@ -1,0 +1,408 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="13: Moving into the 3rd dimension">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id44') && !n4p){
+    location.replace('id44.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">13: Moving into the 3rd dimension</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">A few days after releasing my demo code in lesson 11 of this site, Hikey suggested a future tutorial might detail how to draw a textured cube. &nbsp;So began this tutorial.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Why all the fuss with a textured cube?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Putting a textured cube on the screen requires knowledge of:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;1) Texture uploading VU-&gt;GS</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;2) Storing a model of texture co-ordinates and vertex co-ordinates</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;3) Transforming those model co-ordinates to world co-ordinates using a camera matrix</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;4) Transforming those world co-ordinates to screen co-ordinates using a perspective projection</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Basically, we're doing a lot of very general steps that come in very handy for any model, not just your basic cube.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Part 1 has already been covered in <A HREF="id39.htm" TARGET="_top"    TITLE="9: Uploading Image data"><U>9: Uploading Image data</U></A>, and you'll also find useful details in <A HREF="id40.htm" TARGET="_top"    TITLE="10: Texture Mapping"><U>10: Texture Mapping</U></A>. &nbsp;This tutorial starts off with a brief resume of 3D graphics techniques, then adds the texture mapping code, then finally adds some interactivity to make a nice-looking basic 3D sample.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Memory mapping</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Again, we start building up our demo by getting a solid idea of how we're going to use the available memory... cue Memory Map!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">            <TABLE BORDER="2" CELLPADDING="2" CELLSPACING="1" WIDTH="439" BORDERCOLORLIGHT="#C0C0C0" BORDERCOLORDARK="#808080" FRAME="BOX" RULES="ALL">
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">QWord</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Usage</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">0</FONT></tD>
+                    <tD  VALIGN=TOP><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Start of Model Data - STQ of vertex 1</FONT></NOBR></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ(W) of vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">STQ of vertex 2</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">...</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">... (Model Data)</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">71</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ(W) of vertex 36</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">72</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">GIFtag for drawing the cube</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">73</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Transformed STQ of vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">74</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">RGBA of vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">75</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Transformed XYZ of vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">...</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">... (Transformed Vertex Data)</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">180</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Transformed XYZ of vertex 36</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19 ><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">181-184</FONT></NOBR></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Object to World matrix</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19 ><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">185-188</FONT></NOBR></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">World to Camera matrix</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19 ><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">189-192</FONT></NOBR></tD>
+                    <tD  VALIGN=TOP><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Camera to Screen matrix (Perspective projection)</FONT></NOBR></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19 ><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">193-196</FONT></NOBR></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Incremental rotation matrix</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">197</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Scaling vector</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19 ><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">198-202</FONT></NOBR></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Texture uploading tag</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">203</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Texture data tag</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19 ><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">204-715</FONT></NOBR></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Texture data</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19 ><NOBR><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">716-1021</FONT></NOBR></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Unallocated</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1022</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Texture upload flag</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1023</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="349"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Harness Data</FONT></tD>
+</tR>
+</TABLE></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The first thing to note is that there are two separate areas for the model data, pre- and post-transformation. &nbsp;This is usual to avoid all sorts of errors that can occur from repeated calculations on the same numbers. (Although later on I break my own advice to make one calculation a little easier...). &nbsp;First of all you define a model with its own centre at the origin, so to make our unit cube we'll use vertices from (-0.5, -0.5, -0.5) to (0.5, 0.5, 0.5). &nbsp;This ensures that we don't get an unwanted translation effect when we rotate the model.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">To get from those object co-ordinates to world co-ordinates, you would usually apply a rotation to the model to get it to face the right way, then translate it to the part of the 3D world you want it to inhabit. &nbsp;Then, you would transform from world to camera co-ordinates by applying a transformation to simulate the action of a camera, and finally you apply a projection of some sort to drop from 3D camera co-ordinates to 2D screen co-ordinates. &nbsp;There are many ways of doing this projection, I'm just going to give you a projection matrix to use. &nbsp;If you want to know more about projections, I may well write another tutorial later, but you could always consult a good graphics programming book, e.g. Computer Graphics: Principle and Practice by Foley et al.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Also to note is that throughout this first demo, I've defined a cube by defining each face in terms of 2 triangles, specifying all 3 vertices every time, making for a total vertex count of 36. &nbsp;As you may be aware, there are only 8 vertices on a cube, so why the duplication? &nbsp;The answer is that I'm dealing with triangles, which are easy to work with and fit nicely in with my previous tutorials. &nbsp;Next tutorial I will work on some optimisations for the same demo, one of which will be to use triangle strips instead of triangles, and this will greatly reduce my memory consumption. &nbsp;So, this tutorial is about getting it working, next tutorial will be about getting it working *well*.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Generate that data</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I've been given a helping hand with the data generation program by using some of the files found in the common/samples directory of the sps2 project, namely geommath.h which includes files to define vectors, matrices and quaternions. &nbsp;I'll put them up on my project page if I get permission from Sparky et al, but until then, you'll have to download the sps2 project and use them from there.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The files define 5 new types that come in very handy. &nbsp;Vec3 is a 3-Dimensional vector, Vec4 is it's 4-Dimensional equivalent. &nbsp;Casting from Vec3 to Vec4 just adds a w field of 1.0f, casting from Vec4 to Vec3 makes (X,Y,Z,W) go to (X/W, Y/W, Z/W). &nbsp;Two types to define matrices are included, Mat33 for a 3x3 matrix, and (you guessed it) Mat44 for a 4x4 matrix. &nbsp;Finally there is the Quat type for use with quaternions. &nbsp;In this tutorial, I'll only be using the Vec and Mat types.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">As a side note, the included files also define the *, +, -, +=, -= and *= operations, and the == and != comparison operators. &nbsp;Then there are functions to calculate the cross product of vectors, the inverse and determinant of matrices, and a whole host of other useful functions. &nbsp;I'll use a few of them here, but for a full list of what's available, check out the *.h files!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">OK, onto the actual data generation. &nbsp;It's tedious, but here's my definition of a cube:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">Vec4 verts[NUM_VERTS] = {&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f, 0.5f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f,-0.5f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f, 0.5f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f,-0.5f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f, 0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f, 0.5f, 0.5f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f,-0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3( 0.5f,-0.5f, 0.5f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(-0.5f,-0.5f,-0.5f) };</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">One little trick I've used in there, because I'm lazy, is to define verts[ ] as an array of Vec4s, but to fill it with an array of Vec3s, which will be automatically cast to Vec4. &nbsp;This saves me having to put &quot;,1.0f&quot; on every line of the code. &nbsp;Lazy, I know, but I'll live :) &nbsp;Another thing to note, which will come in handy in your future graphical career, is that I've defined each triangle's vertices in a clockwise order as you look at the cube. &nbsp;Clockwise doesn't matter so much, but the fact that they're all defined in the same order is important. &nbsp;If you know about cross products, you'll appreciate why.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">(The cross product of two vectors is itself a vector, perpendicular to the other two. &nbsp;There are 2 possibilities, one pointing in exactly the opposite direction to the other. &nbsp;If you're consistent with your vertex labelling, then your cross products will all come out in the same way. &nbsp;For this demo however, it doesn't matter.)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then, even more tediously, follow the STQ texture co-ordinates. &nbsp;I decided, boringly enough, that each face should contain the entire texture, so each face is defined the same, like so:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">Vec4 texts[NUM_VERTS] = {&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(0.0f,1.0f,1.0f),</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vec3(1.0f,0.0f,1.0f) };</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Nothing groundbreaking so far, eh? &nbsp;Now we want to actually write that model out into the data file, followed by the GIFtag that will display it. &nbsp;For now, seeing as we haven't uploaded a texture yet, let's keep this untextured. &nbsp;We'll still send the STQ co-ordinates, but the GS will know not to bother looking at them.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_init(&amp;gifpacket, packet_data);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">for (i=0; i&lt;NUM_VERTS; i++)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsvec4(&amp;gifpacket, &amp;(texts[i]));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsvec4(&amp;gifpacket, &amp;(verts[i]));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">prim=GS_SET_PRIM(GS_PRIM_TRI, GOURAUD(1), TEXTURED(0), FOG(0), ABE(0), ALPHA(0), AA(0), CTXT(0), FIX(0));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, GIF_SET_TAG(NLOOP(NUM_VERTS), EOP(1), PRE(1), prim, GIF_PACKED, NREG(3)));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, 0x512);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">for (i=0; i&lt;NUM_VERTS; i++)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[0] = 127 * (verts[i].z&lt;0);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[1] = 127 * (verts[i].z&gt;0);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[2] = 0;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[3] = 0x80;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, 0); // Leave a gap for transformed STQ co-ords</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, colour.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, 0); // Leave a gap for transformed vertex co-ords</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The colour lines will ensure that one face is red, one is green, and the other faces fade from red to green, which should look nice (ish :) &nbsp;Notice, as I said before, that the GIFtag contains STQ information (check out NREG and REGS), but the prim field says TEXTURED(0). &nbsp;That way, once we're sure that our cube is working properly, we can switch texturing on without a problem.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">However, we're not quite done yet. &nbsp;We're going to need to put 4 4x4 matrices in, 3 of them describing various transformations to get object co-ordinates on the screen, and one extra one to define a small rotation around each axis:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Mat44 objectToWorld;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;LoadIdentity(&amp;objectToWorld);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Mat44 worldToCamera;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;LoadIdentity(&amp;worldToCamera);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;SetRow(&amp;worldToCamera, 3, Vec4(0,0,-5.0f,1));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsmat44(&amp;gifpacket, &amp;worldToCamera);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Mat44 cameraToScreen = makePerspectiveMatrix();</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsmat44(&amp;gifpacket, &amp;cameraToScreen);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Mat44 rotate;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;LoadRotation(&amp;rotate, 0.1f, 0.05f, 0.025f);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsmat44(&amp;gifpacket, &amp;rotate);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">where the Mat44 type, and the associated LoadIdentity(), SetRow(), and LoadRotation() functions are defined in the files included form the sps2 project. &nbsp;However, I've added my own functions gifpacket_addgsmat44() and gifpacket_addgsvec4() to the packet.c file from the original basic sample, and the updated files are available from my <A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>project page</U></A>. &nbsp;Note that I've stripped out those unneeded VIFpacket instructions.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I've also added the following makeWorldToScreen() function to my main code:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">Mat44 makeWorldToScreen()</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Mat44 perspective;</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;//Change the 0.06 for a different field of view.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;float n = 0.1f;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;float f = 1000.0f;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;float l = -0.06f * (2048.0f / (640.0f * 0.5f));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;float r = &nbsp;0.06f * (2048.0f / (640.0f * 0.5f));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;float t = &nbsp;0.06f * (2048.0f / (350.0f * 0.5f));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;float b = -0.06f * (2048.0f / (350.0f * 0.5f));</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;LoadIdentity(&amp;perspective);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;SetRow(&amp;perspective,0,Vec4((2*n) / (r-l)&nbsp;&nbsp;&nbsp;&nbsp;, 0.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, 0.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, 0.0f));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;SetRow(&amp;perspective,1,Vec4(0.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, -(2*n) / (t-b)&nbsp;&nbsp;&nbsp;&nbsp;, 0.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, 0.0f));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;SetRow(&amp;perspective,2,Vec4(((r+l) / (r-l))&nbsp;&nbsp;&nbsp;&nbsp;, ((t+b) / (t-b))&nbsp;&nbsp;&nbsp;&nbsp;, ((f+n) / (f-n))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, -1.0f));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;SetRow(&amp;perspective,3,Vec4(0.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, 0.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, ((2*f*n) / (f-n))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, 0.0f));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;return (perspective);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Thanks go out to Kazan and Sparky for the meat of that function.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Here's how it works. &nbsp;f, n, l, r, t and b define a viewing frustrum, and stand for far, near, left, right, top and bottom respectively. &nbsp;Any vertices in this frustrum are projected to lie within (-1, -1, -1) and (1, 1, 1) by the perspective matrix (after the divide by w step) and so anything lying outside this box can be clipped. &nbsp;More on clipping later. &nbsp;However, we need to scale those co-ordinates into framebuffer and Z-buffer co-ordinates, so we need X and Y to lie between 0 and 4096, and Z to lie between 0 and the largest number 24 bits can hold. &nbsp;This 'scaling vector' takes care of it:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">scales.f32[0] = 2048.0f;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">scales.f32[1] = 2048.0f;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">scales.f32[2] = (float)((2&lt;&lt;24)-1)/2;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">scales.f32[3] = 1.0f;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket,scales.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">However, bear in mind that this only scales the X and Y values to lie between -2048 and +2048, something else must move them along to lie between 0 and 4096. &nbsp;Thankfully, there's a macro that takes care of this for us in the VCL Standard Macro Library (vcl_sml.i) named VertexFPtoGsXYZ2.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Phew, now what do we do with all this stuff?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Now we go about putting this all on the screen. &nbsp;The general idea is like this - we start off with a number of transformation matrices, one to take us from object co-ordinates to world co-ordinates, one to take us form world to camera co-ordinates, and one to take us from camera to screen co-ordinates. &nbsp;We multiply each of these together to create an object to screen matrix. &nbsp;Think of it like a concatenation. &nbsp;Object-&gt;World * World-&gt;Camera * Camera-&gt;Screen = Object to Screen. &nbsp;Then, we loop through each vertex of the model, and multiply it by our new Object to Screen matrix, and display the results.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Generally, your camera to screen matrix is not going to change. &nbsp;That's going to be your perspective matrix from earlier. &nbsp;A lot of demos have a constant camera matrix, as they don't allow the camera to move. &nbsp;Our demo is going to let the camera move, but only along the Z-axis, it's not going to be a totally free camera. &nbsp;What normally changes the most in programs is the object to world matrix. &nbsp;Remember that our model is defined with the origin at it's own centre, so you somehow have to get it into the correct position in the world, and pointing the right way. &nbsp;That's what you'll use the object to world matrix for.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">However, I'm going to cut corners in a way by rotating the actual model, and storing the transformed co-ordinates back over the original co-ordinates. &nbsp;Also, I'm going to allow the camera to move, but keep the object in place. &nbsp;Thus, I don't need an object to world matrix at all, my object co-ordinates *are* my world co-ordinates. &nbsp;For that reason, my object to world matrix is just an identity matrix... but I've left it in so that you can see what you would change if you want your object to move.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>(Aside [Note 1]: I did rewrite my code to update the mObjectToWorld matrix each frame, but found that successive matrix multiplications quite quickly skewed the cube whilst it was spinning. &nbsp;The workaround for this would make my code much more complicated, so to keep things simple I've broken my own rule of not modifying the model during the course of the demo. &nbsp;That way, you can see how things work and take them from there.)</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Here comes some code...</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;VectorLoad fScales, kScales, vi00</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixLoad mObjectToWorld, kObjectToWorld, vi00</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixLoad mWorldToCamera, kWorldToCamera, vi00&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixLoad mCameraToScreen, kCameraToScreen, vi00</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixLoad mRotate, kRotate, vi00</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;Ordinarily you would alter the mObjectToWorld matrix here (See note 1 above)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;Compute Object to Screen matrix (Object to World * World to Camera * Camera to Screen)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixMultiply mObjectToScreen, mWorldToCamera, mCameraToScreen</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixMultiply mObjectToScreen, mObjectToWorld, mObjectToScreen</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;Loop through transforming each model vertex, storing transformed verts into GIFtag.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iVertPointer, vi00, kModelStart</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iVertEnd, vi00, kModelEnd + 1</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iStoreTo, vi00, kCubeStart</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">TRANSFORM_LOOP:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;VertexLoad vST, 0, iVertPointer</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;VertexLoad vVert, 1, iVertPointer</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixMultiplyVertex vVert, mRotate, vVert</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;VertexSave vVert, 1, iVertPointer ;Overwrite original model values to allow rotation to increment</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;;(See note 1 above)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;MatrixMultiplyVertex vVert, mObjectToScreen, vVert</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;div q, vf00[w], vVert[w]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;mul.xyz acc, fScales, vVert[w]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd.xyz vVert, vVert, fScales</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;mul.xyz vVert, vVert, q</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;mul.xyz vST, vST, q</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;VertexFptoGsXYZ2 vVert, vVert</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;VertexSave vST, 0, iStoreTo</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;VertexSave vVert, 2, iStoreTo</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iVertPointer, iVertPointer, 2</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iStoreTo, iStoreTo, 3</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibne iVertPointer, iVertEnd, TRANSFORM_LOOP:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The Vector*, Vertex*, and Matrix* macros all come from vcl_sml.i. &nbsp;Their use is pretty self explanatory, once you realise that vVert is really just a floating point register, and mRotate is the first in a consecutive series of 4 floating point registers.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The important things to realise here are that I've kept matrix multiplication out of the loop, and put only two vertex * matrix calculations in the loop, to save myself many repeated calculations. &nbsp;As I said before, I really should have only the one calculation in the loop, but I cut corners to make things simple. &nbsp;I deliberately haven't used the VertexPerspCorr macro available in vcl_sml.i because I needed to introduce the fScales vector, as I explained earlier. &nbsp;Also, I've transformed the STQ vertices, even though I'm not yet using them, so again I can easily switch on texturing in the future.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I think we're ready to fly now! &nbsp;Putting this code together, you should see a nice spinning cube in the centre of the screen. &nbsp;For practice, why don't you add a section which checks to see if R1 or R2 are pressed, and if so, moves the camera closer or further away from the cube. &nbsp;If you do this, you'll notice one of the many flaws in the above code... there is no clipping!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Clipping is the term used for not drawing things that can't be seen. &nbsp;Back-face culling is a time saving technique which ensures that faces of a model that face away from you aren't drawn, which should save you some processing time. &nbsp;With the code as it stands, you can place objects behind the camera, and you'll still see them! &nbsp;As I said right at the start of this tutorial, I'm also wasteful in using triangles instead of triangle strips. &nbsp;However, all of these extra pieces of code are beyond the scope of this tutorial, we'll see them next time.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I've written a sample code file which does the coloured spinning cube example above, then extends it to allow texturing (for those interested, my lava.h file was created through clever use of the hexdump program on a Windows .BMP file (remember that .BMP stores colours in 24-bit BGR order, bear that in mind when you read the colour code in that file) &nbsp;Type <FONT  FACE="Courier New">man hexdump</FONT> to find out more about the hexdump program, especially the region on supplying format strings in a text file</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Thanks to Sparky for graciously allowing me to post parts of his sample code on my site. &nbsp;Incase you haven't checked it out yet, please visit the SPS2 project and check it out, it makes working with the PS2 through Linux a lot nicer, and the sample code is much nicer than the libps2dev sample code. &nbsp;Of course, finish your VU demo for the competiton first...</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>News: It seems that Sauce is starting up an SPS2 tutorial series - I feel pretty certain that this will make excellent reading, knowing Sauce's level of knowledge, so if you've enjoyed these tutorials then please check out the SPS2 project and get reading Sauce's tutorials.</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id43.htm" TARGET="_top"    TITLE="12: Plasmaroids"><U>12: Plasmaroids</U></A> Next - <A HREF="id41.htm" TARGET="_top"    TITLE="Comments and suggestions"><U>Comments and suggestions</U></A></FONT></BODY>
+</HTML>

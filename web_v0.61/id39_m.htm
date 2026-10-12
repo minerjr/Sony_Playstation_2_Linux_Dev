@@ -1,0 +1,150 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="9: Uploading Image data">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id39') && !n4p){
+    location.replace('id39.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">9: Uploading Image data</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The Graphics Synthesiser is so called because it creates graphics out of the primitives you ask it to draw. &nbsp;You send a GIFpacket with the instructions to draw a series of triangles, and you get them. &nbsp;Many different things are done for you by the GS, such as Z-buffering to ensure things are drawn in the correct order, Antialiasing to reduce the jagged appearance of lines, even elementary clipping. &nbsp;However, sometimes you may want to do something that the GS simply cannot do for you, for example you may wish to use a shading method different to the standard flat or Gouraud methods.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If that is the case, you must use a different method to tell the GS what to draw. &nbsp;You must simply draw the image yourself, and transfer it into the part of GS memory reserved for the frame buffer. &nbsp;This lesson is about the transfer.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There is another use for the upload of image data, and that is in texture mapping. &nbsp;The GS must know about a texture before you can draw using it, right? &nbsp;This lesson deals with the upload of the image data, <A HREF="id40.htm" TARGET="_top"    TITLE="10: Texture Mapping"><U>10: Texture Mapping</U></A> deals with actually drawing textured primitives.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Pick a format, any format</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There are a number of different pixel formats we can choose for our image transfer. &nbsp;I would normally recommend the use of full on 32-bit colour, but in this VU competition we are quite severely limited by memory, so sometimes you're going to be better off using 24, 16 or 8 bit colour. &nbsp;I'm going to teach you how to do a 32-bit colour transfer first, then let you figure out the details of changing down to 24 or 16 bits. &nbsp;8 bits is another story though, as a further level of indirection is used, the CLUT.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">In formats above 8 bit colour, you directly specify the colour of each pixel, with a certain numbers of bits allocated to each of the red, green and blue components. &nbsp;In 8 bit colour or below, the value for each pixel instead specifies an entry in a table of colours, called a Colour Look Up Table, or CLUT. &nbsp;More on that later, let's get an image uploaded!</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Setting up the transfer</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There are two steps needed to actually make an image transfer, and we can use a GIFtag to accomplish each task. &nbsp;The first tag consists of some setup details, telling the GS how the transfer is going to happen, and the second contains the actual data to upload.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">To access the necessary registers to set up the transfer, I have to tell you about a little trick called the A&amp;D register. &nbsp;Remember in a GIFtag you can specify a list of registers to send data to, and the number of times to loop through the data, in NLOOP and NREG? &nbsp;Well, what you may not have noticed at the time is that you only use one hex digit to specify each register, and that only allows for data to be sent to one of 16 registers. &nbsp;However, the GS has 54 registers, so how do you get to them?</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The answer is a secret in PACKED mode, there is a pseudo-register called the A&amp;D register. &nbsp;You send data to it in packed mode in exactly the same way as you would to the RGBAQ or XYZ2 registers we've been using, only the top 64 bits consist of the address of the real register you want to send data to, and the lower 64 bits consist of the actual data to be sent. &nbsp;Think of the Address and Data (A&amp;D) register as like a postman, you feed it data and an address, and it posts it off to the correct register for you.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Our first GIFtag has the job of setting 4 registers, BITBLTBUF, TRXPOS, TRXREG and TRXDIR, at addresses 0x50, 0x51, 0x52 and 0x53 respectively. &nbsp;None of these are directly specifiable in the GIFtag, so we have to loop through the A&amp;D register 4 times. &nbsp;NREG = 1, NLOOP = 4. &nbsp;EOP = 0 as we're going to send the image data immediately afterwards, FLG = 00 for packed mode, as that is the only mode that the A&amp;D register is available in. &nbsp;We're not sending any actual primitives, so the PRIM field and the PRE field both contain 0. &nbsp;Finally, the 'address' of the A&amp;D register is 0x0e.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">This bit of code (which should go into gen_data.c) will set up our image transfer then. &nbsp;The transfer we will set up will be for an 8x8 texture defined in 32-bit colour, i.e. PSMCT32 pixel mode.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">qword_t reg;</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, GIF_SET_TAG(NLOOP(4), EOP(0), PRE(0), 0, GIF_PACKED, NREG(1)));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, AD_REG);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_BITBLTBUF(0, 1, PSMCT32, 0x118 &lt;&lt; 5, 1, PSMCT32);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = BITBLTBUF_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_TRXPOS(0, 0, 0, 0, 0);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = TRXPOS_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_TRXREG(8, 8);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = TRXREG_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[0] = GS_SET_TRXDIR(TRXDIR_TO_GS);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">reg.ul64[1] = TRXDIR_REG;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgspacked(&amp;gifpacket, reg.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Note: The GS_SET_* macros, and the *_REG macros are defined in the updated defines.h file available at <A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>my project page</U></A>. &nbsp;Let's go through all those parameters!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Firstly, the BITBLTBUF register. &nbsp;The first 3 parameters are about the source of the image transfer, and the last three are about the destination. &nbsp;We're transferring into the GS from somewhere else, so there's no need to set the source buffer pointer (parameter 1). &nbsp;We're going to do the transfer in a buffer of width 64 pixels. &nbsp;I don't think the buffer width parameter is important in Host-&gt;GS transfers, as long as you use the same buffer throughout. &nbsp;And, finally, the incoming data is in the PSMCT32 format. &nbsp;Then, the destination pointer is 0x118, we have the same buffer width of 64 pixels, and we are storing the data in PSMCT32 format.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Note: &nbsp;I only know that the destination should be 0x118 because I looked at the source code of the harness. &nbsp;The harness has 4 buffers of 640x224 at the start of GS memory, 2 for frame buffers, one for the Z buffer, and one for the merged in help screen. &nbsp;That leaves the area of memory from 0x118 onwards completely untouched. &nbsp;Use it at your own will. &nbsp;If my calculations are correct, you still have about 1800k of the 4Mb of GS ram there to play with. &nbsp;That's a nice lot of room to generate textures and CLUTs into.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then, we set the &quot;transmission position&quot;. &nbsp;This register only really has any importance when transferring between areas of the GS, so just set all the parameters to zero. &nbsp;You probably don't need to set the register at all, but I like to just for safety :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">TRXREG contains the size of the actual data we're sending, which is an 8x8 texture, so we set both the height and width of the transfer to 8. &nbsp;Finally, we tell the TRXDIR register that the transfer is going into the GS from outside. &nbsp;Writing to this register has the hidden side effect of actually starting the transfer, so it must be the last register set.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I've deliberately set EOP to 0, so that the following image data is sent to the GS in the same GIFpacket. &nbsp;In your VCL code, all you need is an xgkick to send the GIFtag off, and you're done. &nbsp;Of course, you could save a few microseconds by only uploading the texture on your very first frame, and setting a value in memory to say that the textures have been uploaded, then every subsequent frame use a conditional branch to check whether textures have been uploaded, to save duplicating your efforts every frame. &nbsp;Just a thought. &nbsp;(Ever noticed how some demos seem to freeze for a little while before starting, and you can't even switch demo for a few seconds? &nbsp;What do you think they're using those few seconds for?)</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Writing the image</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The GIFtag which follows is easy to set up, because in IMAGE mode, nearly all of the fields are ignored! &nbsp;All we need to specify is FLG = 3 to get us into image mode, NLOOP set to the number of QWords we're going to send, and EOP=1 because we're done with the image upload after this. &nbsp;No need for the PRE and PRIM fields to be set, nor the NREG and REGS. &nbsp;An 8x8 texture in PSMCT32 mode takes up 16 QWords (See page 80 of the GS manual for more on transmission data format).</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I'll leave you with a piece of code that generates a very boring image for you to upload, see if you can't do something better. &nbsp;How about automatically getting your values out of a BMP/JPG/PNG file?</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, GIF_SET_TAG(NLOOP(16), EOP(1), PRE(0), 0, GIF_IMAGE, NREG(0)));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">gifpacket_addgsdata(&amp;gifpacket, 0); //Even though we're not using registers, we still have to finish the GIFtag!</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">for(i=0, j=0; i&lt;16; i++)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[0] = (j++) | 0x80000000;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[1] = (j++) | 0x80000000;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[2] = (j++) | 0x80000000;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;colour.ui32[3] = (j++) | 0x80000000;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, colour.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>Note: Thanks to Sauce of the SPS2 project for spotting a bug in the above which was causing 4 times too much data to be generated. &nbsp;To clear up a possible area of confusion, each QWord of the above code represents a whole colour, not individual components. &nbsp;Thus, the code above should generate a red gradient texture for you. &nbsp;In earlier tutorials, colour.ui32[0] would represent the RED component of a colour, in this part of the code, it represents an entire colour in ABGR format. &nbsp;Thus, t</I><I>he OR 0x80000000 part is to set a medium alpha value to each texel, which could come in handy later.</I><I> </I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Also, as this is a texture transfer, we need to alert the GS that a new texture has been uploaded by accessing the TEXFLUSH register before sending new primitives in for texture mapping. &nbsp;For more information, see <A HREF="id40.htm" TARGET="_top"    TITLE="10: Texture Mapping"><U>10: Texture Mapping</U></A>. &nbsp;If we were using a pixel mode of 8-bits or below, we would also need to upload a CLUT, using a very similar register setting sequence. &nbsp;I'll leave you to figure out those details for yourself, if you want to use such textures. &nbsp;Some would argue that unless your texture contains more than 256 pixels, it can't possibly need more than 256 colours, so you're just wasting space if you use a colour mode higher than 8-bits. &nbsp;As usual, it's up to you. (See the note below)</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Other transfers</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">As you may have noticed form the above register setting exercise, it's possible not only to upload images to GS memory, but to download them back again, and also to copy bits of GS memory into other bits of GS memory. &nbsp;Why would you want to do any of this? &nbsp;Well, this is where your imagination comes in. &nbsp;You could, for instance, draw only to the left hand half of the screen, and use an image transfer to copy it backwards to the right hand side of the screen every frame (ooh, that's a good one, I might use that in my own demo!)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Initially, I thought you'd be able to download images from the GS to the VU memory. &nbsp;It turns out that this is not possible, as amongst other things, you need access to the privileged registers of the GS, which you simply don't have from VU microcode.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>A bit of a cheat?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Some people have wondered how certain demos, notably VUniverse, fit all of their data into the available 16kb of VU data. &nbsp;They've accused people (light-heartedly) of cheating, wondered if the rules are different between different competitions, but none of this is true.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The answer, as I now hope you're aware, lies in GS ram. &nbsp;Simply put, although you could load your texture into VU data, then blast it off to the GS and forget about it, you could write a piece of VU code that dynamically generates your texture data for you, and then blasts it off to the GS. &nbsp;If you can write 1kb of code that produces 1Mb of texture data, that's perfectly fine! &nbsp;There's a whole 4Mb of memory to play with is the GS, once you've taken out the two framebuffers, the Z buffer and the help screen buffer, we still have just under 2 Mb that's free for our own use. &nbsp;That's how people manage to fit so much in to their competition entries.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Am I going to tell you how to dynamically generate textures? &nbsp;Maybe, one day, when I figure it out myself. &nbsp;Until then, you're on your own!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id38.htm" TARGET="_top"    TITLE="8: Whats in that last QWord?"><U>8: What's in that last QWord?</U></A> Next - <A HREF="id40.htm" TARGET="_top"    TITLE="10: Texture Mapping"><U>10: Texture Mapping</U></A></FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>A note on memory usage</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">My comment above about using a colour mode capable of more than 256 colours for a texture 256 pixels or less seemed like a good idea at the time, but it generated quite a discussion on the #sps2 channel. &nbsp;I'll present here the main points of the argument, and let you decide which way round you should go.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Bear in mind that on 8-bit colour, you need a CLUT of 256 colours in at least 16-bit colour. &nbsp;That means, your CLUT will take up at least 512 bytes of GS ram, at most 1k. &nbsp;So, a single 16x16 texture in 32-bit mode takes up 1k of memory, where in 8-bit mode it takes up only 256 bytes. &nbsp;You think you have saved yourself 768 bytes, but if your CLUT is in 32-bit colour you've actually wasted 256 bytes!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">On the other hand, I'm talking about memory within the GS there, which isn't that limited. &nbsp;What is limited is the amount of space in your VU data ram, just 16k. &nbsp;IF you can come up with a nice routine to generate your CLUT, then you're saving a valuable chunk of VU data memory. &nbsp;Ever better, if you can use the same CLUT for two textures, you're really saving yourself some memory. &nbsp;If you can drop down to several textures, each of only 4-bit colour, your CLUT cost drops tremendously.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">A general rule of thumb seems to be: For larger textures, use lower bit colour, as the CLUT takes up little room compared to the texture. &nbsp;For smaller textures, don't immediately assume that lower bit modes will save you memory.</FONT></BODY>
+</HTML>

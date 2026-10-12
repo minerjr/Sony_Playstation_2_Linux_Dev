@@ -1,0 +1,119 @@
+; ---------------------------------------------------------------------
+;
+;
+;       vu1 micro code for doing a simple perspective transform
+;
+;
+;	This simple code assumes that vertex of the cube are stored
+;	at the beginning of VU1 memory, and first qword is giftag.
+;	Number of vertex are calculated masking GIFTag and taking
+;	the NLOOP value.
+;	Input data are stored in this way, first all coordinates, 
+;	then all colors and finally all the texture coordinates.
+;	Remember that since transformation matrix has to be applyed
+;	by VU1 vertex are preceded by transformation matrix data
+;
+;Input Data:
+;	4 qword, 		offset 0: Transformation Matrix
+;	1 qword, 		offset 4: GIFTag 
+;	NumVertex qword		offset 5: VertexData
+;	NumVertex qword		offset 5+NumVertex: ColorData
+;	NumVertex qword		offset 5+NumVertex*2: TextureData
+;
+;Data before loop:
+;	VF01-VF04	Transformation Matrix data 
+;	
+;	VI02 	NLOOP - Number of vertices
+;	VI10	Point to the vertex data
+;	VI11    Point to color data
+;	VI12	Point to texture data
+;	VI13	Point to XGKICK area
+;
+;	VI04	Point to output Texture coordinates area
+;	VI05	Point to output Color coordinates area
+;	VI06	Point to output Vertex area
+; ---------------------------------------------------------------------
+.align 4
+.vu
+	;first of all store value 0 into VI10 internal register, this
+	;makes VI01 point to the first memory location
+	NOP[D]			IADDIU VI01, VI00, 0
+	;Load Transformation matrix
+	NOP			LQI    	VF01, (VI01++)
+	NOP			LQI    	VF02, (VI01++)
+	NOP			LQI    	VF03, (VI01++)
+	NOP			LQI    	VF04, (VI01++)
+	
+	;Then load last 32 bits of the GIFTag and calculate num of vertex.
+	NOP[d]		ILWR.x 	VI02, (VI01)x
+	NOP			IADDIU 	VI03, VI00, 0x7fff	;set mask
+	NOP			IAND   	VI02, VI03, VI02		;VI02 contains NLOOP
+	
+	;To calculate base pointer for color and texture the number of 
+	;vertices is added to the base vertex pointer. Remember first to 
+	;add 1 to starting address because first address is occupied with
+	;gif tag.
+	NOP			IADDIU 	VI10, VI01, 1		
+	NOP			IADD 	VI11, VI10, VI02
+	NOP			IADD 	VI12, VI11, VI02
+	NOP			IADD 	VI13, VI12, VI02
+	NOP			IADDIU 	VI04, VI13, 1
+	NOP			IADDIU 	VI05, VI13, 2
+	NOP			IADDIU 	VI06, VI13, 3
+	
+	;Now transfer GIFTag from imput area to destination area
+	NOP			LQ VF5, 0(VI01)
+	NOP			SQ VF5, 0(VI13)
+	
+	;Now transform all vertex for the transformation matrix.	
+LOOP:
+	;Load Data
+	NOP			LQI 	VF10, (VI10++) ;load vertex
+	NOP			LQI 	VF11, (VI11++) ;Load Color	
+	NOP			LQI 	VF12, (VI12++) ;Load texure
+	;Apply transformation matrix.
+	MULAx.xyzw ACC, VF01, VF10x	NOP ; rot/trans/pers 	 
+	MADDAy.xyzw ACC, VF02, VF10y	NOP	 
+	MADDAz.xyzw ACC, VF03, VF10z	NOP	 
+	MADDw.xyzw VF15, VF04, VF10w	NOP
+	;Wait for operation to be executed	
+	NOP 				NOP
+	NOP 				NOP
+	NOP 				NOP
+	;Calculate 1/W
+	NOP				DIV Q, VF00w, VF15w
+	;Wait for register Q to be ready
+	NOP				NOP
+	NOP 				NOP
+	NOP 				NOP
+	NOP 				NOP
+	NOP 				NOP
+	NOP 				NOP
+	
+	;Normalize Vector
+	MULq VF16, VF15, Q		NOP
+	;Now normalize texture coordinate values.
+	MULq VF17, VF12, Q		NOP
+	NOP				NOP
+	NOP				NOP
+	;Convert to fixed point
+	FTOI4 VF19, VF16		NOP
+	
+	;Now texture is ready
+	NOP				SQ VF17, 0(VI04)
+	NOP				IADDIU VI04, VI04, 3
+	;Now color and vertex
+	NOP				SQ VF11, 0(VI05)
+	NOP				IADDIU VI05, VI05, 3
+	NOP				SQ VF19, 0(VI06)
+	NOP				IADDIU VI06, VI06, 3
+	;Loop if there are another vertex
+	NOP				IADDI VI02, VI02, -1
+	NOP  				NOP	
+	NOP				IBNE VI02, VI00, LOOP
+	NOP[D]  			NOP
+	
+	;Now KICK all to GS
+	NOP[E]				XGKICK  VI13
+	NOP				NOP
+	NOP				NOP

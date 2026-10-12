@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>2.5. Listes d'Edition de Décision (EDL)</title><link rel="stylesheet" href="default.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.50.0"><link rel="home" href="index.html" title="MPlayer - Le lecteur vidéo pour LINUX"><link rel="up" href="features.html" title="Chapitre 2. Fonctionnalités"><link rel="previous" href="tv-input.html" title="2.4. Entrée TV"><link rel="next" href="usage.html" title="Chapitre 3. Utilisation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.5. Listes d'Edition de Décision (EDL)</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="tv-input.html">Précédent</a> </td><th width="60%" align="center">Chapitre 2. Fonctionnalités</th><td width="20%" align="right"> <a accesskey="n" href="usage.html">Suivant</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="edl"></a>2.5. Listes d'Edition de Décision (EDL)</h2></div></div><p>
+Le système de liste d'édition de décision (Edit Decision Lists - EDL) vous
+permet de sauter ou rendre muet des sections de vidéos pendant la lecture,
+basé sur un fichier de configuration EDL spécifique au film.
+</p><p>
+Ceci est utile pour ceux qui veulent voir un film en mode &quot;tout public&quot;.
+Vous pouvez couper toutes violence, profanation, Jar-Jar Binks .. d'un film
+suivant vos préférences personnelles. A part ça, il y a d'autres
+utilisations, comme sauter automatiquement les pubs dans les fichiers vidéos
+que vous regardez.
+</p><p>
+Le format de fichier EDL est plutôt rudimentaire. Une fois que le système EDL
+aura atteint un certain niveau de maturité, un format de fichier basé sur XML
+sera probablement implémenté (en gardant une compatibilité descendante avec les
+précédents formats EDL).
+</p><p>
+Le nombre maximum d'entrées EDL pour l'incarnation actuelle de EDL est 1000.
+Si vous avez besoin de plus, changez le <tt>#define MAX_EDL_ENTRIES</tt>
+dans le fichier <tt class="filename">edl.h</tt>.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="edl_using"></a>2.5.1. Utiliser un fichier EDL</h3></div></div><p>
+Incluez l'option <tt class="option">-edl &lt;nomfichier&gt;</tt> quand vous lancez
+<span class="application">MPlayer</span>, avec le nom du fichier EDL que vous voulez
+appliquer à la video.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="edl_making"></a>2.5.2. Faire un fichier EDL</h3></div></div><p>
+Le format de fichier actuel EDL est:
+<pre class="programlisting">
+[seconde de départ] [seconde de fin] [action]
+</pre>
+Où les secondes sont des nombres à virgule et l'action est soit
+<tt>0</tt> pour sauter, soit <tt>1</tt> pour couper le son.
+Exemple:
+<pre class="programlisting">
+5.3   7.1    0
+15    16.7   1
+420   422    0
+</pre>
+Cela va sauter de la seconde 5.3 à la seconde 7.1 de la vidéo, puis va couper
+le son à 15 secondes, le remettre à 16.7 secondes et sauter de la seconde 420
+à la seconde 422 de la vidéo. Ces actions seront appliqués quand le temps de
+lecture atteint le temps indiqué dans le fichier.
+</p><p>
+Pour créer un fichier EDL à partir duquel travailler, utilisez l'option
+<tt class="option">-edlout &lt;nomfichier&gt;</tt>. Durant la lecture, quand vous
+voulez marquer les deux secondes précédentes à sauter, tapez sur <span class="keycap"><b>i</b></span>.
+Une entrée correspondante sera écrite dans le fichier. Vous pouvez ensuite revenir
+et affiner le fichier EDL généré.
+</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tv-input.html">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="features.html">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="usage.html">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">2.4. Entrée TV </td><td width="20%" align="center"><a accesskey="h" href="index.html">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 3. Utilisation</td></tr></table></div></body></html>

@@ -1,0 +1,420 @@
+<chapter>
+ <title>Functional overview of the Playstation 2</title>
+ <sect1>
+  <title>Layout of the Playstation 2</title>
+  <para>
+   The Playstation 2 is a very complex beast, composed of several different 
+   types of specialized processors that are designed to operate in parallel.
+   Most of the processors can access other parts of the system independently 
+   and thus a great deal of the work in the PS2 can be performed unattended 
+   by the main processor.
+  </para>
+  <figure>
+   <title>Block diagram of the Playstation 2</title>
+   <graphic format="PNG" fileref="figures/PS2BlockDiagram.png"/>
+  </figure>
+  <para>
+   The diagram above shows the functional layout of the Playstation 2. The
+   system can be broken down into three groups; graphics, control, and I/O.
+   Most control and calculations happen in the Emotion Engine (EE), graphics 
+   rendering is done mostly in the Graphics Synthesizer (GS), and I/O is
+   handled by the I/O Processor (IOP).
+  </para>
+ </sect1>
+ <sect1>
+  <title>R5900 Emotion Engine CPU core</title>
+  <figure>
+   <title>Block diagram of the Playstation 2 - Emotion Engine Core</title>
+   <graphic format="PNG" fileref="figures/PS2BD-EEcore.png"/>
+  </figure>
+  <para>
+   The main CPU in the Playstation 2 is one developed by Toshiba, exclusively
+   for the console. It is a 128-bit MIPS ISA level III compliant processor.
+   The Emotion Engine (EE) is the chip that manages most of the other
+   processors in the system, performing the role of a traditional CPU.
+  </para>
+  <para>
+   Some of its more advanced features include:
+   <itemizedlist>
+    <listitem>
+     32 128-bit wide general purpose registers
+    </listitem>
+    <listitem>
+     32 32-bit wide floating point registers
+    </listitem>
+    <listitem>
+     128-bit wide data path connected to a 128-bit wide system bus
+    </listitem>
+    <listitem>
+     2-way superscalar pipeline, capable of processing two 64-bit MIPS III
+     instructions per cycle.
+    </listitem>
+    <listitem>
+     MIPS IV parallel multimedia instructions capable of doing one 128, two 
+     64, four 32, eight 16 or sixteen 8-bit operations per instruction.
+    </listitem>
+    <listitem>
+     2 micro-programmable vector processors capable of ~2.8GFlops each.
+    </listitem>
+   </itemizedlist>
+  </para>
+  <sect2>
+   <title>Floating Point Unit (FPU)</title>
+   <figure>
+    <title>Block diagram of the Playstation 2 - Floating Point Unit</title>
+    <graphic format="PNG" fileref="figures/PS2BD-FPU.png"/>
+   </figure>
+   <para>
+    The floating point unit included in the EE core is a high performance
+    single-precision floating-point unit. The designers of the FPU
+    decided to not make it IEEE compliant and save some silicon. All this
+    means is that the floating point numbers generated do not comply -exactly-
+    to the IEEE spec, but the numbers should be close enough for most
+    programmers. The FPU contains one multiply-add unit and one floating point
+    divide unit.
+   </para>
+  </sect2>
+  <sect2>
+   <title>Cache and Scratchpad RAM (SPR)</title>
+   <para>
+    Due to the requirement of low manufacturing cost, the EE contains a very
+    limited on-chip cache. 8KB of data cache and 16KB of instruction cache 
+    are included on-chip. There is also another cache specified as the
+    Scratchpad that is used as a low-latency working area.
+   </para>
+  </sect2>
+  <sect2>
+   <title>DMA, DRAM and Memory Management Unit (MMU)</title>
+   <para>
+    The memory management unit, RDRAM controller and DMA controller handle all
+    memory access within the system. The Playstation 2 is rated at performing
+    a peak theoretical bandwidth of 3.2 GBps. 
+   </para>
+   <para>
+    The DMA controller is a 10 channel controller that can DMA data between
+    main memory and an I/O device (such as the IPU) as well as memory and 
+    scratchpad RAM.
+   </para>
+   <para>
+    The MMU is capable of doing 32-bit physical/logical address space 
+    conversion and has a 48-entry TLB to speed lookups.
+   </para>
+  </sect2>    
+  <sect2>
+   <title>Interrupt controller and Timers</title>
+   <para>
+    The PS2 provides an interrupt for every device in the system as well as
+    a special interrupt for the DMA controller. Four 16-bit timers are provided
+    for high precision, processor cycle-level timing.
+   </para>
+  </sect2>
+ </sect1>
+ <sect1>
+  <title>Vector Processor Unit 0 (VPU0/VU0/COP1)</title>
+   <figure>
+    <title>Block diagram of the Playstation 2 - Vector Processing Units</title>
+    <graphic format="PNG" fileref="figures/PS2BD-VPUs.png"/>
+   </figure>
+  <para>
+   Vector Unit 0 (VU0) is one of the EE co-processors and is used primarily
+   for geometry processing. Both vector units are micro-programmable 
+   processors with their own instruction and data space.
+  </para>
+  <para>
+   The main features of VU0 include:
+   <itemizedlist>
+    <listitem>
+     32 32-bit floating point registers
+    </listitem>
+    <listitem>
+     16 16-bit integer registers
+    </listitem>
+    <listitem>
+     4KB of micro-memory for instructions
+    </listitem>
+    <listitem>
+     4KB of micro-memory for data
+    </listitem>
+    <listitem>
+     4 32-bit single precision floating point multiply-add units
+    </listitem>
+    <listitem>
+     1 32-bit single precision floating point divide unit
+    </listitem>
+    <listitem>
+     Macro and micro-mode operation (explained below)
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>
+   VU0 can run in two modes; macro-mode and micro-mode. In macro-mode, the
+   EE can call VU0 instructions directly and fetch the results. In micro-mode,
+   a small vector unit micro-program is uploaded by the EE and subsequently
+   executed. An example would be the VU0 processing physics effects on 
+   particles before they are sent to VU1 for the rendering phase. After the
+   micro-program has run, the EE can then retrieve the results of the 
+   micro-program.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Vector Processor Unit 1 (VPU1/VU1/COP2)</title>
+  <para>
+   Vector Unit 1 (VU1) is one of the EE co-processors and is used primarily
+   for graphics pre-processing for the GS. Both vector units are 
+   micro-programmable processors with their own instruction and data space.
+  </para>
+  <para>
+   The main features of VU1 include:
+  
+   <itemizedlist>
+    <listitem>
+     32 32-bit floating point registers
+    </listitem>
+    <listitem>
+     16 16-bit integer registers
+    </listitem>
+    <listitem>
+     16KB of micro-memory for instructions
+    </listitem>
+    <listitem>
+     16KB of micro-memory for data
+    </listitem>
+    <listitem>
+     4 32-bit single precision floating point multiply-add units
+    </listitem>
+    <listitem>
+     1 32-bit single precision floating point divide unit
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>
+   The main difference between VU0 and VU1 is the micro-memory available and
+   their purpose. VU1 has 16KB more internal instruction and data space, versus
+   just 4KB for VU0. VU1 is primarily used for pre-processing of geometry,
+   texture and other graphics data before it is sent to the GS. VU0's primary
+   purpose is to pre-process geometry or aid the EE with physics or other 
+   heavy floating point calculations. An example of VU1s use would be 
+   performing the perspective transform for all verticies before they are
+   sent to the GS.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Graphics Synthesizer (GS)</title>
+  <figure>
+   <title>Block diagram of the Playstation 2 - Graphics Synthesizer</title>
+   <graphic format="PNG" fileref="figures/PS2BD-GS.png"/>
+  </figure>
+  <para>
+   The Graphics Synthesizer (GS) is responsible for rendering all graphics
+   primitives to the screen. It is capable of rendering between 25-75 million
+   triangles per second at a fill-rate of about 2.4 Gigapixels per second. 
+   The GS can also output images in NTSC, PAL, VESA and DTV formats 
+   (either interlaced or non-interlaced). Some of its features include:
+   <itemizedlist>
+    <listitem>
+     32-bit color operation (Red, Green, Blue, and Alpha)
+    </listitem>
+    <listitem>
+     Point, Line, Line Strip, Triangle, Triangle Strip, Triangle Fan and
+     Sprite primitives. 
+    </listitem>
+    <listitem>
+     4, 8, 16, 24 and 32-bit texture modes
+    </listitem>
+    <listitem>
+     16, 24 and 32-bit Z buffer
+    </listitem>
+    <listitem>
+     Alpha blending, edge anti-aliasing (lines and triangles), fogging, 
+     scissoring and two context drawing environment.
+    </listitem>
+    <listitem>
+     Unified memory with 38.4GB/s of bandwidth to the framebuffer, 9.6GB/s
+     of bandwidth to the texture buffer, and 1.2GB/s of bandwidth to main
+     RAM.
+    </listitem>
+   </itemizedlist>
+  </para>
+ </sect1>
+ <sect1>
+  <title>Image Processing Unit (IPU)</title>
+  <figure>
+   <title>Block diagram of the Playstation 2 - Image Processing Unit</title>
+   <graphic format="PNG" fileref="figures/PS2BD-IPU.png"/>
+  </figure>
+  <para>
+   The Image Processing Unit is part of the Emotion Engine and performs
+   MPEG-2 macro block decoding, color space conversion and vector
+   quantization for 2D graphics data. This graphics data can be frames
+   from an MPEG-2 movie or compressed textures for 3D models.
+  </para>
+  <para>
+   There really isn't much more to the IPU, it decodes image data very 
+   quickly and thats about it.
+  </para>
+ </sect1>
+ <sect1>
+  <title>I/O Processor (IOP)</title>
+  <figure>
+   <title>Block diagram of the Playstation 2 - I/O Processor</title>
+   <graphic format="PNG" fileref="figures/PS2BD-IOP.png"/>
+  </figure>
+  <para>
+   The I/O Processor on the Playstation 2 is actually the Playstation 1 main
+   processor with several extensions to handle USB, Firewire, sound, and the
+   other new peripherals introduced by the Playstation 2. It is a standard
+   MIPS R3000R processor without a MMU and 2MB of local memory. All external
+   I/O such as memory card access, USB control, Firewire devices and sound
+   playback is handled via the IOP. Some of its features include:
+   <itemizedlist>
+    <listitem>
+     MIPS R3000R processor running at 33.86Mhz or 36.86Mhz
+    </listitem>
+    <listitem>
+     2MB of local memory
+    </listitem>
+    <listitem>
+     Sound Processing Unit with 48 channels
+    </listitem>
+    <listitem>
+     Industry standard USB 1.0, Sony i.Link (IEEE 1394 Firewire) support
+    </listitem>
+    <listitem>
+     Serial interface to MagicGate interface (Memory cards and controllers)
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>
+   Unfortunately, access to the entire IOP is not available to general users 
+   due to Sony's need to protect their Intellectual Property from pirates and 
+   other nefarious individuals.
+  </para>
+  <sect2>
+   <title>USB 1.0 Controller</title>
+   <para>
+    A relatively gutsy move for Sony at the time was integrating two standard
+    USB ports into the Playstation 2. These are standard USB 1.0 compliant
+    ports and will accept any USB 1.0 compliant device. This includes USB
+    cameras, keyboards, mice, storage devices, speakers, etc.
+   </para>
+   <para>
+    The USB devices are available to the PS2 Linux kit via the standard Linux
+    USB device filesystem.
+   </para>
+  </sect2>
+  <sect2>
+   <title>Sony i.Link (Firewire) Controller</title>
+   <para>
+    Another very gutsy move by SCE was to include a i.Link (Firewire) port with
+    the Playstation 2. Sadly, this gamble seems to not have paid off
+    as much as Sony would have liked it to. Only a select few games use the
+    i.Link port. Gran Turismo 3 is probably the most successful PS2 title
+    to use them for networked gameplay.
+   </para>
+   <para>
+    Unfortunately, the i.Link port is not accessible via the PS2 Linux kit. 
+    The IOP controls access via i.Link and the software calls in the closed 
+    source SBIOS do not exist for i.Link access.
+   </para>
+  </sect2>
+  <sect2>
+   <title>Sound Processing Unit (SPU2)</title>
+   <para>
+    The Sound Processing Unit (SPU2) handles all sound mixing and playback. It
+    is a relatively advanced sound processor capable of a variety of sound
+    effects, playback styles and output styles. SPU2 is actually composed of
+    two sound processing cores (CORE0 and CORE1) each with 24-audio channels
+    each. Both SPU cores are identical.
+   </para>
+   <para>
+    Some SPU2's features include:
+    <itemizedlist>
+     <listitem>
+      48-channels of audio in ADPCM format
+     </listitem>
+     <listitem>
+      Software-programmable voices w/ real-time digital effect processing
+      including pitch transformation and modulation, envelope processing and
+      mixing.
+     </listitem>
+     <listitem>
+      2MB of dedicated RAM for sound data
+     </listitem>
+     <listitem>
+      48Khz digital optical output as well as regular analog out
+     </listitem>
+    </itemizedlist>
+   </para>
+  </sect2>
+ </sect1>
+ <sect1>
+  <title>System bus controllers</title>
+  <para>
+   Due to the parallel nature of the Playstation 2's many processors, 
+   communication between components is quite a complicated process. The system
+   must guarantee a certain order of transmission from one part of the system
+   to the other as well as provide a means to decide which transfer is most
+   important. Like the rest of the system, the mechanism for arbitrating what
+   data goes where is well designed and encapsulated in each of the bus
+   interfaces.
+  </para>
+  <sect2>
+   <title>System Interface (SIF) and System bus (SBUS) controllers</title>
+   <para>
+    The System Interface (SIF) and System Bus (SBUS) controllers connect the 
+    IOP to the main bus and control all data going to and coming from the 
+    IOP.
+   </para>
+   <para>
+    The SIF is comprised of a 8 quad-word FIFO and is used to transfer data
+    to/from the IOP.
+   </para>
+   <para>
+    The SBUS is the bus between the SIF and the IOP. 
+    (THIS SECTION NEEDS MORE DOCUMENTATION - msporny)
+   </para>
+  </sect2>
+  <sect2>
+   <title>VPU Interface (VIF0 and VIF1)</title>
+   <para>
+    The Vector Processor Interface (VIF) handles communication between each
+    VU and main memory. Its main purpose is to decompress incoming data to 
+    each VPU (such as vertex data). 
+   </para>
+  </sect2>
+  <sect2>
+   <title>Graphics Interface (GIF)</title>
+   <para>
+    The Graphics Interface (GIF) unpacks and formats incoming data from 
+    main memory into a form that the GS can understand. An example would be
+    packed vertex and color data that is unpacked into draw commands that
+    will display a triangle on the screen of a specified color.
+   </para>
+  </sect2>
+  <sect2>
+   <title>DMA Controller</title>
+   <para>
+    The DMA controller for the PS2 is an integral part of the system. All
+    the system processors depend on the DMA controller to handle transferring
+    data around the system. Once one of the main processors such as the EE or
+    VPUs format data in a format that another processor can understand it, the
+    DMA controller handles the monotonous task of physically feeding the data
+    to the targeted processor.
+   </para>
+   <para>
+    An example of this would be the Emotion Engine creating a list of polygons
+    to be rendered to the screen. The display data is then DMA'ed to the 
+    GIF via the DMA Controller, which then sends it to the Graphics 
+    Synthesizer to become displayed to the screen.
+   </para>
+  </sect2>
+  <sect2>
+   <title>RDRAM Controller</title>
+   <para>
+    The RDRAM controller handles all transfer of data to and from main memory.
+    While a programmer does not have access to the controller, it is important
+    to note that it actually is there.
+   </para>
+  </sect2>
+ </sect1>
+</chapter>

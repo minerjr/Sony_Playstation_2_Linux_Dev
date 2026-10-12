@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>System bus controllers</title><meta name="generator" content="DocBook XSL Stylesheets V1.40"><link rel="home" href="index.html" title="The Playstation 2 Linux Kit Handbook"><link rel="up" href="ch03.html" title="Chapter 3. Functional overview of the Playstation 2"><link rel="previous" href="ch03s07.html" title="I/O Processor (IOP)"><link rel="next" href="ch04.html" title="Chapter 4. The PS2 Linux kernel"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">System bus controllers</th></tr><tr><td width="20%" align="left"><a href="ch03s07.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Functional overview of the Playstation 2</th><td width="20%" align="right"> <a href="ch04.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="id2734944"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2734944"></a>System bus controllers</h2></div></div><p>
+   Due to the parallel nature of the Playstation 2's many processors, 
+   communication between components is quite a complicated process. The system
+   must guarantee a certain order of transmission from one part of the system
+   to the other as well as provide a means to decide which transfer is most
+   important. Like the rest of the system, the mechanism for arbitrating what
+   data goes where is well designed and encapsulated in each of the bus
+   interfaces.
+  </p><div class="sect2"><a name="id2734965"></a><div class="titlepage"><div><h3 class="title"><a name="id2734965"></a>System Interface (SIF) and System bus (SBUS) controllers</h3></div></div><p>
+    The System Interface (SIF) and System Bus (SBUS) controllers connect the 
+    IOP to the main bus and control all data going to and coming from the 
+    IOP.
+   </p><p>
+    The SIF is comprised of a 8 quad-word FIFO and is used to transfer data
+    to/from the IOP.
+   </p><p>
+    The SBUS is the bus between the SIF and the IOP. 
+    (THIS SECTION NEEDS MORE DOCUMENTATION - msporny)
+   </p></div><div class="sect2"><a name="id2734993"></a><div class="titlepage"><div><h3 class="title"><a name="id2734993"></a>VPU Interface (VIF0 and VIF1)</h3></div></div><p>
+    The Vector Processor Interface (VIF) handles communication between each
+    VU and main memory. Its main purpose is to decompress incoming data to 
+    each VPU (such as vertex data). 
+   </p></div><div class="sect2"><a name="id2735010"></a><div class="titlepage"><div><h3 class="title"><a name="id2735010"></a>Graphics Interface (GIF)</h3></div></div><p>
+    The Graphics Interface (GIF) unpacks and formats incoming data from 
+    main memory into a form that the GS can understand. An example would be
+    packed vertex and color data that is unpacked into draw commands that
+    will display a triangle on the screen of a specified color.
+   </p></div><div class="sect2"><a name="id2735028"></a><div class="titlepage"><div><h3 class="title"><a name="id2735028"></a>DMA Controller</h3></div></div><p>
+    The DMA controller for the PS2 is an integral part of the system. All
+    the system processors depend on the DMA controller to handle transferring
+    data around the system. Once one of the main processors such as the EE or
+    VPUs format data in a format that another processor can understand it, the
+    DMA controller handles the monotonous task of physically feeding the data
+    to the targeted processor.
+   </p><p>
+    An example of this would be the Emotion Engine creating a list of polygons
+    to be rendered to the screen. The display data is then DMA'ed to the 
+    GIF via the DMA Controller, which then sends it to the Graphics 
+    Synthesizer to become displayed to the screen.
+   </p></div><div class="sect2"><a name="id2735058"></a><div class="titlepage"><div><h3 class="title"><a name="id2735058"></a>RDRAM Controller</h3></div></div><p>
+    The RDRAM controller handles all transfer of data to and from main memory.
+    While a programmer does not have access to the controller, it is important
+    to note that it actually is there.
+   </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a href="ch03s07.html">Prev</a> </td><td width="20%" align="center"><a href="index.html">Home</a></td><td width="40%" align="right"> <a href="ch04.html">Next</a></td></tr><tr><td width="40%" align="left">I/O Processor (IOP) </td><td width="20%" align="center"><a href="ch03.html">Up</a></td><td width="40%" align="right"> Chapter 4. The PS2 Linux kernel</td></tr></table></div></body></html>

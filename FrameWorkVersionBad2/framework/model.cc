@@ -1,0 +1,1363 @@
+/****************************************************************************\
+|* PS2 framework definitions
+|* =========================
+|*
+|* Simple PS2 C++ framework on which to build a 3D/2.5D engine. 
+|*
+|* Author					: SjG, various others
+|* First created			: Thu Jul 18 13:25:57 GMT 2002
+|* Modification history		: See below
+|*
+\****************************************************************************/
+#include "model.h"
+
+
+/****************************************************************************\
+|* Constructor
+\****************************************************************************/
+Model::Model()
+{
+	initialise();
+}
+
+/****************************************************************************\
+|* Constructor
+\****************************************************************************/
+Model::Model(char *filename)
+{
+	initialise();
+	loadFile(filename);
+}
+
+/****************************************************************************\
+|* Constructor
+\****************************************************************************/
+Model::Model(char *filename, Image *tmpimagePointer)
+{
+	initialise();
+	imagePointer = tmpimagePointer;
+	loadFile(filename);
+}
+	
+/****************************************************************************\
+|* Destructor
+\****************************************************************************/
+Model::~Model()
+	{
+	erase();
+	}
+
+
+/****************************************************************************\
+|* Method - initialise the model
+\****************************************************************************/
+void Model::initialise(void)
+	{
+	mesh				= NULL;
+	nmeshes				= 0;
+	nfaces				= 0;
+	vpkt.buffer			= NULL;
+	vpkt.buffer_size	= 0;
+	type				= MODEL_BAD_FORMAT;
+
+	animations 			= NULL;
+	currentTime			= 0;
+	endTime				= 0;
+	previousTime			= 0;
+	frameIndex			= 0;
+	nframes				= 0;	
+	animationIndex 			= 0;
+
+	nvifdatas			= 0;
+	vifdata				= NULL;
+
+	objTrans			= (ps2_vu0_fvector){0,0,0,0};
+	objRot				= (ps2_vu0_fvector){0,0,0,0};
+	objRot0				= (ps2_vu0_fvector){0,0,0,0};
+
+	dmasent = 0;
+
+	imagePointer			= NULL;
+	
+	localScreen			= NULL;
+	localLight			= NULL;
+	lightColour			= NULL;
+	localClip			= NULL;
+	outlineFactor		= NULL;
+	}
+
+/****************************************************************************\
+|* Method - delete the model data
+\****************************************************************************/
+void Model::erase(void)
+	{
+	int i;
+	if (vpkt.buffer != NULL)
+		free(vpkt.buffer);
+		
+	for (i=nmeshes-1; i>=0; i--)
+		{
+		free(mesh[i].st);
+		free(mesh[i].normal);
+		free(mesh[i].vertex);
+		}
+	free(animations);
+	free(mesh);
+	initialise();
+	}
+/****************************************************************************\
+|* Method - dump the model data to a file
+\****************************************************************************/
+void Model::dump(void)
+	{
+	unsigned int i, j, mesh_verts;
+	qword_t *TmpVertex, *TmpNormal;
+	//if (vpkt.buffer != NULL)
+	//	free(vpkt.buffer);
+	FILE *output;
+	output = fopen("ModelData.txt","w+");
+	fprintf(output, "Number of meshes: %d\n", nmeshes);
+	fclose(output);
+	output = fopen("ModelData.txt","a");
+	fprintf(output, "Number of faces: %d\n", nfaces);
+	fprintf(output, "Type: %d\n", type);
+
+	
+	
+	for (i=0; i< nmeshes; i++)
+	{
+		fprintf(output, "Mesh Number: %d\n", i);
+		fprintf(output, "RGBA: %f %f %f %f\n", mesh[i].rgb.f32[0], mesh[i].rgb.f32[1], mesh[i].rgb.f32[2], mesh[i].rgb.f32[3]);
+		fprintf(output, "Texture Index: %d\n", mesh[i].tex_index);
+		fprintf(output, "Number of faces: %d\n", mesh[i].nfaces);
+		fprintf(output, "Texture: %d\n", mesh[i].texture);		
+		fprintf(output, "Number of vertexs: %d\n", mesh[i].nfaces * 3);
+		if (type == MODEL_STRIPPED)
+		{
+			mesh_verts = mesh[i].nfaces+2;
+		}
+		else if (type == MODEL_TRIMODEL)
+		{
+			mesh_verts = mesh[i].nfaces * 3;
+		}
+		for (j = 0; j < mesh_verts; j+=1)
+		{
+			unsigned int vu_verts = VU_VERTS_STRIP;
+			//memcpy(&TmpX, &mesh[i].vertex + j, 4);
+			//memcpy(&TmpY, &mesh[i].vertex + j + 5, 4);
+			//memcpy(&TmpZ, &mesh[i].vertex + j + 10, 4);
+			if (j + VU_VERTS_STRIP > mesh[i].nfaces+2)
+				vu_verts = mesh_verts % VU_VERTS_STRIP;
+			TmpVertex = (qword_t*)(mesh[i].vertex +j * VERT_DATA_LEN_STRIP);
+			TmpNormal = (qword_t*)(mesh[i].normal +j * NORM_DATA_LEN_STRIP);
+			fprintf(output, "Vertex: %f %f %f\n", TmpVertex->fvect[0], TmpVertex->fvect[1], TmpVertex->fvect[2]);	
+			fprintf(output, "Normal: %f %f %f\n", TmpNormal->fvect[0], TmpNormal->fvect[1], TmpNormal->fvect[2]);	
+						
+		}
+		
+		fprintf(output, "Size of Vertex Array: %d\n", sizeof(mesh[i].vertex));
+		//free(mesh[i].st);
+		//free(mesh[i].normal);
+		//free(mesh[i].vertex);
+		}
+	fclose(output);	
+		
+	//free(mesh);
+	//initialise();
+	}
+	
+/****************************************************************************\
+|* Method - load a file
+\****************************************************************************/
+void Model::loadFile(char *name)
+	{
+	if (strstr(name, ".ms3d") != NULL)
+		loadMS3D(name);
+	else if (strstr(name, ".ms") != NULL)
+		loadStripped(name);
+	else if (strstr(name, ".md2") != NULL)
+		loadMD2(name);
+	else
+		type = MODEL_BAD_FORMAT;
+	}
+	
+
+	
+/****************************************************************************\
+|* Method - load a stripped-triangle file
+\****************************************************************************/
+void Model::loadStripped(char *name)
+	{
+	char tmpPath[1024];
+	unsigned int *indexes = NULL;
+
+	erase();
+
+	FILE *sf = fopen(name, "r");
+	if (sf==NULL)
+		{
+		_log << "Could not load file '" << name << "'\n";
+		type=MODEL_BAD_FORMAT;
+		return;
+		}
+
+	fseek(sf, 0, SEEK_END);
+	int filesize=ftell(sf);
+	fseek(sf, 0, SEEK_SET);
+	_log << name << " size: " << filesize << " bytes\n";
+
+	if (filesize<13)
+		{
+		_log <<"Unexpected end of stripped file\n";
+		fclose(sf);
+		type=MODEL_BAD_FORMAT;
+		}
+	else
+		{
+		unsigned int i;
+		struct
+			{
+			char magic[8];
+			unsigned char version;
+			unsigned int nmeshes;
+			unsigned int ntextures;
+			} header;
+
+		fread(&header, 1, 9, sf);
+
+		if (strncmp(header.magic, STRIPPED_MAGIC, strlen(STRIPPED_MAGIC))!=0)
+			{
+			_log << "Invalid file format\n";
+			fclose(sf);
+			type=MODEL_BAD_FORMAT;
+			return;
+			}
+
+		if (header.version!=STRIPPED_VERSION)
+			{
+			_log << "Incorrect file version\n";
+			fclose(sf);
+			type=MODEL_BAD_FORMAT;
+			return;
+			}
+
+		fread(&header.nmeshes, 4, 1, sf);
+		fread(&header.ntextures, 4, 1, sf);
+		indexes=(unsigned int *)malloc(header.ntextures*sizeof(unsigned int));
+
+		for (i=0; i<header.ntextures; i++)
+			{
+			unsigned char len;
+			fread(&len, 1, 1, sf);
+			*(tmpPath+len)=0;
+			fread(tmpPath, 1, len, sf);
+			// indexes[i]=AddTexture(tmp_path);
+			}
+
+		nfaces=0;
+		nmeshes=header.nmeshes;
+
+		mesh=(mesh_t*) memalign(64, nmeshes * sizeof(mesh_t));
+		memset(mesh, 0, nmeshes * sizeof(mesh_t));
+
+		/********************************************************************\
+		|* Read in each mesh
+		\********************************************************************/
+		for (i=0; i<nmeshes; i++)
+			{
+			fread(&mesh[i].texture, sizeof(unsigned int), 1, sf);
+
+			if (mesh[i].texture>=0)
+				mesh[i].texture=indexes[mesh[i].texture];
+			
+			fread(&mesh[i].rgb, sizeof(float), 4, sf);
+			fread(&mesh[i].nfaces, sizeof(unsigned int), 1, sf);
+			
+			/****************************************************************\
+			|* Decompress the vertex strip
+			\****************************************************************/
+			lzo_uint out_len1 = mesh[i].nfaces * VERT_DATA_LEN_STRIP;
+			lzo_uint overhead = out_len1/64+16+3;
+			mesh[i].vertex    = (char *) memalign(64, out_len1);
+			lzo_byte *out     = (lzo_byte *) mesh[i].vertex;
+			
+			lzo_uint in_len;
+			fread(&in_len, sizeof(lzo_uint), 1, sf);
+			lzo_byte *in      = (lzo_byte *) memalign(64, in_len);
+			lzo_byte *wrkmem  = (lzo_byte *) memalign(64, overhead);
+			
+			lzo_uint out_len2;
+			fread(in, 1, in_len, sf);
+			lzo1x_decompress(in, in_len, out, &out_len2, NULL);
+			
+			free(wrkmem);
+			free(in);
+			
+			if(out_len1!=out_len2)
+				{
+				_log << "Error decompressing stripped file (vertices)\n";
+				erase();
+				fclose(sf);
+				return;
+				}
+			
+			/****************************************************************\
+			|* Decompress the normals
+			\****************************************************************/
+			out_len1       = mesh[i].nfaces * NORM_DATA_LEN_STRIP;
+			overhead       = out_len1/64+16+3;
+			mesh[i].normal = (char *) memalign(64, out_len1);
+			out            = (lzo_byte *) mesh[i].normal;
+
+			fread(&in_len, sizeof(lzo_uint), 1, sf);
+			in             = (lzo_byte *) memalign(64, in_len);
+			wrkmem         = (lzo_byte *) memalign(64, overhead);
+			
+			fread(in, 1, in_len, sf);
+			lzo1x_decompress(in, in_len, out, &out_len2, NULL);
+			free(wrkmem);
+			free(in);
+			
+			if(out_len1!=out_len2)
+			    {
+				_log << "Error decompressing stripped file (normals)\n";
+				erase();
+				fclose(sf);
+				return;
+			    }
+			
+			/****************************************************************\
+			|* Decompress the texture co-ords if they're present
+			\****************************************************************/
+			if (mesh[i].texture >= 0)
+				{
+				out_len1    = mesh[i].nfaces * ST_DATA_LEN_STRIP;
+				overhead    = out_len1/64+16+3;
+				mesh[i].st  = (char *) memalign(64, out_len1);
+				out         = (lzo_byte *) mesh[i].st;
+
+				fread(&in_len, sizeof(lzo_uint), 1, sf);
+				in          = (lzo_byte *) memalign(64, in_len);
+				wrkmem      = (lzo_byte *) memalign(64, overhead);
+				
+				fread(in, 1, in_len, sf);
+				lzo1x_decompress(in, in_len, out, &out_len2, NULL);
+				free(wrkmem);
+				free(in);
+				
+				if(out_len1!=out_len2)
+					{
+					_log << "Error decompressing stripped file (textures)\n";
+					erase();
+					fclose(sf);
+					return;
+					}
+				}
+
+			// we actually read the number of verts, correct that
+			mesh[i].nfaces -= 2;
+			nfaces         += mesh[i].nfaces;
+			}
+			
+		fread(&header.magic, 1, 8, sf);
+		if (strncmp(header.magic, "STRIPPED", 8) != 0)
+			{
+			_log << "Unexpected string at the end of stripped file.\n";
+			erase();
+			fclose(sf);
+			type=MODEL_BAD_FORMAT;
+			return;
+			}
+
+		fclose(sf);
+		free(indexes);
+		}
+	
+	_log << "Loading done, " << nmeshes << " meshes, " << nfaces << " polys\n";
+	type=MODEL_STRIPPED;
+	buildPacket();
+	}
+		
+/****************************************************************************\
+|* Method - load a ms3d file
+\****************************************************************************/
+void Model::loadMS3D(char *name)
+{
+
+	Ms3dFile *TmpMs3dFile;
+	TmpMs3dFile = new Ms3dFile();
+	int loop1, loop2, loop3;
+	_log << "Opened ms3d file.\n";
+	if (TmpMs3dFile->Load(name) == false)
+	{
+	
+		_log << "Bad ms3d file.\n";
+		erase();
+		type=MODEL_BAD_FORMAT;
+		return;
+	}
+
+	_log << "MS3D: Number of materials: " << TmpMs3dFile->numMaterials << "\n";
+	type = MODEL_TRIMODEL;
+	mesh=(mesh_t*) memalign(64, TmpMs3dFile->numGroups * sizeof(mesh_t));
+	memset(mesh, 0, TmpMs3dFile->numGroups * sizeof(mesh_t));
+		nmeshes = TmpMs3dFile->numGroups;
+		nfaces = 0;
+		
+		_log << "MS3D: Number of groups:" << TmpMs3dFile->numGroups << "\n";
+		for (loop1=0; loop1<TmpMs3dFile->numGroups; loop1++)
+		{
+			_log << "MS3D: Group Number:" << loop1 << "\n";
+
+			_log << "MS3D: Number of Triangles:" << TmpMs3dFile->groups[loop1].numTriangles << "\n";
+			//log << "MS3D: Number of groups:" << TmpMs3dFile->numGroups << "\n";
+			
+			mesh[loop1].nfaces = TmpMs3dFile->groups[loop1].numTriangles;
+			mesh[loop1].texture = 0;//atoi(&TmpMs3dFile->groups[loop1].materialIndex);
+			nfaces = nfaces + mesh[loop1].nfaces;
+			//mesh[loop1].rgb = new qword_t;
+			int materialIndex = (int)TmpMs3dFile->groups[loop1].materialIndex;
+			_log << "MS3D: Material Index: " << materialIndex << "\n";
+ 			if (TmpMs3dFile->numMaterials > 0)
+			{
+				_log << "MS3D: Material Loaded\n";
+
+				_log << "MS3D: R:" << (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[0]) << "\n";
+				_log << "MS3D: G:" << (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[1]) << "\n";
+				_log << "MS3D: B:" << (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[2]) << "\n";
+
+				mesh[loop1].rgb.fvect[0] = (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[0]);
+				mesh[loop1].rgb.fvect[1] = (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[1]);
+				mesh[loop1].rgb.fvect[2] = (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[2]);
+				mesh[loop1].rgb.fvect[3] = 1.0;
+			}
+			else
+			{
+				mesh[loop1].rgb.fvect[0] = 200.0;
+				mesh[loop1].rgb.fvect[1] = 200.0;
+				mesh[loop1].rgb.fvect[2] = 200.0;
+				mesh[loop1].rgb.fvect[3] = 1.0;
+			}
+			
+			/****************************************************************\
+			|* Decompress the vertex strip
+			\****************************************************************/
+			mesh[loop1].vertex = (char *) memalign(64, (mesh[loop1].nfaces + 2) * 3 * VERT_DATA_LEN_TRI + 2);
+			mesh[loop1].normal = (char *) memalign(64, (mesh[loop1].nfaces + 2) * 3 *  NORM_DATA_LEN_TRI);
+			memset(mesh[loop1].vertex, 0, (mesh[loop1].nfaces + 2) * 3 *  VERT_DATA_LEN_TRI);
+			memset(mesh[loop1].normal, 0, (mesh[loop1].nfaces + 2) * 3 *  NORM_DATA_LEN_TRI);
+			//if (mesh[loop1].texture >= 1)
+			//{
+			mesh[loop1].st  = (char *) memalign(64, (mesh[loop1].nfaces + 2) * 3 * ST_DATA_LEN_TRI);
+			memset(mesh[loop1].st, 0, (mesh[loop1].nfaces + 2) * 3 *  ST_DATA_LEN_TRI);
+
+			//}
+			int vertexcounter = 0;
+			int uvcounter = 0;
+			for (loop2 = 0; loop2 < TmpMs3dFile->groups[loop1].numTriangles ; loop2++)
+			{
+				int triangleIndex = TmpMs3dFile->groups[loop1].triangleIndices[loop2];
+				const MS3D_TRIANGLE* tri = &TmpMs3dFile->triangles[triangleIndex];
+				
+				for (loop3 = 0; loop3 < 3; loop3++)
+				{
+					_log << "MS3D: Vertex #:" << loop2 << "\n";
+
+					int vertexindex = tri->vertexIndices[loop3];
+ 					((qword_t*)(mesh[loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->fvect[0] = TmpMs3dFile->vertices[vertexindex].vertex[0];  
+					((qword_t*)(mesh[loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->fvect[1] = TmpMs3dFile->vertices[vertexindex].vertex[1];
+  					((qword_t*)(mesh[loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->fvect[2] = TmpMs3dFile->vertices[vertexindex].vertex[2];  
+
+
+ 					((qword_t*)(mesh[loop1].normal +((loop2 * 3) + loop3) * NORM_DATA_LEN_TRI))->fvect[0] = tri->vertexNormals[loop3][0];  
+					((qword_t*)(mesh[loop1].normal +((loop2 * 3) + loop3) * NORM_DATA_LEN_TRI))->fvect[1] = tri->vertexNormals[loop3][1];
+  					((qword_t*)(mesh[loop1].normal +((loop2 * 3) + loop3) * NORM_DATA_LEN_TRI))->fvect[2] = tri->vertexNormals[loop3][2];  
+
+					if (mesh[loop1].texture >= 1)
+					{
+						((qword_t*)(mesh[loop1].st +((loop2 * 3) + loop3) * ST_DATA_LEN_TRI))->fvect[0] = tri->u[loop3];
+  						((qword_t*)(mesh[loop1].st +((loop2 * 3) + loop3) * ST_DATA_LEN_STRIP))->fvect[1] = tri->v[loop3];  
+					}
+
+					//mesh[loop1].vertex + (vertexcounter * 4) + loop3 = (char)TmpMs3dFile->vertices[vertexindex].vertex;
+					//mesh[loop1].normal[vertexcounter] = (char)tri->vertexNormals[loop3];
+					_log << "MS3D: Vertex X Y Z:" << TmpMs3dFile->vertices[vertexindex].vertex[0] << " " <<  TmpMs3dFile->vertices[vertexindex].vertex[1] << " " << TmpMs3dFile->vertices[vertexindex].vertex[2] << "\n"; 
+					
+					//if (mesh[loop1].texture >=0)
+					//{
+					//	mesh[loop1].st[uvcounter] = (char)tri->u[loop3];
+					//	uvcounter++;
+					//	mesh[loop1].st[uvcounter] = (char)tri->v[loop3];
+					//	uvcounter++;
+
+					//}
+					
+
+					vertexcounter++;
+				}
+
+
+
+			}
+
+		}
+			
+			
+	delete TmpMs3dFile;
+	buildPacket();
+
+}
+
+/****************************************************************************\
+|* Method - load a md2 file
+\****************************************************************************/
+void Model::loadMD2(char *name)
+{
+
+	Md2File *TmpMd2File;
+	TmpMd2File = new Md2File();
+
+	int loop1, loop2, loop3;
+	_log << "Opened md2 file.\n";
+	if (TmpMd2File->Load(name,-1) == false)
+	{
+	
+		_log << "Bad md2 file.\n";
+		erase();
+		type=MODEL_BAD_FORMAT;
+		return;
+	}
+
+	//_log << "MS3D: Number of materials: " << TmpMs3dFile->numMaterials << "\n";
+	type = MODEL_TRIMODEL;
+	//TmpMd2File->m_Header.numFrames = 1;
+	nframes = TmpMd2File->m_Header.numFrames;
+	nmeshes = 1;//MD2's use only one mesh per frame.
+	nfaces = 0;
+	//Allocte the number of meshes per frame for every frame plus one extra
+	mesh=(mesh_t*) memalign(64, (TmpMd2File->m_Header.numFrames + (1 * nmeshes)) * sizeof(mesh_t));
+	memset(mesh, 0, (TmpMd2File->m_Header.numFrames + (1 * nmeshes)) * sizeof(mesh_t));
+		
+		_log << "MD2: Number of groups:" << TmpMd2File->m_Header.numFrames << "\n";
+		for (loop1=0; loop1<(TmpMd2File->m_Header.numFrames); loop1++)
+		{
+			_log << "MD2: Frame Number:" << loop1 - 1 << "\n";
+			_log << "MD2: Frame name:" << TmpMd2File->m_pFrames[loop1].strName << "\n";
+
+			_log << "MD2: Number of Triangles:" << TmpMd2File->m_Header.numTriangles << "\n";
+			//log << "MS3D: Number of groups:" << TmpMs3dFile->numGroups << "\n";
+			
+			mesh[loop1].nfaces = TmpMd2File->m_Header.numTriangles;
+			mesh[loop1].texture = 0;//atoi(&TmpMs3dFile->groups[loop1].materialIndex);
+			nfaces = nfaces + mesh[loop1].nfaces;
+			//mesh[loop1].rgb = new qword_t;
+			int materialIndex = 0;//(int)TmpMs3dFile->groups[loop1].materialIndex;
+			_log << "MD2: Material Index: " << materialIndex << "\n";
+ 			//if (TmpMs3dFile->numMaterials > 0)
+			//{
+				_log << "MD2: Material Loaded\n";
+
+				//_log << "MS3D: R:" << (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[0]) << "\n";
+				//_log << "MS3D: G:" << (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[1]) << "\n";
+				//_log << "MS3D: B:" << (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[2]) << "\n";
+
+				//mesh[loop1].rgb.fvect[0] = (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[0]);
+				//mesh[loop1].rgb.fvect[1] = (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[1]);
+				//mesh[loop1].rgb.fvect[2] = (255.0 * TmpMs3dFile->materials[materialIndex].diffuse[2]);
+				//mesh[loop1].rgb.fvect[3] = 1.0;
+			//}
+			//else
+			//{
+				mesh[loop1].rgb.fvect[0] = 200.0;
+				mesh[loop1].rgb.fvect[1] = 200.0;
+				mesh[loop1].rgb.fvect[2] = 200.0;
+				mesh[loop1].rgb.fvect[3] = 1.0;
+			//}
+			
+			/****************************************************************\
+			|* Decompress the vertex strip
+			\****************************************************************/
+			mesh[loop1].vertex = (char *) memalign(64, (mesh[loop1].nfaces) * 3 * VERT_DATA_LEN_TRI + 2);
+			mesh[loop1].normal = (char *) memalign(64, (mesh[loop1].nfaces) * 3 *  NORM_DATA_LEN_TRI);
+			memset(mesh[loop1].vertex, 0, (mesh[loop1].nfaces) * 3 *  VERT_DATA_LEN_TRI);
+			memset(mesh[loop1].normal, 0, (mesh[loop1].nfaces) * 3 *  NORM_DATA_LEN_TRI);
+			//if (mesh[loop1].texture >= 1)
+			//{
+			mesh[loop1].st  = (char *) memalign(64, (mesh[loop1].nfaces) * 3 * ST_DATA_LEN_TRI);
+			memset(mesh[loop1].st, 0, (mesh[loop1].nfaces) * 3 *  ST_DATA_LEN_TRI);
+
+			//}
+			int vertexcounter = 0;
+			int uvcounter = 0;
+			for (loop2 = 0; loop2 < TmpMd2File->m_Header.numTriangles ; loop2++)
+			{
+				
+				for (loop3 = 0; loop3 < 3; loop3++)
+				{
+					int triangleIndex1 = TmpMd2File->m_pTriangles[loop2].vertexIndices[loop3];
+					int uvIndex = TmpMd2File->m_pTriangles[loop2].textureIndices[loop3];
+					//const tMd2Face* tri1 = &TmpMd2File->m_pFrames[loop1].pVertices[triangleIndex1];
+
+					//_log << "MS3D: Vertex #:" << loop2 << "\n";
+
+					//int vertexindex = tri->vertexIndices[loop3];
+ 					((qword_t*)(mesh[loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[0] = TmpMd2File->m_pFrames[loop1].pVertices[triangleIndex1].vertex[0];  
+					((qword_t*)(mesh[loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[1] = TmpMd2File->m_pFrames[loop1].pVertices[triangleIndex1].vertex[1];
+  					((qword_t*)(mesh[loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[2] = TmpMd2File->m_pFrames[loop1].pVertices[triangleIndex1].vertex[2];  
+
+
+ 					//((qword_t*)(mesh[loop1].normal +((loop2 * 3) + loop3) * NORM_DATA_LEN_TRI))->fvect[0] = tri->vertexNormals[loop3][0];  
+					//((qword_t*)(mesh[loop1].normal +((loop2 * 3) + loop3) * NORM_DATA_LEN_TRI))->fvect[1] = tri->vertexNormals[loop3][1];
+  					//((qword_t*)(mesh[loop1].normal +((loop2 * 3) + loop3) * NORM_DATA_LEN_TRI))->fvect[2] = tri->vertexNormals[loop3][2];  
+
+					//if (mesh[loop1].texture >= 1)
+					//{
+					((qword_t*)(mesh[loop1].st +((loop2 * 3) + loop3) * ST_DATA_LEN_TRI))->f32[0] = TmpMd2File->m_pTexCoords[uvIndex].u;// / float (TmpMd2File->m_Header.skinWidth);
+  					((qword_t*)(mesh[loop1].st +((loop2 * 3) + loop3) * ST_DATA_LEN_STRIP))->f32[1] = TmpMd2File->m_pTexCoords[uvIndex].v;// / float(TmpMd2File->m_Header.skinHeight);  
+					//}
+
+					//mesh[loop1].vertex + (vertexcounter * 4) + loop3 = (char)TmpMs3dFile->vertices[vertexindex].vertex;
+					//mesh[loop1].normal[vertexcounter] = (char)tri->vertexNormals[loop3];
+					//_log << "MD2: Vertex X Y Z:" << TmpMd2File->m_pFrames[loop1 - 1].pVertices[triangleIndex1].vertex[0] << " " << TmpMd2File->m_pFrames[loop1 - 1].pVertices[triangleIndex1].vertex[1] << " " << TmpMd2File->m_pFrames[loop1 - 1].pVertices[triangleIndex1].vertex[2] << "\n";
+  
+					
+					//if (mesh[loop1].texture >=0)
+					//{
+					//	mesh[loop1].st[uvcounter] = (char)tri->u[loop3];
+					//	uvcounter++;
+					//	mesh[loop1].st[uvcounter] = (char)tri->v[loop3];
+					//	uvcounter++;
+
+					//}
+					
+
+					vertexcounter++;
+				}
+
+
+
+			}
+
+		}
+	_log << "Enter buildMD2Aniamtions\n";
+	buildMD2Animations(TmpMd2File);	
+	_log << "Delete TmpMD2File\n";
+	TmpMd2File->CleanUp();
+	delete TmpMd2File;
+	//frameIndex = 1;
+	computeNormals();
+	buildPacket();
+}
+
+
+
+/****************************************************************************\
+|* Method - converts md2's frames into animation information.
+\****************************************************************************/
+void Model::buildMD2Animations(Md2File *TmpMd2File)
+{
+	char tmpName[16], tmpLastName[16];
+	int numberAnimations = 0;
+	int framenum = 0;
+	int animationIndex = 0;
+
+	strcpy(tmpLastName, "");
+	_log << "BuildMD2Animations Start\n";
+	//First figure out how many different animations there are.
+	for (int x = 0; x < TmpMd2File->m_Header.numFrames; x++)
+	{		
+		strcpy(tmpName, TmpMd2File->m_pFrames[x].strName);
+	
+
+		//HACK Gets ride of the last 2 characters from the
+		//name as its the index number of the frame.
+		//Should not just assume the last two characters
+		//are the frame index.
+		//strncpy(tmpName, tmpName, strlen(tmpName) - 2);
+		tmpName[strlen(tmpName) - 2] = '\0';
+		if(strcmp(tmpName, tmpLastName) != 0  || x ==TmpMd2File->m_Header.numFrames - 1)
+		{
+			if (strcmp(tmpLastName, "") != 0)
+			{
+					
+				numberAnimations++;
+			}
+		}
+		strcpy(tmpLastName, tmpName);
+		_log << "tmpName = " << tmpName << "\n";
+	}
+	_log << "BuildMD2Animations: number of animations = " << numberAnimations << "\n";
+	//Align the memory or you will get a segfault 11 error.
+	//animations = new animation_t[numberAnimations];
+	animations=(animation_t*) memalign(64, numberAnimations * sizeof(mesh_t));
+
+	memset(animations, 0, sizeof(animation_t) * numberAnimations);
+	nanimations = numberAnimations;
+	numberAnimations = 0;
+	animationIndex = 0;
+	strcpy(tmpLastName, "");
+
+	//Now we populate the animation structors.
+	for (int x = 0; x < TmpMd2File->m_Header.numFrames; x++)
+	{		
+		strcpy(tmpName, TmpMd2File->m_pFrames[x].strName);
+	
+
+		//HACK Gets ride of the last 2 characters from the
+		//name as its the index number of the frame.
+		//Should not just assume the last two characters
+		//are the frame index.
+		
+		//strncpy(tmpName, tmpName, strlen(tmpName) - 2);
+		tmpName[strlen(tmpName) - 2] = '\0';
+
+
+		if(strcmp(tmpName, tmpLastName) != 0  || x == TmpMd2File->m_Header.numFrames - 1)
+		{
+			if (strcmp(tmpLastName, "") != 0)
+			{
+				_log << "1stTmplast name == " << tmpLastName << "\n";
+				_log << "1sttmp name == " << tmpName << "\n";
+				_log << "Set animations endindex...";
+				animations[animationIndex].endIndex = x - 1;
+				_log << "done\n";
+				
+				animationIndex++;
+				_log << "strcpy name...";
+				strcpy(animations[animationIndex].name, tmpName);
+				_log << "done\n";
+				_log << "set start index...";
+				animations[animationIndex].startIndex = x;
+				_log << "done\n";
+				animations[animationIndex].currentIndex = animations[animationIndex].startIndex;
+				animations[animationIndex].animationSpeed = 100;		
+			
+				_log << " done creating new info\n";				
+
+				
+			}
+			else
+			{
+				_log << "2ndTmplast name == " << tmpLastName << "\n";
+				_log << "2ndTmp name == " << tmpName << "\n";
+				strcpy(animations[animationIndex].name, tmpName);
+				animations[animationIndex].startIndex = 0;
+				animations[animationIndex].currentIndex = animations[animationIndex].startIndex;
+				animations[animationIndex].animationSpeed = 100;		
+
+			}
+			//animations.startIndex = x
+		}
+		else if (x == TmpMd2File->m_Header.numFrames)
+		{
+			animations[animationIndex].endIndex = x;
+		}
+		strcpy(tmpLastName, tmpName);
+		_log << "Animation index = " << animationIndex << "\n";
+
+	}
+	_log << "Animations information\n";
+	for (int i = 0; i < animationIndex; i++)
+	{
+		_log << "Animation Index = " << i << "\n";
+		_log << "Animation name = " << animations[i].name << "\n";
+		_log << "Animation startindex = " << animations[i].startIndex << "\n";
+		_log << "Animation endindex = " << animations[i].endIndex << "\n";
+	}	
+	_log << "Number of animations = " << animationIndex << "\n";	
+	frameIndex = TmpMd2File->m_Header.numFrames - 1;
+	
+	endTime = 1000;
+	mesh[frameIndex].vertex = (char *) memalign(64, (mesh[frameIndex].nfaces + 2) * 3 * VERT_DATA_LEN_TRI + 2);
+	mesh[frameIndex].normal = (char *) memalign(64, (mesh[frameIndex].nfaces + 2) * 3 *  NORM_DATA_LEN_TRI);
+	memset(mesh[frameIndex].vertex, 0, (mesh[frameIndex].nfaces + 2) * 3 *  VERT_DATA_LEN_TRI);
+	memset(mesh[frameIndex].normal, 0, (mesh[frameIndex].nfaces + 2) * 3 *  NORM_DATA_LEN_TRI);
+	mesh[frameIndex].nfaces = mesh[0].nfaces;
+	//mesh[frameIndex].	
+	for (int loop1 = 0; loop1 < nmeshes; loop1++)
+	{	
+		//_log << "Mesh Number = " << loop1 << "\n";
+		for (int loop2 = 0; loop2 < mesh[loop1].nfaces; loop2++)
+		{
+			//_log << "Face Number = " << loop2 << "\n";
+			for (int loop3 = 0; loop3 < 3; loop3++)
+			{
+				//_log << "Create point 1 and point 2...";
+				qword_t *point1 = ((qword_t*)(mesh[0 + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI));
+				//qword_t *point2 = ((qword_t*)(mesh[0 + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI));
+ 				//_log << "done\n";
+				//_log << "Update mesh[frameIndex] with new data...";
+ 				((qword_t*)(mesh[frameIndex + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[0] = point1->f32[0];
+ 				((qword_t*)(mesh[frameIndex + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[1] = point1->f32[1];
+ 				((qword_t*)(mesh[frameIndex + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[2] = point1->f32[2];
+				//_log << "Done\n";
+			}
+			
+		}
+	}
+
+
+
+
+	
+}
+
+/****************************************************************************\
+|* Method - sets the speed of the animation
+\****************************************************************************/
+void Model::setAnimationSpeed(int tmpSpeed)
+{
+	animation_t *tmpAnimation = &animations[animationIndex];
+	
+	tmpAnimation->animationSpeed = tmpSpeed;
+}
+
+/****************************************************************************\
+|* Method - run a frame of animation
+\****************************************************************************/
+void Model::runAnimation()
+{
+	//_log << "runAnimation: Start\n";
+	timeb tmpTime;
+	ftime(&tmpTime);
+	//_log << "runAnimation: CurrentTime = " << currentTime << "\n";
+	int tmpNextFrame = 0;
+	animation_t *tmpAnimation = &animations[animationIndex];
+	int counter = 0;
+	//_log << "//Get the index of the animation to be run.\n";
+
+	//_log << "Counter = " << counter << "\n";
+	//_log << "nanimations = " << nanimations << "\n";
+	if (animationIndex > nanimations)
+	{
+		//_log << "Animation " << name << "does not exist\n";
+		return;
+	}
+	
+	if (tmpTime.millitm - previousTime > 50 || tmpTime.millitm - previousTime < 50)
+	//if (tmpTime.millitm - previousTime != 0)
+	{
+
+		currentTime = currentTime + tmpAnimation->animationSpeed;
+		previousTime = tmpTime.millitm;
+	}
+	else
+	{
+		return;
+	}
+
+	//_log << "//Check to see if the previous animation is the one to be run or not.\n";
+	//_log << "tmpAnimation->name = " << tmpAnimation->name << "\n";
+	//_log << "tmpAnimation->currentIndex = " << tmpAnimation->currentIndex << "\n";
+	//_log << "tmpAnimation->startIndex = " << tmpAnimation->startIndex << "\n";
+	//_log << "tmpAnimation->endIndex = " << tmpAnimation->endIndex << "\n";
+	//_log << "animationIndex = " << animationIndex << "\n";
+	//_log << "counter = " << counter << "\n";
+
+
+
+	//_log << "//Check to see if the current time has caught up to the end time.\n";
+	//_log << "endtime = " << endTime << "\n";
+	//_log << "currentTime = " << currentTime << "\n";
+	if (endTime - currentTime <= 0)
+	{
+		//_log << "endTime - currentTime <= 0\n";
+		//_log << "Set endtime = currentTime + 2...";
+		//endTime = currentTime;
+		currentTime = 0;
+		//_log << "done\n";
+		//_log << "tmpAnimation->currentIndex++...";
+		tmpAnimation->currentIndex = tmpAnimation->currentIndex + 1;
+		//_log << "done\n";
+		//_log << "//If the current index excedes the end index then\n";
+		//_log << "//set the current index to equal the start index.\n";
+		if (tmpAnimation->currentIndex > tmpAnimation->endIndex)
+		{
+			tmpAnimation->currentIndex = tmpAnimation->startIndex;
+		}	
+
+	}
+
+	
+	tmpNextFrame = tmpAnimation->currentIndex + 1;
+	//_log << "tmpNextFrame = " << tmpNextFrame;
+	if (tmpNextFrame > tmpAnimation->endIndex)
+	{
+		tmpNextFrame = tmpAnimation->startIndex;
+	}
+	float t = (float)(((float)(currentTime)) / 1000.0);
+	//_log << "t = " << t << "\n";
+	//_log << "//Interpolation of the vertexs going to be ugly code.\n";
+
+	for (int loop1 = 0; loop1 < nmeshes; loop1++)
+	{	
+		//_log << "Mesh Number = " << loop1 << "\n";
+		for (int loop2 = 0; loop2 < mesh[tmpAnimation->currentIndex].nfaces; loop2++)
+		{
+			//_log << "Face Number = " << loop2 << "\n";
+			for (int loop3 = 0; loop3 < 3; loop3++)
+			{
+				//_log << "Create point 1 and point 2...";
+				qword_t *point1 = ((qword_t*)(mesh[tmpAnimation->currentIndex + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI));
+				qword_t *point2 = ((qword_t*)(mesh[tmpNextFrame + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI));
+ 				//_log << "done\n";
+				//_log << "Update mesh[frameIndex] with new data...";
+ 				((qword_t*)(mesh[frameIndex + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[0] = point1->f32[0] + t * (point2->f32[0] - point1->f32[0]);
+ 				((qword_t*)(mesh[frameIndex + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[1] = point1->f32[1] + t * (point2->f32[1] - point1->f32[1]);
+ 				((qword_t*)(mesh[frameIndex + loop1].vertex +((loop2 * 3) + loop3) * VERT_DATA_LEN_TRI))->f32[2] = point1->f32[2] + t * (point2->f32[2] - point1->f32[2]);
+				//_log << "Done\n";
+			}
+			
+		}
+	}
+
+	//_log << "build the packet last\n";
+
+	updatePacket();	
+	//buildPacket();
+
+}
+
+/****************************************************************************\
+|* Method - change the running animation
+\****************************************************************************/
+void Model::setAnimation(char *name)
+{
+	animation_t *tmpAnimation;
+	int counter = 0;
+	
+	while(counter < nframes)
+	{
+		if (counter > nanimations)
+		{
+			break;
+		}
+		tmpAnimation = &animations[counter];
+		if (strcmp(tmpAnimation->name, name) == 0)
+		{
+			break;
+		}
+		counter++;
+	}
+	
+	tmpAnimation = &animations[animationIndex];
+	tmpAnimation->currentIndex = tmpAnimation->startIndex;
+	animationIndex = counter;
+
+}
+
+/****************************************************************************\
+|* Method - compute the normals for the model
+\****************************************************************************/
+void Model::computeNormals()
+{
+	ps2_vu0_fvector vVector1, vVector2, pNormal, vPoly[3];
+
+	for (int index1 = 0; index1 < nframes; index1++)
+	{
+		for (int index2 = 0; index2 < nmeshes; index2++)
+		{
+			int tmpIndex = (index1 * nmeshes) + index2;
+			//ps2_vu0_fvector pNormals[mesh[tmpIndex].nfaces];
+			//ps2_vu0_fvector pTempNormals[mesh[tmpIndex].nfaces];
+
+			for (int i = 0; i < mesh[tmpIndex].nfaces; i++)
+			{
+				
+ 				vPoly[0] = ((qword_t *)(mesh[tmpIndex].vertex +((i * 3)) * VERT_DATA_LEN_TRI))->fvect;
+ 				vPoly[1] = ((qword_t *)(mesh[tmpIndex].vertex +((i * 3) + 1) * VERT_DATA_LEN_TRI))->fvect;
+ 				vPoly[2] = ((qword_t *)(mesh[tmpIndex].vertex +((i * 3) + 2) * VERT_DATA_LEN_TRI))->fvect;
+
+				ps2_vu0_sub_vector(vVector1, vPoly[0], vPoly[1]);
+				ps2_vu0_sub_vector(vVector1, vPoly[1], vPoly[2]);
+
+				pNormal[0] = vVector1[1] * vVector2[2] - vVector2[1] * vVector1[2];
+				pNormal[1] = vVector2[0] * vVector1[2] - vVector1[0] * vVector2[2];
+				pNormal[2] = vVector1[0] * vVector2[1] - vVector2[0] * vVector1[1];
+				
+				float length = (float)sqrt(pNormal[0] * pNormal[0] + pNormal[1] * pNormal[1] + pNormal[2] * pNormal[2]);
+
+				pNormal[0] = pNormal[0] / length;
+				pNormal[1] = pNormal[1] / length;
+				pNormal[2] = pNormal[2] / length;
+
+ 				((qword_t *)(mesh[tmpIndex].normal +((i * 3)) * VERT_DATA_LEN_TRI))->fvect = pNormal;
+ 				((qword_t *)(mesh[tmpIndex].normal +((i * 3) + 1) * VERT_DATA_LEN_TRI))->fvect = pNormal;
+ 				((qword_t *)(mesh[tmpIndex].normal +((i * 3) + 2) * VERT_DATA_LEN_TRI))->fvect = pNormal;
+				
+
+			}
+
+		}
+	}
+
+}
+
+/****************************************************************************\
+|* Method - build a VIF packet for the model. Needs to be called whenever
+|* the structure of the model changes (not it's orientation)
+\****************************************************************************/
+void Model::buildPacket(void)
+{
+	unsigned int mesh_verts;
+	unsigned int m, v, cnt1;
+	int textureon = 0;
+	int tags=0;
+	int packet_size=10;
+	int counter = 0;
+	int imageNumber = 1;
+	//if (imagePointer != NULL)
+	//{
+		imageNumber = 2;
+	//}
+	if (type == MODEL_STRIPPED)
+	{
+		for (m=0; m<nmeshes; m++)
+		{
+			packet_size+=10;
+
+			mesh_verts=mesh[m].nfaces+2;
+
+			for (v=0; v<mesh_verts; v+=VU_VERTS_STRIP)
+			{
+				packet_size+=VU_VERTS_STRIP+VU_VERTS_STRIP*imageNumber*2*3/4+4;
+				counter++;
+
+			}
+		}
+		_log << "nmeshes = " << nmeshes << " counter = " << counter << "\n";
+		nvifdatas = nmeshes * counter;
+
+	}
+	else if (type == MODEL_TRIMODEL)
+	{
+		_log << "Triangle Model Type: " << type << "\n";
+		for (m=0; m<nmeshes; m++)
+			{
+			packet_size+=10;
+			
+			mesh_verts=mesh[m + frameIndex].nfaces * 3;
+			for (v=0; v<mesh_verts; v+=VU_VERTS_TRI)
+				{
+				packet_size+=VU_VERTS_TRI+VU_VERTS_TRI*imageNumber*2*3/4+4;
+				counter++;	
+				}
+			
+			}
+		// the number of vif datas = number of meshes * number of mesh verts / VU_VERTS_TRI;
+		_log << "nmeshes = " << nmeshes << " counter = " << counter << "\n";
+
+		nvifdatas = nmeshes * counter;
+
+	}
+	_log << "nvifdatas = " << nvifdatas << "\n";
+	//Create the vif packet pointers used for updating vif packets.
+	vifdata = (vifpacketmem_t*)memalign(64, sizeof(vifpacketmem_t) * nvifdatas);
+	memset(vifdata, 0, sizeof(vifpacketmem_t) * nvifdatas);
+	_log << " .. allocating " << packet_size << " qwords (" 
+	     << packet_size*16 << " bytes)\n";
+
+	if (vpkt.buffer != NULL)
+		free(vpkt.buffer);
+	vpkt.buffer = NULL;
+	vpkt.buffer = (u_long128 *) memalign(64, 16 * packet_size);
+
+	// init memory for data VIF PKT
+	vpkt.vp.init(vpkt.buffer);
+	vpkt.vp.end(0);
+	tags++;
+
+	if (type == MODEL_BAD_FORMAT)
+	{
+		_log << "bad model format\n";
+		vpkt.vp.terminate();
+		return;
+	}
+		
+	_log << "good model format\n";
+
+	vpkt.vp.addCode(0x3000000); // set vu1 base
+	vpkt.vp.addCode(0x2000200); // set vu1 offset
+
+	vpkt.vp.openDirectCode(0);
+
+	if (imagePointer == NULL)	
+	{
+		vpkt.vp.addq(GIF_SET_TAG(1,1,0,0,GIF_PACKED,4));
+
+		vpkt.vp.addq(GIF_SET_REGS4(PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD));
+		//_log << (int)(GIF_SET_REGS4(PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD))  << "\n";
+		//vpkt.vp.addq(0xEEEEL);
+		vpkt.vp.addq(PS2_GS_SETREG_ALPHA( 0,2,2,2,0xA0));
+		vpkt.vp.addq(PS2_GS_ALPHA_1);
+		vpkt.vp.addq(PS2_GS_SETREG_PABE( 1 ));
+		vpkt.vp.addq(PS2_GS_PABE);
+		vpkt.vp.addq(PS2_GS_SETREG_FBA( 0 ));
+		vpkt.vp.addq(PS2_GS_FBA_1);
+		vpkt.vp.addq(PS2_GS_SETREG_CLAMP(0, 0, 0, 0, 0, 0));
+		vpkt.vp.addq(PS2_GS_CLAMP_1);
+	}
+	else
+	{
+		vpkt.vp.addq(GIF_SET_TAG(1,1,0,0,GIF_PACKED,6));
+		vpkt.vp.addq(GIF_SET_REGS6(PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD));
+		//_log << (int)(GIF_SET_REGS6(PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD, PS2_GS_AD))  << "\n";
+		
+		vpkt.vp.addq(PS2_GS_SETREG_TEX0(imagePointer->texture.fbp, 
+			imagePointer->texture.fbw, imagePointer->texture.psm, 
+			imagePointer->tw, imagePointer->th, 1, 
+			PS2_GS_TEX_TFX_DECAL, imagePointer->clut.fbp, 
+			imagePointer->clut.psm, 0, 0, 1));
+		vpkt.vp.addq(PS2_GS_TEX0_1);
+		vpkt.vp.addq(PS2_GS_SETREG_TEX1_1(0, 0, 
+			PS2_GS_TEX1_MMAG_LINEAR, PS2_GS_TEX1_MMIN_LINEAR, 0, 0, 0));
+		vpkt.vp.addq(PS2_GS_TEX1_1);
+		vpkt.vp.addq(PS2_GS_SETREG_ALPHA( 0,2,2,2,0xA0));
+		vpkt.vp.addq(PS2_GS_ALPHA_1);
+		vpkt.vp.addq(PS2_GS_SETREG_PABE( 1 ));
+		vpkt.vp.addq(PS2_GS_PABE);
+		vpkt.vp.addq(PS2_GS_SETREG_FBA( 0 ));
+		vpkt.vp.addq(PS2_GS_FBA_1);
+		vpkt.vp.addq(PS2_GS_SETREG_CLAMP(1, 1, 0, 
+			imagePointer->texture.w, 0, imagePointer->texture.h));
+		vpkt.vp.addq(PS2_GS_CLAMP_1);
+		
+	}
+	vpkt.vp.closeDirectCode();
+
+
+
+	int prim_type;
+	if (imagePointer != NULL)
+	{
+		textureon = 1;
+	}
+	if (type == MODEL_STRIPPED)
+	{
+		prim_type=PS2_GS_SETREG_PRIM(PS2_GS_PRIM_PRIM_TRISTRIP, GOURAUD(1),
+	                             TEXTURED(textureon), 0, 0, 0, 0, 0, 0 );
+	}
+	else if (type == MODEL_TRIMODEL)
+	{
+		prim_type=PS2_GS_SETREG_PRIM(PS2_GS_PRIM_PRIM_TRIANGLE, GOURAUD(1),
+	                             TEXTURED(textureon), 0, 0, 0, 0, 0, 0 );
+	}
+	vpkt.vp.openUpkCode((0 | 0x8000), V4_32, 4, 4 );
+
+	localScreen = vpkt.vp.current;
+	for (cnt1=0; cnt1<4; cnt1++)
+		vpkt.vp.add2q(0);	// 128-bit add (2 qwords)
+
+	localLight = vpkt.vp.current;
+	for (cnt1=0; cnt1<4; cnt1++)
+		vpkt.vp.add2q(0);	// 128-bit add (2 qwords)
+
+	lightColour = vpkt.vp.current;
+	for (cnt1=0; cnt1<4; cnt1++)
+		vpkt.vp.add2q(0);	// 128-bit add (2 qwords)
+
+	vpkt.vp.closeUpkCode();
+	
+	vpkt.vp.add(VIF1_SET_MSCALF(0,0));
+	//vpkt.vp.addCode(VIF1_SET_MSCNT(0));
+
+	//localdata = vpkt.vp.current;
+	counter = 0;
+	for (m=0; m<nmeshes; m++)
+		{
+
+		int pre=1;
+		if (type == MODEL_STRIPPED)
+		{
+			mesh_verts=mesh[m].nfaces+2;
+
+			for (v=0; v<mesh_verts; v+=VU_VERTS_STRIP )
+			{
+				unsigned int vu_verts=VU_VERTS_STRIP;
+	
+				if (v + VU_VERTS_STRIP > mesh_verts)
+					vu_verts = mesh_verts % VU_VERTS_STRIP; // -v;
+
+				vpkt.vp.openUpkCode((0|0x8000), V4_32, 4, 4);
+				vpkt.vp.addq(PS2_GIFTAG_SET_TOPHALF( 
+						NLOOP(vu_verts), EOP(1),
+			                        PRE(pre), prim_type,
+						PS2_GIFTAG_FLG_PACKED, 3));
+				//vpkt.vp.addq(0x41L);
+				vpkt.vp.addq(GIF_SET_REGS3(PS2_GS_ST,PS2_GS_RGBAQ, PS2_GS_XYZ2));
+				_log << " (int)0x41L\n";
+				vpkt.vp.closeUpkCode();
+
+				vpkt.vp.openUpkCode((1|0x8000), V3_32, 4, 4);
+				_log << "Set vifdata[counter].memlocation = vptk.vp.current...";
+				vifdata[counter].memlocation = vpkt.vp.current;
+				counter++;
+				_log << "done\n";
+				vpkt.vp.add2q((u_long128*)(mesh[m].vertex +v * VERT_DATA_LEN_STRIP),
+			                        vu_verts*3/4);
+				vpkt.vp.closeUpkCode();
+
+				vpkt.vp.openUpkCode((76|0x8000), V3_32, 4, 4);
+				vpkt.vp.add2q((u_long128*)(mesh[m].normal +v * VERT_DATA_LEN_STRIP),
+			 			vu_verts*3/4);
+				vpkt.vp.closeUpkCode();
+
+				vpkt.vp.openUpkCode((151|0x8000), V2_32, 4, 4);
+				for (cnt1=0; cnt1<vu_verts; cnt1++)
+					vpkt.vp.add2q(*((u_long128*)(&(mesh[m].rgb))));
+				vpkt.vp.closeUpkCode();
+
+
+				vpkt.vp.addCode(VIF1_SET_MSCNT(0));
+				pre=0;
+				
+			}
+		}
+		else if (type == MODEL_TRIMODEL)
+		{				
+			mesh_verts=mesh[m + frameIndex].nfaces * 3;
+
+			for (v=0; v<mesh_verts; v+=VU_VERTS_TRI)
+				{
+				unsigned int vu_verts=VU_VERTS_TRI;
+	
+				if (v + VU_VERTS_TRI > mesh_verts)
+					vu_verts = mesh_verts % VU_VERTS_TRI; // -v;
+
+				vpkt.vp.openUpkCode((0|0x8000), V4_32, 4, 4);
+				vpkt.vp.addq(PS2_GIFTAG_SET_TOPHALF( NLOOP(vu_verts), EOP(1), PRE(pre), prim_type, PS2_GIFTAG_FLG_PACKED, 3));
+				//_log << (int)PS2_GIFTAG_SET_TOPHALF( NLOOP(vu_verts), EOP(1), PRE(pre), prim_type, PS2_GIFTAG_FLG_PACKED, 3) << "\n";
+
+				//_log << (int)GIF_SET_REGS2(PS2_GS_RGBAQ, PS2_GS_XYZF2) << "\n";
+				//vpkt.vp.addq(0x41L);
+				vpkt.vp.addq(GIF_SET_REGS3(PS2_GS_ST, PS2_GS_RGBAQ, PS2_GS_XYZ2));
+
+				_log << (int)(GIF_SET_REGS3(PS2_GS_ST, PS2_GS_RGBAQ, PS2_GS_XYZ2)) << "\n";
+
+				vpkt.vp.closeUpkCode();
+
+				vpkt.vp.openUpkCode((1|0x8000), V3_32, 4, 4);
+				//_log << "Set vifdata[counter].memlocation = vptk.vp.current...\n";
+				//Get the current location of the packet to be update later.
+				vifdata[counter].memlocation = vpkt.vp.current;
+				_log << "vpkt.vp.current = " << (int)vpkt.vp.current << "\n";
+				counter++;
+				_log << "done\n";
+				vpkt.vp.add2q((u_long128*)(mesh[m + frameIndex].vertex +v * VERT_DATA_LEN_TRI),
+			                        vu_verts*3/4);
+				vpkt.vp.closeUpkCode();
+
+				vpkt.vp.openUpkCode((51|0x8000), V3_32, 4, 4);
+				vpkt.vp.add2q((u_long128*)(mesh[m + frameIndex].normal +v * VERT_DATA_LEN_TRI),
+			 			vu_verts*3/4);
+				vpkt.vp.closeUpkCode();
+
+				vpkt.vp.openUpkCode((101|0x8000), V4_32, 4, 4);
+				for (cnt1=0; cnt1<vu_verts; cnt1++)
+					vpkt.vp.add2q(*((u_long128*)(&(mesh[m + frameIndex].rgb))));
+					//vpkt.vp.add2q(PS2_GS_SETREG_RGBAQ(mesh[m + frameIndex].rgb.fvect[0],mesh[m + frameIndex].rgb.fvect[1],mesh[m + frameIndex].rgb.fvect[2],mesh[m + frameIndex].rgb.fvect[3],FLOAT_ONE));
+
+				vpkt.vp.closeUpkCode();
+								
+				//if (imagePointer != NULL)
+				//{
+					//vpkt.vp.openDirectCode(0);
+					//_log << "Add st...\n";	
+					//_log << "openupkcode...\n";
+					vpkt.vp.openUpkCode((151|0x8000), V4_32, 4, 4);
+					//_log << "done\n";
+					//_log << "add2s()...";
+					//vpkt.vp.addq((u_long64*)(mesh[m + frameIndex].st +v * ST_DATA_LEN_TRI),
+			                //           VU_VERTS_TRI*2/4);
+					for (cnt1=0; cnt1< vu_verts;cnt1++)
+						vpkt.vp.add2q(PS2_GS_SETREG_ST(0,FLOAT_ONE));
+					//_log << "done\n";
+					vpkt.vp.closeUpkCode();
+					//_log << "...done\n";				
+				//}
+				
+				vpkt.vp.addCode(VIF1_SET_MSCNT(0));
+				pre=0;
+				}
+			}
+		}
+	
+	vpkt.vp.terminate();
+	//vpkt.vp.end(0);
+	_log << "finished packet: " << vpkt.vp.size() << " qwords, "
+	     << tags << " tags\n";
+	//vpkt.vp.dump();
+	}
+
+/****************************************************************************\
+|* Method - update the vertex data of the vif packet.
+\****************************************************************************/
+void Model::updatePacket(void)
+{
+	unsigned int mesh_verts;
+	unsigned int m, v;
+	
+	int counter = 0;
+	
+	for (m=0; m<nmeshes; m++)
+	{
+
+		if (type == MODEL_STRIPPED)
+		{
+			mesh_verts=mesh[m].nfaces+2;
+
+			for (v=0; v<mesh_verts; v+=VU_VERTS_STRIP)
+			{
+
+				unsigned int vu_verts=VU_VERTS_STRIP;
+	
+				if (v + VU_VERTS_STRIP > mesh_verts)
+					vu_verts = mesh_verts % VU_VERTS_STRIP; // -v;
+
+				vpkt.vp.current = vifdata[counter].memlocation;
+
+				vpkt.vp.add2q((u_long128*)(mesh[m + frameIndex].vertex +v * VERT_DATA_LEN_STRIP),
+			                           vu_verts*3/4);
+				
+				//memcpy(vifdata[counter].memlocation, (u_long128*)(mesh[x + frameIndex].vertex + v * VERT_LEN_DATA_STRIP), VU_VERTS_STRIP * 3 / 4);
+				counter++;
+			}
+		}
+		else if (type == MODEL_TRIMODEL)
+		{				
+			mesh_verts=mesh[m + frameIndex].nfaces * 3;
+
+			for (v=0; v<mesh_verts; v+=VU_VERTS_TRI)
+			{
+				unsigned int vu_verts=VU_VERTS_TRI;
+	
+				if (v + VU_VERTS_TRI > mesh_verts)
+					vu_verts = mesh_verts % VU_VERTS_TRI; // -v;
+
+				vpkt.vp.current = vifdata[counter].memlocation;
+
+				vpkt.vp.add2q((u_long128*)(mesh[m + frameIndex].vertex +v * VERT_DATA_LEN_TRI),
+			                           vu_verts*3/4);
+				//memcpy(vifdata[counter].memlocation, (u_long128*)(mesh[x + frameIndex].vertex + v * VERT_LEN_DATA_TRI), VU_VERTS_TRI * 3 / 4);
+				counter++;
+
+			}
+			
+		}
+	}
+
+}
+			
+/****************************************************************************\
+|* Method - draw the model onto the screen
+\****************************************************************************/
+void Model::draw(Framework *f)
+{
+	//vpkt.vp.dump();
+	dmasent++;
+	_log << "Dma'd " << dmasent << "...";
+	//if (dmasent < 17)
+		f->dmaStartOnVu1(NULL, (ps2_dmatag*)vpkt.vp.base);
+	_log << "done\n";
+}
+	

@@ -1,0 +1,9 @@
+Remember when building the examples to specify directory of installation
+of sps2 library.
+Supposing that your sps2 installation directory is /Develop/sps2dev-0.3.0a
+make should be invoked in this way
+
+make SPS2DIR=/Develop/sps2dev-0.3.0a
+
+If sps2 is not correctly specified and sps2 header are not reachable in 
+standard include directory, examples will not compile.

@@ -1,0 +1,191 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="3: Making your data file">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id29') && !n4p){
+    location.replace('id29.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">3: Making your data file</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Believe it or not, the simplest way to create a data file, once you know what you're going to put in it, is to use a hex editor. Textpad on Windows can do it, and I'm reliably informed that emacs on the PS2Linux kit can too.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">However, putting something meaningful in the data file can be a little trickier. &nbsp;You can use any means to make your data file generation easier, the basic sample happens to use a C program. &nbsp;To start with, we'll explore what we can change in the data file of the basic sample, so we'll stick with editing that C program. &nbsp;I'm just trying to impress on you that this decision is arbitrary... I'll show other ways of creating the file later.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">(Note: This lesson is about creating a data file containing a GIFpacket ready to be drawn. &nbsp;If you need more knowledge on GIFtags and GIFpackets themselves, see <A HREF="id32.htm" TARGET="_top"    TITLE="2: A brief overview of the basic sample"><U>2: A brief overview of the basic sample</U></A>)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Load up gen_data.c in your favourite text editor. &nbsp;The comments at the start of the file detail the GIFpacket we're going to create, but I'd just like to point out that when we're actually in the VU code, we normally refer to the first QWord of memory as QW0, not QW1. &nbsp;Therefore, the last QWord of memory is QW1023.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">All the program does is open a file to write to and write out a GIFpacket, consisting of a single GIFtag followed by 3 vertices worth of RGBAQ and XYZ2 information, followed by as many zeroes as necessary to make a 16kb file. &nbsp;16kb incidentally is the size of VU data memory. &nbsp;Half the trick of this competition is to get what you want to do done, in only 16kb of data memory!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The qword_t typedef is quite interesting, let's look at that.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">typedef union</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;u_long128 &nbsp;&nbsp;&nbsp;&nbsp;ul128;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;u_long64 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ul64[2];</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;u_int &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ui32[4];</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;float &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f32[4];</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">} qword_t;</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>(Thanks to jse for pointing out a small error in the basic sample code... u_long isn't actually 64 bits! &nbsp;To fix that, just change that u_long to a u_long64 as above, which I believe is what the programmer originally intended. &nbsp;Alternatively, grab my fixed gen_data.c from </I><A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U><I>my project page</I></U></A><I>. &nbsp;According to Hikey, u_long is 64 bits on the native PS2, but PS2Linux makes it 32 bits - just some trivia for those interested</I><I>)</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you need to know more about unions, go to your favourite C programming book or web site. &nbsp;What this qword_t typedef does is allow us to reference a QWord as one big 128-bit unsigned integer, or 2 64-bit unsigned integers, or 4 32-bit unsigned integers, or 4 32-bit floats. &nbsp;Different uses of QWords require different references, but we're mainly concerned with 32-bit breakdowns, as the VU references each QWord as 4 32-bit fields, called x, y, z, and w. &nbsp;More on that in <A HREF="id30.htm" TARGET="_top"    TITLE="4: Making your code file"><U>4: Making your code file</U></A>.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The gifpacket_* functions and gifpacket_t type are all defined in packet.c and packet.h, and I strongly suggest that you don't modify these files, they do their job perfectly well.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Writing out the data</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Firstly, we initialise our gifpacket_t with gifpacket_init(). &nbsp;Then we create the GIFtag we described in <A HREF="id32.htm" TARGET="_top"    TITLE="2: A brief overview of the basic sample"><U>2: A brief overview of the basic sample</U></A>. &nbsp;Note that several macros are defined for us to make this job easier. &nbsp;Our end result has to be a 128-bit GIFtag, but we can use the GS_SET_TAG macro to set up the first 64 bits of the GIFtag (everything except the REGS field), GS_SET_PRIM to set up the PRIM field in the GIFtag, and finally fill in the REGS field ourselves.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Once upon a time, looking around various projects, I came across a more complete defines.h file and though, wow, that'd be useful someday! &nbsp;So, I copied it to my home directory, and it's now available from <A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>my project page</U></A>. &nbsp;Unfortunately, I can't remember which project it came from in the first place! &nbsp;<A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>Download the new defines.h</U></A> file, and it will come in handy as we expand the basic sample in all sorts of new directions. &nbsp;It's also more fully commented...</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">After the GIFtag comes the colour and co-ordinate information. &nbsp;This is where the qword_t type comes in handy. &nbsp;2 qword_t temporary variables are set, called colour and vertex. &nbsp;Now, we can split a colour down into 4 parts, RGBA, and we can split a qword_t into 4 32-bit unsigned integers. &nbsp;Guess what? &nbsp;color.ui32[0] refers to the red component of colour, color.ui32[1] refers to the green component, color.ui32[2] refers to the blue component, and color.ui32[3] to the A component (Don't worry about the Q part, there's some trickery going on to get the Q co-ordinate to the right place, but we don't deal with texture mapping yet, so we don't need to worry where it went)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Similarly, vertex is split into 4 ui32 components, one each for X, Y and Z, then a mysterious 4th component which contains the ADC bit. &nbsp;Don't worry about this 4th component for now, leave it as 1 and everything will behave normally. &nbsp;We'll come back to the ADC bit later.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Hang on a minute! &nbsp;There's a couple of stray &lt;&lt; 4 operations that have mysteriously appeared in the X and Y co-ordinates. &nbsp;If you've read <A HREF="id32.htm" TARGET="_top"    TITLE="2: A brief overview of the basic sample"><U>2: A brief overview of the basic sample</U></A>, you'll know what the 2048s are doing in there, but what about the &lt;&lt; 4? &nbsp;For those of you unused to binary, &lt;&lt; 4 means &quot;Shift your number left 4 times&quot;. &nbsp;So 1&lt;&lt;4 = 10000 and 10010 &lt;&lt; 4 = 100100000. &nbsp;Why do this? &nbsp;If we look at the description of the XYZ2 register on P137 of the GS manual, we see that the data in the X and Y registers is expected in 12:4 fixed point format. &nbsp;That means that there's an imaginary binary point before the last 4 bits of the number.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Basically, we want to write the number 1948 to the X register. &nbsp;1948 = 11110011100 in binary, so when it's shifted left 4 times we get 111100111000000. &nbsp;However when we send it to the GS, the GS reads it as 11110011100.0000, which is 1948.0 decimal which is what we wanted. &nbsp;Had we left out the &lt;&lt;4, the GS would have read 1111001.1100 which is 121.75, giving us an X co-ordinate way off screen.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Notice that after assigning a value to the temporary variables colour and vertex, they still have to actually be inserted into our GIFpacket using the gifpacket_addgspacked() function. &nbsp;Finally the packet is terminated with gifpacket_terminate, and the 16kb file is written to disk.</FONT><BR>
+<bR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Homework</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">OK, think you understand gen_data.c? &nbsp;Then change it! &nbsp;Now's the time to implement the changes that you thought about doing back in <A HREF="id32.htm" TARGET="_top"    TITLE="2: A brief overview of the basic sample"><U>2: A brief overview of the basic sample</U></A>. &nbsp;(Note: You might need to have VCL installed here to avoid any errors, even though we haven't fiddled with any VU code yet! &nbsp;See the start of <A HREF="id30.htm" TARGET="_top"    TITLE="4: Making your code file"><U>4: Making your code file</U></A> to see how to install VCL, if you haven't already.)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2) Change the vertex.ui32[ ] values to make the triangle fill the top-right half of the screen, assuming the screen is 640x224 pixels large (Positive X is to the right, positive Y is *down*). &nbsp;<I>Tip: Leave the 2048 and the &lt;&lt;4 in place, and just change the other numbers.</I></FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">3) Change the NLOOP field of the GIFtag to allow for a second triangle, and add code to draw this somewhere in the bottom-left half of the screen.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">4) Create a second GIFsegment that allows for the drawing of a single blue point at (-50, 50) relative to the centre of the screen.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">5) Modify Q4 to draw 5 green points in a horizontal line, starting at (-50, 50), spaced 10 pixels apart.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The answers to Q2 and Q3 can be checked by recompiling the basic sample after your alterations, then running the harness program as before. &nbsp;However, the basic sample VU code is only set up to draw one GIFpacket. &nbsp;To test your answers to Q4 and Q5, you'll have to make sure that the first GIFsegment and second GIFsegment are part of the same packet. &nbsp;In other words, the first GIFtag must have EOP=0, and the second EOP=1.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I want to emphasise again that the basic.dat file that is generated by this program is the only thing of importance. &nbsp;The gen_data program is not part of the competition entry, it could have been written in Perl, Ruby, on the PS2, on a PC, and doesn't even need to exist at all. &nbsp;If you're really interested, I'll show you how to generate basic.dat by hand, using nothing more than pen and paper. &nbsp;If you're saner than me, and just want to get on with your VU demo, move along to <A HREF="id30.htm" TARGET="_top"    TITLE="4: Making your code file"><U>4: Making your code file</U></A></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id32.htm" TARGET="_top"    TITLE="2: A brief overview of the basic sample"><U>2: A brief overview of the basic sample</U></A> Next - <A HREF="id30.htm" TARGET="_top"    TITLE="4: Making your code file"><U>4: Making your code file</U></A></FONT><BR>
+<bR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Aside: Generating basic.dat by hand</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Recall from <A HREF="id32.htm" TARGET="_top"    TITLE="2: A brief overview of the basic sample"><U>2: A brief overview of the basic sample</U></A>, what data we were trying to generate:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">PRIM - Let's sort out a value for the PRIM field first -</FONT><BR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">PRIM = 3</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">IIP = 1</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">TME = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">FGE = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">ABE = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">AA1 = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">FST = 0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">CTXT =0</FONT></TD>
+ </TR>
+</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT" WIDTH="24" VALIGN = "top" ><IMG BORDER="0" SRC="1x1.gif" HEIGHT="1" ALIGN="bottom" WIDTH="24" HSPACE="0" VSPACE="0"></TD>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">FIX =0</FONT></TD>
+ </TR>
+</TABLE>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">GIFtag: NLOOP = 3, EOP = 1, PRE = 1, PRIM as above , FLG = 0, NREG = 2, REGS = 0x51</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">RGBAQ: 0xFF000000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ2: (2048 - 100, 2048 - 50, 1)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">RGBAQ: 0x00FF0000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ2: (2048 + 100, 2048 - 50, 1)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">RGBAQ: 0x0000FF00</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">XYZ2: (2048 + 100, 2048 + 50, 1)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Now, what you have to bear in mind when writing numbers is that we write the most significant bit first, i.e. bit 127, but we think of the least significant bit, i.e. bit 0 first. &nbsp;So, we must remember to put our fields in the other way round, starting with REGS, then NREG, etc. etc.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Looking at the GIFtag specification on P151 of the EE User's Manual, we have our GIFtag is (all 128 bits!) (I've split up the fields with hyphens, REGS - NREG - FLG - PRIM (FIX, CTXT, FST, AA1, ABE, FGE, TME, IIP, PRIM) - PRE - some garbage - EOP - NLOOP)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">0000000000000000000000000000000000000000000000000000000001010001 - </FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">0010 - 00 - 00000001011 - 1 - 101010101010101010101010101010 - 1 - 000000000000011</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">It's much easier to write that down in Hex, thankfully translating from binary to hex is easy, just take 4 digits at a time.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">00000000000000512005EAAAAAAA8003</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">That's a GIFtag that still says I'm going to send 3 set of RGBAQ and XYZ2 vertex information, and I expect a triangle to be drawn.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then follows the colour and co-ordinates of the first vertex - remember the colour is specified in ABGR format, and the co-ordinates in ZYX format (see P153 of the EE User's Manual for more info on packed data)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">000000000000000000000000000000FF</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">000000000000000100007CE0000079C0</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">0000000000000000000000FF00000000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">000000000000000100007CE000008640</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">00000000000000FF0000000000000000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">00000000000000010000832000008640</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Put that all together, and you've got your GIFpacket, which could be typed into a hex editor without a C program in sight. &nbsp;Of course, I don't recommend you actually do this, I'm just trying to prove a point to myself :) &nbsp;We're done here, move along now to <A HREF="id30.htm" TARGET="_top"    TITLE="4: Making your code file"><U>4: Making your code file</U></A>.</FONT><BR>
+<bR>
+</BODY>
+</HTML>

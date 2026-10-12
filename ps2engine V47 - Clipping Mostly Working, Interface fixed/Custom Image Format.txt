@@ -1,0 +1,12 @@
+7 Bytes First
+PS2CIF - signiture string
+
+4 bytes - width
+4 bytes - height
+1 bytes - bpp
+1 bytes - hasPallette
+
+
+if has pallette then 1024 bytes - swizzeled pallette
+
+Followed by width x height * bpp / 8 bytes actual image data

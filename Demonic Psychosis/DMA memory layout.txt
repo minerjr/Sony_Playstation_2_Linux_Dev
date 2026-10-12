@@ -1,0 +1,18 @@
+12 Megs of DMAed memory
+
+4 Megs for textures
+
+8 megs for Models
+
+
+1 Page = 4096 Bytes/ 4Kilobytes
+
+12 Megs = 3072 Pages
+
+4 Megs = 1024 Pages
+
+8 Megs = 2048 Pages
+
+Each model will be around 64 pages each to hold XYZ, ST, RGBAQ and Normal data
+
+That means a the object can contain rufly 4096 Triangles.

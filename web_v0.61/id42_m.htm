@@ -1,0 +1,298 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="11: Putting it all together">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id42') && !n4p){
+    location.replace('id42.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">11: Putting it all together</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">OK, if you've been through the showcase of previous demos then you've seen my demo in amongst them, my girlfriend's name made out of triangles spinning around past a starfield effect. &nbsp;If you've been doing the homework questions up to now, you should already be able to recreate that exact demo, but I'm going to take you through the process here...</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Memory Map</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Probably one of the most important things to do when writing a VU demo is to keep track of what you're doing with each QWord of memory. &nbsp;You can do this on paper if you like, but I find Excel comes in handy, as you can give yourself a worksheet allocating each row to 1 QWord of memory, and using 4 columns to denote the four fields, x, y, z and w. &nbsp;However you choose to do it, it'll come in handy a lot, so make sure you have some way of keeping track.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">My memory map is going to be very simple. &nbsp;All of my graphics are done in 1 big GIFpacket, split into 2 GIFsegments, one for the logo and one for the starfield. &nbsp;Thus, I have a GIFtag in QW0, followed by the RGBAQ and XYZ2 data for my logo, followed by a GIFtag for the starfield, and finally RGBAQ and XYZ2 data for each star. &nbsp;My logo is made of 14 triangles, so that's 42 vertices, each of which needing 2 QWords of memory. &nbsp;Therefore my logo data takes up QW0 to QW84. &nbsp;After that I have my starfield GIFtag in QW85, followed by 200 stars, so that takes up QW85 to QW485. &nbsp;For the moment, I'm not using QW486 to QW1022, but don't forget the data supplied by the harness in QW1023! &nbsp;That QWord is not available for public use. &nbsp;To summarise:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">            <TABLE BORDER="2" CELLPADDING="2" CELLSPACING="1" WIDTH="364" BORDERCOLORLIGHT="#C0C0C0" BORDERCOLORDARK="#808080" FRAME="BOX" RULES="ALL">
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">QWord</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Usage</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">0</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Logo GIFtag</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Colour of vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Position of vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">...</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Vertex Data</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">84</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Position of last vertex</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">85</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Starfield GIFtag</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">86</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Colour of Vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">87</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Position of Vertex 1</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">...</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Vertex Data</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">485</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Position of last vertex</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">486</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Unallocated</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">...</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Unallocated</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1022</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Unallocated</FONT></tD>
+</tR>
+                <tR>
+                    <tD  VALIGN=TOP HEIGHT= 19  WIDTH="71"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1023</FONT></tD>
+                    <tD  VALIGN=TOP WIDTH="274"><FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Harness Data</FONT></tD>
+</tR>
+</TABLE></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, let's write a gen_data.c to generate the required data. &nbsp;First up is the GIFtag for the logo. &nbsp;I decided to create the logo by drawing it out on some graph paper, labelling the centre of the logo as (0,0) and working out the co-ordinates of each of the vertices from there. &nbsp;I gave the logo an arbitrary constant Z-value of 100, which I'll come back to later.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The definition of the logo then looks like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">#define NUM_TRIS&nbsp;&nbsp;&nbsp;&nbsp;14</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">const int vert[NUM_TRIS * 6] = {&nbsp;&nbsp;&nbsp;&nbsp;-150, &nbsp;-90, -150, &nbsp;-50, -240, -100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-150, &nbsp;-90, -150, &nbsp;-50, -220, &nbsp;-20,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-240, -100, -200, -100, -240, &nbsp;100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-140, &nbsp;100, -100, &nbsp;100, -140, -100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-140, &nbsp;100, -140, &nbsp;&nbsp;60, &nbsp;-50, &nbsp;100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -50, -100, &nbsp;-50, &nbsp;-60, -140, -100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -90, -100, &nbsp;-50, -100, &nbsp;-50, &nbsp;100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -40, &nbsp;100, &nbsp;&nbsp;&nbsp;0, &nbsp;100, &nbsp;-40, -100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -40, &nbsp;100, &nbsp;-40, &nbsp;-40, &nbsp;&nbsp;50, &nbsp;100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;60, &nbsp;100, &nbsp;100, &nbsp;100, &nbsp;&nbsp;60, -100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;60, &nbsp;100, &nbsp;&nbsp;60, &nbsp;&nbsp;60, &nbsp;150, &nbsp;100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 190, &nbsp;-20, &nbsp;220, &nbsp;&nbsp;&nbsp;0, &nbsp;230, -100,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 180, &nbsp;100, &nbsp;220, &nbsp;100, &nbsp;200, &nbsp;-40,</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 180, &nbsp;&nbsp;&nbsp;0, &nbsp;210, &nbsp;-20, &nbsp;160, -100};</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">And I fill up the GIFtag with code like this: (after the gifpacket_init of course)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;prim=GS_SET_PRIM(GS_PRIM_TRI, GOURAUD(1), TEXTURED(0), FOG(0), ABE(0), ALPHA(0), AA(0), CTXT(0), FIX(0));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsdata(&amp;gifpacket, GIF_SET_TAG(NLOOP(NUM_TRIS*3), EOP(0), PRE(1), prim, GIF_PACKED, NREG(2)));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsdata(&amp;gifpacket, 0x51);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;for(i=0, j=0; i&lt;NUM_TRIS; i++)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[0]=0x0;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[1]=0xFF;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[2]=0xFF;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[3]=0x80;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, color.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[0]=(2048+vert[j++])&lt;&lt;4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[1]=(2048+vert[j++])&lt;&lt;4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[2]=100;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[3]=1;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, vertex.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[0]=0xFF;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[1]=0x0;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[2]=0xFF;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[3]=0x80;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, color.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[0]=(2048+vert[j++])&lt;&lt;4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[1]=(2048+vert[j++])&lt;&lt;4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[2]=100;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[3]=1;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, vertex.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[0]=0xFF;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[1]=0xFF;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[2]=0x0;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[3]=0x80;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, color.ul128);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[0]=(2048+vert[j++])&lt;&lt;4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[1]=(2048+vert[j++])&lt;&lt;4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[2]=100;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[3]=1;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, vertex.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I deliberately set EOP=0 in this GIFtag as I knew I wanted the starfield information to follow immediately afterwards.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Notice that I've decided not to make colour information part of my logo, I've defined each triangle as a Gouraud shaded mix of the 3 secondary colours. &nbsp;That suits me fine, but you may want to create an array of colour information and feed that into the loop instead, giving you more control over the look of the logo. &nbsp;In fact, if you want to, you could design a logo generation program which lets you draw the logo you want, and outputs the vertex information into a file for you, so you don't even have to bother with graph paper. &nbsp;The choice is yours...</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Next follows the starfield GIFpacket. &nbsp;I decided that random (x,y) co-ordinates &nbsp;and colours would be fine, and I decided that a quick trick will make the movement of the stars easier. &nbsp;My idea was to store the speed that I wanted the star to move in the Z co-ordinate of the vertex, and use VU code to add the X and Z co-ordinates together each frame. &nbsp;Then, I would detect when the star reaches the right edge of the screen, and warp it back to the left edge when it does.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Knowing this, I wrote out the starfield GIFtag like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;prim=GS_SET_PRIM(GS_PRIM_POINT, GOURAUD(0), TEXTURED(0), FOG(0), ABE(0), ALPHA(0), AA(0), CTXT(0), FIX(0));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsdata(&amp;gifpacket, GIF_SET_TAG(NLOOP(NUM_STARS), EOP(1), PRE(1), prim, GIF_PACKED, NREG(2)));</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgsdata(&amp;gifpacket, 0x51);</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;for (i=0; i&lt;NUM_STARS; i++)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[0]=i+50;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[1]=2*i+50;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[2]=3*i+50;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.ui32[3]=0x80;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, color.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[0]=((rand()%640) + 1728) &lt;&lt; 4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[1]=((rand()%224) + 1936) &lt;&lt; 4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[2]=((rand()%5) + 1) &lt;&lt; 4;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vertex.ui32[3]=1;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gifpacket_addgspacked(&amp;gifpacket, vertex.ul128);</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">As you can see, the code gives each star a random x co-ordinate between 1728 and 2367, a random y co-ordinate between 1936 and 2159, and a random z co-ordinate between 1 and 5. &nbsp;All co-ordinates are shifted 4 times to the right (I didn't need to shift the Z co-ordinate, but by doing so it makes the arithmetic in the VU code easier). &nbsp;This spreads the stars out randomly on a 640x224 screen centred at (2048, 2048) as required. &nbsp;By allowing the Z co-ordinate to vary between 1 and 5, we get 5 different layers of stars, creating a nice parallax effect. &nbsp;However, to ensure the logo always appears in front of the stars, making the stars appear as if they are in the background, I had to make sure the Z co-ordinates of the logo vertices are always bigger than (5 &lt;&lt; 4) = 80. &nbsp;That's why I set them all to 100, a nice round number :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">That's it for the gen_data.c, for the moment at least ;) &nbsp;You can find the complete version at my <A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>project page</U></A>. &nbsp;Download it, and run it with the ordinary basic.vcl, which as you know just sends the GIFtag stored at address 0, and you should see a static logo spelling my girlfriend's name in front of an array of dimly coloured stars. &nbsp;Excellent, we're half way there.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Moving the stars</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">OK, so now that you know my little trick for moving the stars along, it all seems a little easy. &nbsp;For every vertex, we load up the X and Z co-ordinates, add them together, check we haven't been past the end of the screen, and store the X co-ordinate back. &nbsp;That sounds easy enough, let's write the code!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">We're going to need a for loop, with a single if statement and I'm going to construct it like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">for (iPointer = Start of Star data; iPointer != iEndPointer; i+=2)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;load iPointer[X] into iX;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;load iPointer[Z] into iZ;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iX = iX + iZ;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;if (iX &gt; Right edge of screen)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iX = Left edge of screen;</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;}</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;store iX into iPointer[X];</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">3 Things need pointing out here, firstly that the edge of the screen is at X co-ordinate (2048+320) = 2368, but we must remember that the number we're dealing with has already been left-shifted 4 times, which is the same as multiplication by 16. &nbsp;2368 * 16 = 37888. &nbsp;A similar calculation gives you the left edge of the screen as 27648. &nbsp;Secondly, as you'd know if you'd read both lessons 6 and 8, although we'd like to check if iX &gt; 37888, we really have to check if iX - 37888 &gt; 0. &nbsp;However, we can't put 37888 into the isubiu instruction, because it's too big, so really we check if iX - 27888 - 10000 &gt; 0, or any other equivalent sum.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Thirdly, I snuck i+=2 into the for loop, but why? &nbsp;Well, we're only dealing with vertex XYZ2 co-ordinates, so we have to remember to skip over the RQBAQ data in-between. &nbsp;Let's see if you can see how the pseudo code translates into VU code.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kStarsStart .assign 85 ; Now you see why the memory map comes in useful :)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kStarsEnd .assign 485</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">START:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iPointer, vi00, kStarsStart ; Initialise iPointer</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iEndPointer, vi00, kStarsEnd ; Initialise iEndPointer</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">STARSLOOP:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iPointer, iPointer, 2 &nbsp;; Move onto the (first|next) vertex XYZ data</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ilw.x iX, 0(iPointer) ; Load iPointer[x] into iX</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ilw.z iZ, 0(iPointer) ; Load iPointer[z] into iZ</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iadd iX, iX, iZ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; iX = iX + iZ</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isubiu iCheck, iX, 27888</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isubiu iCheck, iCheck, 10000</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibgtz iCheck, WRAP: &nbsp;&nbsp;; if (iX - 27888 - 10000 &gt; 0) &lt;Right edge of screen&gt; goto WRAP</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">WRAPDONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isw.x iX, 0(iPointer) ; Store iX into iPointer[x]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibne iPointer, iEndPointer, STARSLOOP &nbsp;; Restart the loop if we're not at the end yet</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b KICK:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">WRAP:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iX, vi00, 27648 ; iX = 27648 &lt;Left edge of screen&gt;.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;b WRAPDONE:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">KICK:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;xgkick vi00 ; Send the whole GIFtag off (Logo and Starfield)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">It's important to realise that there are other ways of doing exactly what I just did, it's up to you how you do things, as long as they have the desired effect. &nbsp;For this reason, I'm going to let you code the next part...</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Moving the logo</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">This is your domain. &nbsp;I'm going to tell you what to code, you decide how to code it. &nbsp;Lesson 7 on some Maths may come in useful, vcl_sml.i may come in useful, you decide what you want to do.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">What I want to end up with is a spinning logo, that zooms in or out. &nbsp;Here's my hint - use gen_data.c to pre calculate a matrix that rotates a vertex by 1 degree. &nbsp;In your VU code, use this matrix to multiply each vertex of the logo, looping through like the above starfield code. &nbsp;As for the zooming, the method is completely up to you.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Introducing a tiny bit of interactivity.</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">In my demo, mainly for debugging purposes, but also to teach myself how to add some interactivity to demos, I implemented a small button check. &nbsp;It went something a little like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">if (Circle button is not pressed)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Update the starfield</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">if (Cross button is not pressed)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">{</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;Update the logo</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">}</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">To give you a taster, here's how I did the Circle button check, you can easily modify it to check the Cross button if you've read <A HREF="id38.htm" TARGET="_top"    TITLE="8: Whats in that last QWord?"><U>8: What's in that last QWord?</U></A>.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kCircle .assign 0x2000</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">START:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ilw.w iPad, 1023(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iMask, vi00, kCircle</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iand iCheck, iPad, iMask</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ibne iCheck, vi00, SKIP_STARFIELD:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">STARSLOOP:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;. See above code</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">SKIP_STARFIELD:&nbsp;&nbsp;&nbsp;&nbsp;</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">And that's it, my first ever VU demo, laid bare for all to see! &nbsp;Next up I'll try to dissect Plasmaroids and show you how that was done, but you'll probably have a good idea yourself by now :) &nbsp;The main reason I'm choosing Ben's demo is that it too was built up from the basic sample, using the same ideas. &nbsp;Generate what GIFtags you need, i.e. for the asteroids, the ship, the plasma background, the particles for explosions and acceleration, and the explosions themselves, then alter them with the VU code as you see fit.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you head over to my <A HREF="http://playstation2-linux.com/projects/vutut" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>project page</U></A>, you'll find gen_data.c and basic.vcl files for the code given to you in this chapter, ready for you to add the necessary other parts, or rewrite into your own demo!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Happy microcoding!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id40.htm" TARGET="_top"    TITLE="10: Texture Mapping"><U>10: Texture Mapping</U></A> Next - <A HREF="id43.htm" TARGET="_top"    TITLE="12: Plasmaroids"><U>12: Plasmaroids</U></A></FONT></BODY>
+</HTML>

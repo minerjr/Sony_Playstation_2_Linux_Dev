@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>I/O Processor (IOP)</title><meta name="generator" content="DocBook XSL Stylesheets V1.40"><link rel="home" href="index.html" title="The Playstation 2 Linux Kit Handbook"><link rel="up" href="ch03.html" title="Chapter 3. Functional overview of the Playstation 2"><link rel="previous" href="ch03s06.html" title="Image Processing Unit (IPU)"><link rel="next" href="ch03s08.html" title="System bus controllers"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">I/O Processor (IOP)</th></tr><tr><td width="20%" align="left"><a href="ch03s06.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Functional overview of the Playstation 2</th><td width="20%" align="right"> <a href="ch03s08.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="id2733930"></a><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id2733930"></a>I/O Processor (IOP)</h2></div></div><div class="figure"><p><a name="id2733937"></a><b>Figure 3.7. Block diagram of the Playstation 2 - I/O Processor</b></p><p><img src="figures/PS2BD-IOP.png"></p></div><p>
+   The I/O Processor on the Playstation 2 is actually the Playstation 1 main
+   processor with several extensions to handle USB, Firewire, sound, and the
+   other new peripherals introduced by the Playstation 2. It is a standard
+   MIPS R3000R processor without a MMU and 2MB of local memory. All external
+   I/O such as memory card access, USB control, Firewire devices and sound
+   playback is handled via the IOP. Some of its features include:
+   <div class="itemizedlist"><ul><li><a name="id2733975"></a>
+     MIPS R3000R processor running at 33.86Mhz or 36.86Mhz
+    </li><li><a name="id2733980"></a>
+     2MB of local memory
+    </li><li><a name="id2733985"></a>
+     Sound Processing Unit with 48 channels
+    </li><li><a name="id2733990"></a>
+     Industry standard USB 1.0, Sony i.Link (IEEE 1394 Firewire) support
+    </li><li><a name="id2733995"></a>
+     Serial interface to MagicGate interface (Memory cards and controllers)
+    </li></ul></div>
+  </p><p>
+   Unfortunately, access to the entire IOP is not available to general users 
+   due to Sony's need to protect their Intellectual Property from pirates and 
+   other nefarious individuals.
+  </p><div class="sect2"><a name="id2734840"></a><div class="titlepage"><div><h3 class="title"><a name="id2734840"></a>USB 1.0 Controller</h3></div></div><p>
+    A relatively gutsy move for Sony at the time was integrating two standard
+    USB ports into the Playstation 2. These are standard USB 1.0 compliant
+    ports and will accept any USB 1.0 compliant device. This includes USB
+    cameras, keyboards, mice, storage devices, speakers, etc.
+   </p><p>
+    The USB devices are available to the PS2 Linux kit via the standard Linux
+    USB device filesystem.
+   </p></div><div class="sect2"><a name="id2734864"></a><div class="titlepage"><div><h3 class="title"><a name="id2734864"></a>Sony i.Link (Firewire) Controller</h3></div></div><p>
+    Another very gutsy move by SCE was to include a i.Link (Firewire) port with
+    the Playstation 2. Sadly, this gamble seems to not have paid off
+    as much as Sony would have liked it to. Only a select few games use the
+    i.Link port. Gran Turismo 3 is probably the most successful PS2 title
+    to use them for networked gameplay.
+   </p><p>
+    Unfortunately, the i.Link port is not accessible via the PS2 Linux kit. 
+    The IOP controls access via i.Link and the software calls in the closed 
+    source SBIOS do not exist for i.Link access.
+   </p></div><div class="sect2"><a name="id2734892"></a><div class="titlepage"><div><h3 class="title"><a name="id2734892"></a>Sound Processing Unit (SPU2)</h3></div></div><p>
+    The Sound Processing Unit (SPU2) handles all sound mixing and playback. It
+    is a relatively advanced sound processor capable of a variety of sound
+    effects, playback styles and output styles. SPU2 is actually composed of
+    two sound processing cores (CORE0 and CORE1) each with 24-audio channels
+    each. Both SPU cores are identical.
+   </p><p>
+    Some SPU2's features include:
+    <div class="itemizedlist"><ul><li><a name="id2734917"></a>
+      48-channels of audio in ADPCM format
+     </li><li><a name="id2734922"></a>
+      Software-programmable voices w/ real-time digital effect processing
+      including pitch transformation and modulation, envelope processing and
+      mixing.
+     </li><li><a name="id2734930"></a>
+      2MB of dedicated RAM for sound data
+     </li><li><a name="id2734934"></a>
+      48Khz digital optical output as well as regular analog out
+     </li></ul></div>
+   </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a href="ch03s06.html">Prev</a> </td><td width="20%" align="center"><a href="index.html">Home</a></td><td width="40%" align="right"> <a href="ch03s08.html">Next</a></td></tr><tr><td width="40%" align="left">Image Processing Unit (IPU) </td><td width="20%" align="center"><a href="ch03.html">Up</a></td><td width="40%" align="right"> System bus controllers</td></tr></table></div></body></html>

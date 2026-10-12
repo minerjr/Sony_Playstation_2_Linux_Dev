@@ -1,0 +1,270 @@
+August 11, 2003
+
+Sauce's Visual VU Debugger (SVVUDB) Alpha Release
+-------------------------------------------------
+
+This is an alpha pre-release of SVVUDB - Sauce's Visual VU Debugger.
+
+This document will serve as the user manual until the feature set has
+been frozen, allowing a more formal manual to be developed.  It is,
+after all, very difficult and cumbersome to document a moving target.
+
+This new version adds clients for windows and PC Linux
+
+Contents:
+   I. SVVUDB IS *NOT JUST* AN X-WINDOWS APPLICATION!!!
+  II. INVOKING SVVUDB
+ III. THE SVVUDB INTERFACE
+  IV. ADDING BREAKPOINTS
+   V. GRAPHICS CONTEXTS
+  VI. DEBUGGING WITH THE VU CODING CONTEST HARNESS
+ VII. DEBUGGING REMOTELY (Windows, PC Linux or other PS2)
+VIII. USING SVVUDB ON WINDOWS
+
+I. SVVUDB IS *NOT JUST* AN X-WINDOWS APPLICATION!!!
+---------------------------------------------------
+   The latest version comes with a client for Windows as well as a
+client for PC Linux.
+
+SVVUDB can be used to debug VU0 and VU1 code.
+
+II. INVOKING SVVUDB
+-------------------
+
+Invoking "./svvudb -h" will yield output that describes the command
+line parameters similar to this:
+
+./svvudb [-vu0 | -vu1] [-bp <address>] [-c <address>,<file>]
+         [-d <address>,<file>] [-s <address>]
+        Where <address> is a decimal address
+        or a hex address in the format of 0x123
+        and <file> is a filename.
+        -bp adds a breakpoint at <address>
+        -c uploads code from <file> to <address>
+        -d uploads data from <file> to <address>
+        Note that multiple bp, -c, and -d directives can be specified.
+        -s starts the VU at <address> if it is not already running.
+        Note also that if -vu0 or -vu1 are not specified, -vu1 is
+        assumed
+
+The -vu0 | -vu1 Option
+----------------------
+-vu0 or -vu1 can be specified to indicate the VU that the debugger
+should target.  -vu1 is assumed if neither is specified.  You cannot
+specify both at the same time.
+
+The -bp <address> Option
+------------------------
+The -bp option can be used multiple times; it is used to add a
+breakpoint to VU code that is already loaded or code that is being
+loaded from the command line.  The address, in 64 bit increments, can
+be written in decimal or hexadecimal, so:
+
+   -bp 16
+
+and
+
+   -bp 0x10
+
+Are the same.  They will set a breakpoint at the seventeenth (17th)
+instruction in the VU code memory.
+
+The -c <address>,<file> Option
+------------------------------
+The -c option can be used to upload a microprogram.  As with the -bp
+option, the address can be specified in hexadecimal or in decimal.  To
+upload test.bin to address 0x10, invoke:
+
+   -c 0x10,test.bin
+
+Note the space after the -c, and no spaces before or after the comma.
+You can specify multiple -c options.
+
+The -d <address>,<file> Option
+------------------------------
+The -d option can be used to upload a data.  As with the -bp option,
+the address can be specified in hexadecimal or in decimal.  Unlike the
+-bp option, however the address specifies QWORD increments.  To upload
+test.dat to address 0x10, invoke:
+
+   -d 0x10,test.dat
+
+Note the space after the -d, and no spaces before or after the comma.
+You can specify multiple -d options.
+
+The -s <address> Option
+-----------------------
+Being able to upload code and data is only useful if you can actually
+cause the debugger to execute code (on the other hand, the debugger
+can be used on code driven by other applications simply by setting
+breakpoints).  The -s switch is used to specify the starting address
+of the VU microprogram.  This is from which execution will start.  So,
+to put it all together:
+
+   ./svvudb -bp 0x10 -s 0x10 -c 0x10,test.bin -d 0x10,test.dat
+
+Will upload the code file test.bin to micro memory address 0x10, the
+data file test.dat to data memory address 0x10, set a breakpoint at
+0x10 (which is the first instruction of the uploaded code), and begin
+execution at that first instruction.
+
+III. THE SVVUDB INTERFACE
+-------------------------
+   SVVUDB's interface is split up into four windows:
+ - The Code Window, which shows a disassembly of the VU code and
+ contains the primary interface controls
+ - The Memory Window, which shows the VU data memory and allows you to
+ update it
+ - The Floating Point Register Window, which shows the 32 vector
+ registers VF00-VF31 and allows you to change their values, and
+ - The Integer/Other Register Window which shows the scalar registers
+ VI00-VI15, as well as special registers which include STATUS, MAC,
+ CLIP, R, I, P, Q and TPC.  Most of these registers can be edited as
+ well.
+
+   As you step through your code, the memory and register windows will
+highlight all values that have changed since the last instruction.
+
+To Step Through Your Code
+-------------------------
+ - Use the "Step" button or press s to single-step through your code.
+ - Use the "Run" button or press r to run until the next breakpoint
+   has reached.
+
+To Add/Remove a Breakpoint
+--------------------------
+   Ensure the instruction is selected and press the "Add Breakpoint"
+button or "Clear Breakpoint" button.  You may also use the keyboard
+shortcuts 'b' or 'x'.
+
+To Edit Memory or a Register
+----------------------------
+    Right-click on the memory or register you would like to edit.  You
+may edit the value and press "Ok" to commit the changes, or "Cancel"
+to ignore them.  All hexadecimal values must be written as "0x123".
+
+IV. ADDING BREAKPOINTS
+----------------------
+   SVVUDB's GUI (graphical user interface) becomes active only after a
+breakpoint has been triggered.  SVVUDB offers many ways to set
+breakpoints in your code.
+
+1. Adding Breakpoints through the Command Line
+----------------------------------------------
+   The simplest way to set a breakpoint within SVVUDB is through the
+command line.  This assumes that the VU code has already been uploaded
+by the time the debugger is started.  It requires no change in the
+application, however, assumes that you will not overwrite the VU micro
+memory with new code after adding this breakpoint.
+
+   As an example:
+
+./svvudb -bp 0 -vu1
+
+will add a breakpoint at address 0 in VU1.
+
+2. Embedding Breakpoints in VU Source
+-------------------------------------
+   Breakpoints can be embedded into VU source files by setting the D
+bit.  This is a good choice for developers who do not want to touch
+their application source at all but don't mind changing the VU source.
+This will also allow the developer to understand right away how the
+breakpoint corresponds to the VU source -- since the developer places
+it in the appropriate spot directly in the VU source.  The following
+is an example of a NOP instruction that will trigger the debugger.
+
+nop[D]		nop
+
+3. Dynamically Inserting Breakpoints
+------------------------------------
+   By dynamically inserting breakpoints, a developer can truly
+leverage SVVUDB's ability to run an application uninterrupted until a
+breakpoint is reached.  This approach is particularly useful for
+applications that may upload multiple VU microprograms in a session
+but the developer needs to debug only one of them.
+
+   You must compute the address of the instruction at which to break.
+Each VU instruction takes up 64 bits, and bit 60 (counting from zero)
+is the breakpoint bit, which must be set.  So in order to add a
+breakpoint in the third instruction:
+
+sps2uint64 *pCode=(sps2uint64) myCodePointer;
+pCode[2] |= (sps2uint64) 1 << 60;
+
+   (instead of sps2uint64 you may use your own flavor of a unsigned 64
+   bit integer type).
+
+   This will allow you to set a breakpoint dynamically in your code
+either before transferring it to VU micro memory (or after you
+transfer it if you memory map your VU code).
+
+V. GRAPHICS CONTEXTS
+--------------------
+   SVVUDB allows you to configure the portion of the GS memory that is
+being displayed.  This is particularly useful since many applications
+are double-buffered; they draw one on buffer as they display the
+other.  Unfortunately, as you debug, it often is more useful to see
+the image being drawn; however, most applications will only show the
+previously completed frame.  This is where SVVUDB's Graphics Contexts
+come in.
+
+   You must first ensure that two graphics contexts have been properly
+configured to correspond to the two buffers in your double-buffered
+application.  This is done by pressing the "Graphics Context Settings"
+button in the code window.  From the drop-down menu at the top, there
+are a number of pre-configured settings from the file svvudb.gc.txt.
+You may add additional settings to that file, or you may edit the
+values as they appear on the screen.
+
+   Once properly configured, you will be able to quickly toggle
+between the two buffers by clicking on GS Context 1 and GS Context 2
+(or pressing '1' or '2').  This will allow you to quickly switch
+between the frame being drawn and the last completed frame.
+
+   In order to add an entry to svvudb.gc.txt, it is recommended that
+you clone an existing entry and adjust the values as appropriate.  The
+values are basically a list of the fields for the corresponding
+registers, from right to left (i.e. least significant bits come
+first).  
+
+IMPORTANT HINT: The first entry in svvudb.gc.txt define the settings
+used by default.
+
+VI. DEBUGGING WITH THE VU CODING CONTEST HARNESS
+------------------------------------------------
+   Debugging with the VU coding contest harness is easy!
+
+   1. Start up the harness
+   2. Start your demo
+   3. Run "./svvudb -bp 0"
+   4. Click on "Graphics Context Settings" and load the preset that
+      matches the command line you use for the harness
+
+And you're off!  "./svvudb -bp 0" loads the debugger, setting a
+breakpoint at address 0 which is the starting address of coding
+contest entries.
+
+VII. DEBUGGING REMOTELY (Windows, PC Linux or other PS2)
+--------------------------------------------------------
+You can now debug from a remote machine.  On the PS2 to be debugged,
+start svvudb in server mode by running:
+
+svvudb -server
+
+If the port is NOT 6123, then make note of it.  On the client machine,
+run:
+
+svvudb -client <server host> [-port <server port>] [other arguments]
+
+All other arguments stay the same.  Note that on a PC linux system
+you'll have to run svvudb-pc-linux.  You only need to specify the port
+if you did not bind the server port to 6123.
+
+VIII. USING SVVUDB ON WINDOWS
+-----------------------------
+
+If you want to use the windows version of SVVUDB, you will need to get
+the GTK+ runtime files from www.dropline.net/gtk/ and install them.
+
+Also, since the *.dll files will NOT be in your path, you will need to
+add them before running SVVUDB.

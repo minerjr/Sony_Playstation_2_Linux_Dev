@@ -1,0 +1,8 @@
+# format is:
+# file name, rotx, roty, rotz
+# default rotation values are 0
+
+antalia.stripped, 90
+3000gt_no_windows.stripped
+ape.stripped
+buzzbee.stripped, 90, 0, 0

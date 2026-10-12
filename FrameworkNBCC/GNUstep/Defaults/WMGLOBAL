@@ -1,0 +1,6 @@
+{
+  SystemFont = "-alias-variable-medium-r-normal-*-%d-*-*-*-*-*-*-*,-alias-variable-*-r-normal-*-12-*-*-*-*-*-*-*";
+  BoldSystemFont = "-alias-variable-bold-r-normal-*-%d-*-*-*-*-*-*-*,-alias-variable-*-r-normal-*-12-*-*-*-*-*-*-*";
+  MultiByteText = YES;
+  DoubleClickTime = 250;
+}

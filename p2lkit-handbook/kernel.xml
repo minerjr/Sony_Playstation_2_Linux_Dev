@@ -1,0 +1,36 @@
+<chapter>
+ <title>The PS2 Linux kernel</title>
+ <sect1>
+  <title>The MIPS kernel core</title>
+ </sect1>
+ <sect1>
+  <title>PS2 specific device drivers</title>
+  <sect2>
+   <title>Sony PS2 DVD drive</title>
+  </sect2>
+  <sect2>
+   <title>Playstation 2 Joypad support </title>
+  </sect2>
+  <sect2>
+   <title>Memory card device</title>
+  </sect2>
+  <sect2>
+   <title>Real-time clock</title>
+  </sect2>
+  <sect2>
+   <title>SPU sound driver</title>
+  </sect2>
+  <sect2>
+   <title>Ethernet driver (smap)</title>
+  </sect2>
+  <sect2>
+   <title>Graphics Synthesizer console</title>
+  </sect2>
+  <sect2>
+   <title>Sony PS2 USB controller</title>
+  </sect2>
+ </sect1>
+ <sect1>
+  <title>Kernel command line options</title>
+ </sect1>
+</chapter>

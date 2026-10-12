@@ -1,0 +1,78 @@
+<chapter>
+ <title>Hardware and software included with the kit</title>
+ <sect1>
+  <title>Ethernet Unit</title>
+  <para>
+   A 10/100 Mbit ethernet unit ships with the Playstation 2 Linux kit. The
+   unit is compatible with any 10/100 Base-T network/hub. Along with the
+   standard RJ-45 jack on the back of the unit (with link and activity LEDs),
+   the ethernet unit houses three other connections. The Sony PS2 Hard Disk
+   Drive (HDD) power and IDE data connections are kept opposite the RJ-45
+   jack as well as a proprietary PC card connector which is used to connect 
+   the unit to the Playstation 2.
+  </para>
+  <para>
+   The ethernet unit that ships with the Linux kit resembles the consumer one
+   that will be sold in the US starting in August 2002. The one item that is
+   missing is the 56k modem port.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Hard Disk Drive (HDD)</title>
+  <para>
+   The hard disk drive (HDD) unit that ships with the Playstation 2 is a
+   standard IDE drive with specialized firmware to make it work in a
+   Playstation 2. It is a 40 GB drive manufactured by Western Digital for
+   Sony.
+  </para>
+ </sect1>
+ <sect1>
+  <title>USB Keyboard, Mouse and VGA cable</title>
+  <para>
+   A Sony Playstation 2 USB keyboard is included in the Playstation 2 Linux 
+   kit. The keyboard is a standard black 104-key keyboard. There is a 
+   pass-through port for chaining another USB device off of the keyboard,
+   such as a USB mouse or camera.
+  </para>
+  <para>
+   The Sony Playstation 2 USB mouse is of the standard two button mechanical
+   variety. It is black in color and has a nice PS2 logo on the top. 
+  </para>
+  <para>
+   The kit also comes with a VGA break-out cable for hooking the Playstation
+   2 to a VGA monitor. By default, the linux installer will only work with a
+   Sync on Green VGA monitor. After the installation is complete, you can
+   instruct the bootloader to only use NTSC or PAL for display (so you don't
+   need to have a monitor nearby). The cable also has two RCA jacks for left
+   and right stereo. It plugs directly into the Playstation 2 video port
+   located at the back left of the machine.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Playstation 2 Linux software distribution</title>
+  <para>
+   The PS2 Linux kit ships with a version of Kondara Linux, which is based
+   on RedHat Linux 5.2. The distribution's installer (anaconda) has been 
+   tailored towards the Playstation 2's hardware making installation a 
+   relatively straight forward process.
+  </para>
+  <para>
+   There are two DVD discs in the distribution, the first one is primarily
+   a bootloader and rescue disc, the second is the software distribution.
+   There are 581 binary RPM packages that are included with the system along
+   with 389 source RPM packages.
+  </para>
+  <para>
+   The distribution is a relatively complete one, including a tailored 
+   X-Windows server, most common server packages and user applications.
+  </para>
+ </sect1>
+ <sect1>
+  <title>Hardware that you must purchase separately</title>
+  <para>
+   You must have purchased a Playstation 2 unit ($199 as of August 2002) and 
+   a memory card ($25 as of August 2002) before you are able to use the 
+   Playstation 2 Linux kit.
+  </para>
+ </sect1>
+</chapter>

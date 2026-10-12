@@ -1,0 +1,36 @@
+<chapter>
+ <title>System Performance</title>
+ <sect1>
+  <title>Processors</title>
+  <sect2>
+   <title>Emotion Engine Core</title>
+  </sect2>
+  <sect2>
+   <title>Vector Units</title>
+  </sect2>
+  <sect2>
+   <title>Graphics Synthesizer</title>
+  </sect2>
+  <sect2>
+   <title>I/O Processor</title>
+  </sect2>
+ </sect1>
+ <sect1>
+  <title>System I/O</title>
+  <sect2>
+   <title>Memory bandwidth</title>
+  </sect2>
+  <sect2>
+   <title>Ethernet</title>
+  </sect2>
+  <sect2>
+   <title>Harddisk</title>
+  </sect2>
+  <sect2>
+   <title>USB</title>
+  </sect2>
+  <sect2>
+   <title>Firewire</title>
+  </sect2>
+ </sect1>
+</chapter>

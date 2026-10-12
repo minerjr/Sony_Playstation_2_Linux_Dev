@@ -1,0 +1,184 @@
+<html>
+<head>
+<title>CFYC's Guide to PS2Linux Programming</title>
+</head>
+<body background="http://www.ifrance.com/ps2linux-cfyc/pi.gif">
+<p align="justify">
+<b>
+CFYC's Guide to PS2Linux Programming, Part #1<br>
+Lionel Lemari&eacute; - <a href="mailto:hikey@playstation2-linux.com">hikey@playstation2-linux.com</a><br>
+Last update: 2002-08-13<br>
+</b>
+<br>
+This is Part #1 of a series of guides to using Linux (for Playstation 2) to develop small/simple graphical applications. This series aims to make the users aware of the PS2 architecture and to provide a solid ground of understanding as to how to design an application to take advantage of this hardware.<br>
+<br>
+<b>This document is currently in the process of being written, it is online for testing purposes only and is not the full version.</b><br>
+You can find the latest version here: <a href="http://playstation2-linux.com/download/cfyc/guide_ps2_programming_01.html">http://playstation2-linux.com/download/cfyc/guide_ps2_programming_01.html</a>.<br>
+<br>
+Please do check out the <a href="tips_tricks.html">Tips &amp; Tricks</a> page, as I will populate it with a list of what you absolutly have to know, and try to clear up some misconceptions I have witnessed so far.<br>
+<br>
+Should you have any comments, feedback, or insults, please do not hesitate to post them in the forums in the <a href="http://playstation2-linux.com/projects/cfyc">CFYC</a> project or to contact me directly by <a href="mailto:hikey@playstation2-linux.com">e-mail</a>.
+</p>
+<hr>
+<p align="justify">
+<br>
+<b>Chapter #1 - Introduction to the Guide - the general idea</b><br>
+<br>
+<!--
+This Guide makes use of Steven &lt;SauceMan&gt; Osman's kernel module (found <a href="">here</a>). This module opens up a great deal of functionalities normally hidden for security reasons, please make sure you read the <a href="">disclaimer</a>. Using the module means that you accept to trade system stability for a big speed increase.<br>
+-->
+This Guide is aimed at people wanting to get the best out of the kit. A good application has to be designed properly in order to take advantage of the hardware. In the following chapters, we will cover: <br>
+- Setting up the devices (GS, VUs, SPR, pads)<br>
+- Loading a texture in VRAM<br>
+- Building a DMA packet to send a sprite via PATH3, using the texture.<br>
+- Using scratchpad for better memory access performance.<br>
+- Coding and uploading a VU1 micro-program.<br>
+- Building a DMA packet to send geometry via PATH1, using the texture.<br>
+- displaying text on the screen.<br>
+- Using VU0 to offload calculations from the main CPU.<br>
+- Using Interlock to speed things up (VU0/CPU).<br>
+- Using interrupts (if it turns out to be possible at all).<br>
+<br>
+Each part of the Guide includes a <a href="#step">step by step</a> chapter, concretely demonstrating how to use what is explained.<br>
+<br>
+I strongly recommend you make a local copy of the pdf hardware manuals from disc 1 and to keep them handy, as I will reference them as much as possible.<br>
+<br>
+The general idea is that at all times, the different parts of the PS2 should be kept busy. This is not an easy task to design the application taking everything in consideration, so you have to study the general architecture of the console before even attempting to do anything.<br>
+The console has the following devices: (<i>eeuser_e.pdf, p16</i>)<br>
+- <b>GS</b>, which is the graphics chip. It draws 2D primitives (points, lines, triangles, strips and sprites). There are three PATHs to reach it:<br>
+<table><tr><td width=20></td><td>
+- <b>PATH1</b>: Mainly intended for geometry. You send the 3d data of your model to VU1, which transforms it and sends it to the GIF via a dedicated bus. You <i>want</i> to use it as much as possible.<br>
+- <b>PATH2</b>: Not interesting for now. Mainly used to grab the VRAM back to main memory.<br>
+- <b>PATH3</b>: Mainly intended for texture and pre-transformed geometry uploads (HUD, text, ...).<br>
+</td></tr></table>
+- <b>VUs</b>, which are 2 additional processors with custom sets of instructions especially targeted at vector calculations.<br>
+<table><tr><td width=20></td><td>
+- <b>VU0</b>: Ideally used for vertex deformation (e.g. skinning), physics, possibly AI, particle systems...<br>
+- <b>VU1</b>: Ideally used for transform and lighting and special effects (e.g. cartoon rendering).<br>
+</td></tr></table>
+- <b>ScratchPad</b>, which is a small fast access memory device. You want to use it as much as possible to overcome data cache misses problems which are a killer on PS2Linux.<br>
+- <b>DMAC</b>, which is an intelligent memory transfer manager. It is mandatory that you get familiar with it, as this is the main reason why the PS2 is so fast.<br>
+<br>
+It is important you give an extra effort in understanding the function of each device, before you even learn how to use them.<br>
+<br>
+<u>Little design example (1)</u><br>
+Imagine you want to write a little textured rotating cube demo over a textured background.<br>
+<table><tr><td><b>CPU</b></td><td>
+The CPU side in that case won't have too much to do, mainly setting up buffers to be sent.
+</td></tr><tr><td><b>VU0</b></td><td>
+VU0 will do the rotation matrix calculations, camera movements, that kind of things.
+</td></tr><tr><td><b>VU1</b></td><td>
+VU1 will do the transform and lighting. Don't even think about doing on the CPU, it's a waste of time.
+</td></tr><tr><td><b>ScratchPad</b></td><td>
+You can store your matrices, model data, temporary variables in there. ScratchPad is generally good for you, it doesn't have any cache issues and Linux doesn't mess with it...
+</td></tr></table>
+<table border=1><tr><td>
+So basically,<br>
+- you initialise the console,<br>
+- prebuild a GIF packet once and for all to draw the background sprite (we'll see later for optimisations here) in SPRmem,<br>
+- prebuild a DMA packet once and for all for your model in SPRmem,<br>
+- prebuild a GIF packet once and for all for the textures in main memory,<br>
+- prebuild a DMA packet once and for all for the tranformation matrices, the data will be updated on each frame,<br>
+- then in a loop,<br>
+<table><tr><td width=20></td><td>
+- wait for start of VSYNC,<br>
+- DMA send the background sprite in normal mode (<i>eeuser_e.pdf, p44</i>), don't wait for completion,<br>
+- update the rotation matrix with VU0,<br>
+- wait for completion of DMA transfer of the bg sprite,<br>
+- DMA send the tranformation matrices to VIF1,<br>
+- DMA send the model data to VIF1 in source chain mode (<i>eeuser_e.pdf, p45</i>),<br>
+- DMA send the textures to the GIF for the next frame.<br>
+</td></tr></table>
+</td></tr></table>
+<br>
+<u>Little design example (2)</u><br>
+Now, for the hell of it, you want to make a car game, GTA style, 2D and everything.<br>
+I am not saying that this is the greatest design ever, it's just showing the way you should think about those things.<br>
+<table><tr><td><b>CPU</b></td><td>
+First of all, it will obviously deal with the input from the player. Then visibility test (e.g. quadtree), stitch a bunch of prebuilt DMA packets together sorted by texture usage. A bit of IA as well, to make it sound cool.<br>
+</td></tr><tr><td><b>VU0</b></td><td>
+All the (visible) cars DMA packets are sent to VU0 to update position, direction, speed, all that. Collision detection could be done here, but that means that you have to find out roughly potentially colliding cars on CPU, because chances are they will not all fit in memory at once.
+</td></tr><tr><td><b>VU1</b></td><td>
+VU1 will do procedural terrain generation while the CPU and VU0 are busy doing physics (that's a nice name for a textured grid, isn't it ?). Then it will generate triangle strips from the position and direction of each car and send a few particles, generate pedestrians, and other eye candies.
+</td></tr><tr><td><b>ScratchPad</b></td><td>
+You can use the SPR to efficiently exchange data between CPU and VU0 at high rate, without having to deal with cache issues.
+</td></tr></table>
+<br>
+<table border=1><tr><td>
+So again, basically,<br>
+- initialise the lot,<br>
+- load all the textures in main memory, in DMA packets ready to send,<br>
+- prebuild DMA packet that will hold the data for the cars, making structures with pointers to the data inside the packet,<br>
+- prebuild some separate packets that VU1 will use to generate the road grid, they're separate from each other so you can do visibility tests on them,<br>
+- then in a loop,<br>
+<table><tr><td width=20></td><td>
+- read input, update stuff accordingly,<br>
+- test visibility for the terrain and cars,<br>
+- send visible textures (<i>see note</i>),<br>
+- send the bits of roads to VU1, do not wait for completion,<br>
+- work with CPU and VU0 coupled (possibly interlock) to work out new positions for the cars, collisions and everything,<br>
+- wait for terrain rendering to finish,<br>
+- send the cars, grouped by texture, VU1 will create a quad (tri-strip) for each car,<br>
+- prepare some eye-candy on CPU,<br>
+- wait for the cars to be rendered, send the eye-candy.<br>
+</td></tr></table>
+</td></tr></table>
+<i>note</i>: There is room from improvement here (and everywhere, but particularly here). It is actually possible to send the textures via PATH3 and send some geomatry via PATH1 at the same time. The main problem is to synchronise both, and it will not be addressed here.<br>
+<hr>
+<br>
+<br>
+<b>Chapter #2 - Setting the devices</b><br>
+<br>
+Before you can do anything, you have to open the different devices to get access to the processors, scratchpad, controllers... <br>
+Coming pretty soon.<br>
+<br>
+</p>
+<hr>
+<p align="justify">
+<a name="step">&nbsp;</a><br>
+<b>Step by step, Part #1</b><br>
+<br>
+<u>Setting up the devices</u><br>
+<br>
+Source taken from <u>harness.c</u> in the <a href="http://playstation2-linux.com/download/cfyc/base_code.html">base code</a> (not available yet).
+<br>
+<br>
+Open the pad devices to be able to read the data with a <i>read</i> command later.<br>
+<table border=1 bgcolor=FFFFFF><tr><td>
+<pre>pad_fd[<FONT color=#ff00ff>0</FONT>] = open( PS2_DEV_PAD0,O_RDWR );
+pad_fd[<FONT color=#ff00ff>1</FONT>] = open( PS2_DEV_PAD1,O_RDWR );</pre>
+</td></tr><tr><td>
+<pre><B><FONT color=#804040>if</FONT></B> (read(pad_fd[id],pad,<FONT color=#ff00ff>32</FONT>)!=<FONT color=#ff00ff>8</FONT>) pad-&gt;button = <FONT color=#ff00ff>0xFFFF</FONT>;</pre>
+</td></tr></table>
+<br>
+Open the VU0 device, it needs to be done before VU1. Then mmap it so we can used it as normal memory, using the pointers <i>vu0mem</i> and <i>vu1mem</i>. Don't hesitate to do a <i>man mmap</i> to get more information.<br>
+<table border=1 bgcolor=FFFFFF><tr><td>
+<pre>vu0_fd = open( PS2_DEV_VPU0,O_RDWR );
+vu1_fd = open( PS2_DEV_VPU1,O_RDWR );</pre>
+</td></tr><tr><td>
+<pre>vu0mem = mmap( <FONT color=#ff00ff>0</FONT>, <FONT color=#ff00ff>8192</FONT>, PROT_READ|PROT_WRITE, MAP_SHARED, vu0_fd, <FONT color=#ff00ff>0</FONT> );
+vu1mem = mmap( <FONT color=#ff00ff>0</FONT>, <FONT color=#ff00ff>32768</FONT>, PROT_READ|PROT_WRITE, MAP_SHARED, vu1_fd, <FONT color=#ff00ff>0</FONT> );</pre>
+</td></tr></table>
+<br>
+Open the scratchpad device, and mmap.<br>
+<table border=1 bgcolor=FFFFFF><tr><td>
+<pre>spr_fd = open( PS2_DEV_SPR, O_RDWR );</pre>
+</td></tr><tr><td>
+<pre>sprmem = mmap( (<B><FONT color=#2e8b57>void</FONT></B>*)<FONT color=#ff00ff>0x70000000</FONT>, <FONT color=#ff00ff>16384</FONT>, PROT_READ|PROT_WRITE, MAP_SHARED, spr_fd, <FONT color=#ff00ff>0</FONT> );</pre>
+</td></tr></table>
+<br>
+Open the GS device, it is then used with IOCTL to set the different registers.<br>
+<table border=1 bgcolor=FFFFFF><tr><td>
+<pre>gs_fd = open( PS2_DEV_GS, O_RDWR );</pre>
+</td></tr><tr><td>
+<pre>err=ioctl( gs_fd, PS2IOC_GSCREENINFO, &amp;old_screeninfo);</pre>
+</td></tr></table>
+<br>
+Open the event device, so we can wait for vsync.<br>
+<table border=1 bgcolor=FFFFFF><tr><td>
+<pre>event_fd = open( PS2_DEV_EVENT, O_RDWR );</pre>
+</td></tr></table>
+</p>
+</body>
+</html>
+

@@ -1,0 +1,44 @@
+Here are files and headers from FLAC sources.
+
+From libFLAC (can be disabled with --enable-external-flac,
+	if you have libFLAC & headers installed. Copyright
+	is in COPYING.Xiph):
+FLAC_assert.h
+FLAC_export.h
+FLAC_format.h
+FLAC_metadata.h
+FLAC_ordinals.h
+FLAC_stream_decoder.h
+bitbuffer.c
+bitmath.c
+cpu.c
+crc.c
+fixed.c
+format.c
+lpc.c
+metadata_object.c
+private_bitbuffer.h
+private_bitmath.h
+private_cpu.h
+private_crc.h
+private_fixed.h
+private_format.h
+private_lpc.h
+protected_stream_decoder.h
+stream_decoder.c
+
+From plugin_common (needed for decoding.
+	can only be disabled by --disable-flac :)
+	(GPL):
+defs.h
+dither.c
+dither.h
+private_fast_float_math_hack.h
+replaygain_synthesis.c
+replaygain_synthesis.h
+
+Changes made:
+Fixed some warnings.
+Use local headers.
+Currently no assembler optimizations included, etc.
+

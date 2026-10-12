@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>CFYC's Guide to PS2Linux Programming</title>
+</head>
+<body background="http://www.ifrance.com/ps2linux-cfyc/pi.gif">
+<p align="justify">
+<b>
+CFYC's Guide to PS2Linux Programming, Tips &amp; Tricks page<br>
+Lionel Lemari&eacute; - <a href="mailto:hikey@playstation2-linux.com">hikey@playstation2-linux.com</a><br>
+Last update: 2002-08-13<br>
+</b>
+<br>
+This is the Tips &amp; Tricks page, where I will attempt to list a number of ideas you absolutly have to get familiar with, some of them are aimed to correct misconceptions that I have observed in the forums. As a general rule, if you don't understand something in the list, post on the forums and take it for granted until it is explained. That will save you a lot of time.<br>
+<br>
+<b>This document is currently in the process of being written, it is online for testing purposes only and is not the full version.</b><br>
+You can find the latest version here: <a href="http://playstation2-linux.com/download/cfyc/tips_tricks.html">http://playstation2-linux.com/download/cfyc/tips_tricks.html</a>.<br>
+<br>
+You can also check out the <a href="guide_ps2_programming_01.html">Guide to PS2Linux Programming</a> which deals with design and implementation of games in general on PS2Linux.<br>
+<br>
+Should you have any comments, feedback, or insults, please do not hesitate to post them in the forums in the <a href="http://playstation2-linux.com/projects/cfyc">CFYC</a> project or to contact me directly by <a href="mailto:hikey@playstation2-linux.com">e-mail</a>.
+</p>
+<hr>
+<p align="justify">
+<br>
+<b>EE core</b><br>
+<br>
+<u>Tip #1</u><br>
+<br>
+Do not ever, <i>ever</i>, consider creating a class for a primitive like a dot, line, triangle. Also, do not send your primitives one at a time, build batches (around 50 vertices on average).<br>
+<br>
+The reason for that is that nothing is less efficient than having the memory fragmented with classes all over the place. Performance is an issue on PS2, if you don't do it the right way, you will have disappointing results.<br>
+And it's not good for packet building purposes either because the data would need to be copied into the DMA packet anyway and there is no point having it twice in memory at the same time. It's no good for teaching purposes as well, it's no good learning with the wrong concepts.<br>
+So what you want is a clean array (allocated all at once, forget all you know about realloc), that contains your prebuilt DMA packet with the data embedded. Ideally the packet building is done offline and saved into a file that you read at runtime and that needs no processing.<br>
+<br>
+<u>Tip #2</u><br>
+<br>
+Do not use PATH3 <font face="courier new">(EE-&gt;GS)</font> for geometry, it is *bad*. When you learn, use the basic.vsm file from the samples, make some base code, learn about packets, then have a look at VCL. It's seriously not that hard for common T&amp;L, and it is the way to go.<br>
+<br>
+</p>
+<hr>
+<p align="justify">
+<br>
+<b>VIF0 / VU0</b><br>
+- Coming some time in the near (?) future.<br>
+<br>
+</p>
+<hr>
+<p align="justify">
+<br>
+<b>VIF1 / VU1</b><br>
+- Coming some time in the near (?) future.<br>
+<br>
+</p>
+<hr>
+<p align="justify">
+<br>
+<b>Other</b><br>
+- Coming some time in the near (?) future.<br>
+<br>
+</p>
+</body>
+</html>
+

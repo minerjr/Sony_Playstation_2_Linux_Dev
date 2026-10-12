@@ -1,0 +1,153 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="7: Some Maths">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id35') && !n4p){
+    location.replace('id35.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">7: Some Maths</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">This lesson looks at some of the things you can do with the VUs by figuring out some maths. &nbsp;First up is matrix multiplication, a common task in the 3D world. &nbsp;We then apply that knowledge to rotation and scaling, and in the future we'll flesh this out to actually make a complete demo.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Matrix Multiplication</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">A lot of 3D graphics involves multiplying matrices. &nbsp;Commonly, 4x4 matrices are used which represent 3D homogeneous co-ordinates. &nbsp;That's convenient, because VU memory is mapped out in QWords with 4 fields. &nbsp;What an amazing coincidence :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, how would we go about multiplying 2 matrices together? &nbsp;For those of you uninitiated to matrices, a general matrix multiplication looks like this...</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><IMG ALIGN=bottom SRC="087f1650.gif" border=0 width="753" height="101"></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>Note: Many thanks to all who sent in the matrix graphics! &nbsp;There were a lot of you... good to know I have many readers :)</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, to calculate a 4x4 matrix product, that's a whopping 64 multiplications and 48 additions! &nbsp;Good job that the VU can handle MADDing all four fields simultaneously then. &nbsp;Ever get the feeling that Sony designed the VUs to fit their purpose really, really well :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Here then is a routine which will multiply 2 4x4 matrices together, and store the results in a fourth. &nbsp;Firstly, we'll load each matrix into 4 float registers, using some constants. &nbsp;Note: I don't think I told you this before, but GASP can perform calculations on constants for you. &nbsp;As you would expect, if kLeft has been assigned the value 0, then kLeft+1 would evaluate as 1.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kLeft .assign 0</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kRight .assign 4</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kResult .assign 8</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf01, kLeft(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf02, kLeft+1(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf03, kLeft+2(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf04, kLeft+3(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf05, kRight(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf06, kRight+1(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf07, kRight+2(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;lq vf08, kRight+3(vi00)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">This puts vf01 = (a, b, c, d), vf02 = (e, f, g, h).....vf05 = (A, B, C, D) etc.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then, we calculate the first row of the result matrix. &nbsp;The first row needs 16 multiplications, and 12 additions. &nbsp;We know we can do 4 multiplications and additions in one instruction, so we should only need 4 instructions. &nbsp;Firstly, we notice that every element in the first row has a term with a as a factor (a being the x field of vf01). &nbsp;The 'a' terms are A, B, C and D, the 4 fields of the vf05 register. &nbsp;So, we need to multiply each field of vf05 by the x field of vf01. &nbsp;That is the purpose of the broadcast instruction.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;mul&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf05, vf01[x]</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Now we have the 'a' terms in the accumulator, we'll add on the 'b' terms. &nbsp;They come from a broadcast multiply of vf01[y] across vf06.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf06, vf01[y]</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then, we calculate the 'c' terms, and the 'd' terms. &nbsp;When calculating the 'd' terms though, we can now store the result into it's final destination, vf09, instead of the accumulator.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf07, vf01[z]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vf09, vf08, vf01[w]</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">And that's one row of the matrix done! &nbsp;The other 3 rows follow quite simply:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;mul&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf05, vf02[x]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf06, vf02[y]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf07, vf02[z]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vf10, vf08, vf02[w]</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;mul&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf05, vf03[x]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf06, vf03[y]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf07, vf03[z]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vf11, vf08, vf03[w]</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;mul&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf05, vf04[x]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf06, vf04[y]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc, vf07, vf04[z]</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;madd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vf12, vf08, vf04[w]</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Finally, we store our results back into VU mem for later.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;sq vf09, kResult(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;sq vf10, kResult+1(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;sq vf11, kResult+2(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;sq vf12, kResult+3(vi00)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There, 64 multiplications and 48 additions done, as promised. &nbsp;All in 16 instructions. &nbsp;Then add 8 instructions for loading the matrices, and 4 for storing the results, and that only 28 instructions. &nbsp;In actual fact, VCL will rearrange a few of them and run some of the lq and sq instructions at the same time as the MULs and MADDs. &nbsp;Aren't the VUs great :)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">You may want to skip to the end of the page and try the homework question now.</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Rotation, Scaling, and Translation.</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Bearing in mind that this is a VU microcoding tutorial, not a 3D tutorial per se, I just wanted to brush over how to implement a few transformations. &nbsp;Note that the matrices may be shown in a different sense to what you're used to. &nbsp;That's because, for the reasons outlined in Homework Question 1, it's easier to write the multiplication code the wrong way around (see note below), and transpose the matrix to suit.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Thus, to move a point (x, y, z, 1) to a point (x+dx, y+dy, z+dz, 1) we would use the matrix:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><IMG ALIGN=bottom SRC="08867650.gif" border=0 width="103" height="101"></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Similarly, we would scale an object by (sx, sy, sz, 1) with the matrix</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><IMG ALIGN=bottom SRC="08a63660.gif" border=0 width="99" height="102"></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">And we would perform a rotation around an axis with</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><IMG ALIGN=bottom SRC="08b34610.gif" border=0 width="308" height="97"></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">(where cx = cosine of the angle of rotation about the x-axis, sx is the sine of that angle, and so on.)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Of course, you could define the matrices the normal way, then write your own matrix transposition routine. &nbsp;Maybe that's your best route, as you could do the rotation, scaling and translation matrices in the normal order, multiply them together, and only transpose that result to make the vertex multiplication easier. &nbsp;It's all really up to you!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">There is a useful file in the <A HREF="http://playstation2-linux.com/projects/vcl" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>latest release of vcl</U></A> called the Standard Macro Library. &nbsp;Just adding the line:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;.include &quot;vcl_sml.i&quot;</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">to the top of your code, and putting that file in your coding directory, enables you to use all sorts of macros for operations on matrices, quaternions, vectors, vertices, even some simple macros for implementing a simple stack. &nbsp;Go take a look at them, they can help you out a lot when you're unsure how you should go about something like matrix multiplication (Where do you think I got the above code from?)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">You may notice some slightly strange notation in the macros. &nbsp;If 'matrix' is actually vf12, then it seems that GASP is clever enough to know that matrix[1] should be vf13, matrix[2] should be vf14, and so on. &nbsp;That should help make the macro code a little easier to read.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">One final thing, do the homework question before you look at the macro that does it for you, I want you to get used to using the microinstructions!</FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Homework</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Take the matrix multiplication code above, and adapt it to multiply a 1x4 vector by a 4x4 matrix. &nbsp;You're after results like this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><IMG ALIGN=bottom SRC="08ceb5b0.gif" border=0 width="747" height="91"></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Hint: &nbsp;4 instructions should do for the actual multiply.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>Note: &nbsp;I think it's more usual mathematically to multiply the other way round, i.e. to multiply a 4x4 matrix by a 4x1 column vector. &nbsp;However, I think it's easier and more efficient to write the multiplication code for the multiplication shown above. &nbsp;I believe that the mathematically correct way round is what you'll be used to if you have an OpenGL background, and the faster, 'wrong' way around will actually be correct to you if the have a D3D background. &nbsp;Each to their own.</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">I'll add some more homework questions to this lesson when I can think of a good direction to point you in.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id34.htm" TARGET="_top"    TITLE="6: Using the building blocks"><U>6: Using the building blocks</U></A> Next - <A HREF="id38.htm" TARGET="_top"    TITLE="8: Whats in that last QWord?"><U>8: What's in that last QWord?</U></A></FONT><BR>
+<bR>
+</BODY>
+</HTML>

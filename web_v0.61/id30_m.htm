@@ -1,0 +1,137 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+<META name="description" content="4: Making your code file">
+<SCRIPT language="JavaScript">
+var n4p = (self.innerHeight != null && self.innerHeight == 0);
+if ((parent.TlxPgNm==null || parent.TlxPgNm!='id30') && !n4p){
+    location.replace('id30.htm');
+}
+</SCRIPT>
+<META http-equiv="GENERATOR" CONTENT="Created with Trellix Web, HTML Exporter 2.5.2309"> 
+</HEAD>
+<BODY BGCOLOR="#000000" TEXT="#F7F7FF" LINK="#FFFFCC" ALINK="#00039A" VLINK="#CCCC99">
+    <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="4" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif">4: Making your code file</FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="11"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">VU code isn't hard, but it can be a little awkward. &nbsp;VCL is a tool that makes writing VU code a lot easier for you by taking care of lots of things that I'll only brush over here. &nbsp;The VU can actually pair up instructions and run 2 of them at once, you have to be careful about using results from previous operations before they're ready, and other things like that. &nbsp;But that's the last you'll hear of them hear, because we're using VCL</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>(Note to native PS2DEVers, this is what makes VCL so useful. &nbsp;If it's not available cross-platform soon, I'll make a basic sample without using VCL just for you.)</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you haven't installed VCL yet, you might need to here. &nbsp;It's found on the first DVD of the Linux kit, which is the one you have to use to boot Linux, so it's already in your drive! &nbsp;Go to your favourite directory, and type:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">mount /mnt/cdrom</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">cp /mnt/cdrom/vcl/vcl-12_1.tgz .</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">tar zxfv vcl-12_1.tgz</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">cp vcl-1.28 /usr/local/bin</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Note: There's an updated VCL available at the <A HREF="http://playstation2-linux.com/projects/vcl" TARGET="_top"    TITLE="http://playstation2-linux.com/projects/v"><U>playstation2-linux.com</U></A> web site, which contains a PDF manual. &nbsp;The version on the disk does have some text files to read though, so please do so!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, to actually make our code file, first we run it through VCL to turn it into a proper VU assembly source file, then we assemble that file with ee-dvp-as, the vector unit assembler, into an object file. &nbsp;However, the assembler leaves the file in a form that is suitable for linking into big projects, not suitable for uploading into VU instruction memory, so we must take a final step to convert our object file into a binary file that can be uploaded. &nbsp;The details of this process are hidden away in the Makefile for the basic sample, if you just stick to editing the basic.vcl file, the Makefile will do the job for you.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">All the basic sample does is take the GIFpacket we made and stored in our data file, and send it to the GS. &nbsp;Let's dissect the basic.vcl file:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kGifPacket .assign 0</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">.init_vf_all</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">.init_vi_all</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">.syntax new</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">.vu</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">--enter</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">--endenter</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">START:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iKick, vi00, kGifPacket</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;xgkick iKick</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">--exit</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">--endexit</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Like all VCL code files, we have a --enter--endenter block, and a --exit--endexit block. &nbsp;These can do handy things for us when we integrate VU microcode into a larger program. &nbsp;However, I don't think there's anything clever they can do for us in this competition, so I'll leave them for now. &nbsp;Just use them to mark the start and end of your code.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">You may be more comfortable with seeing the line</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">kGifPacket .assign 0</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">written as</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">#define kGifPacket 0</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The latter is syntax you expect in a C file, processed by the CPP preprocessor. &nbsp;The former is syntax expect by the GASP preprocessor. &nbsp;VCL can be set up to use either, but for now we'll leave it in GASP syntax. &nbsp;All the line does is change every occurrence of kGifPacket into a 0 throughout the file, *before* any actual assembling is done.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif"><I>Caveat: GASP doesn't recognise some numbers correctly - namely those in Hex notation and floating point numbers. &nbsp;There may be others out there, but these are known problems. &nbsp;To fix them, write hex numbers as </I>H'123<I> instead of </I>0x123, <I>and</I> 5.325e-2 <I>instead of</I> 0.05325<I>. &nbsp;I don't know whether this caveat applies to the CPP preprocessor, I guess that it doesn't.</I></FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The directives .init_vi_all, and .init_vf_all tell VCL that we're allowed to use all of the integer and float registers, which makes sense as our demo is the only one running. &nbsp;.syntax new tell VCL to use the new syntax model, presumably there was an old syntax model, but I never knew of it :) &nbsp;Todo: <I>I'm not sure what the .vu directive actually does, I think it's a directive to use the VU instruction set, so just leave it in and don't worry about it.</I></FONT><BR>
+<bR>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" VSPACE="0" HSPACE="0" >
+ <TR>
+  <TD ALIGN="LEFT"><FONT SIZE="3" COLOR="#CC9900" FACE="Arial,Helvetica,sans-serif"><B>Where's the meat?</B></FONT></TD>
+ </TR>
+ <TR>
+  <TD HEIGHT="8"></TD></TR>
+</TABLE>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So far, everything has just been syntax to get up and running, so where are the lines that actually do something? &nbsp;They're here:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">START:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iKick, vi00, kGifPacket</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;xgkick iKick</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The START: line is just a label, it's not necessary for this program, so I'll get on to labels later... satisfy yourself for now that they mark a place in the code that you can jump to later.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The xgkick line is the really important instruction, it says &quot;Find the GIFpacket stored in data memory at the address stored in the iKick register, and send it to the GS&quot;</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">But, what's in the iKick register? &nbsp;That's what the line above does. &nbsp;Let's translate it into a form you might be more used to:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">iaddiu is the instruction to 'Integer ADD an Immediate Unsigned' value. &nbsp;Immediate means the value is specified on the line directly, not stored in some register. &nbsp;The command is followed by what register you want to put the answer in, what register you're adding to, and finally the value you're adding.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, iaddiu iKick, vi00, kGifPacket means to add the value kGifPacket to vi00, and put the result in iKick. &nbsp;A couple of things to note. &nbsp;vi00 is an integer register that *always* holds the value zero. &nbsp;kGifPacket was assigned the value 0 earlier, but where's the iKick register? &nbsp;iKick is just a name I gave to the register. &nbsp;VCL will translate that for me into a real register name, most probably vi01, but it doesn't matter. &nbsp;As long I use the name iKick consistently, I'm safe.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">So, what the command really says is &quot;Take the value 0, add 0 to it, and put the value in some register&quot; or even more simply, &quot;Put the value 0 in the iKick register&quot;. &nbsp;Taken together the two lines of code say &quot;Kick the GIFpacket stored in data memory at address 0 to the GS&quot;. &nbsp;Where is address 0? &nbsp;It's the start of data memory. &nbsp;In other words, it's the GIFpacket we carefully constructed in <A HREF="id29.htm" TARGET="_top"    TITLE="3: Making your data file"><U>3: Making your data file</U></A>.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The final thing to notice with the code is that it just ends. &nbsp;There's nothing at the end, save for the --exit--endexit block. &nbsp;VCL puts a magic instruction in the end the code for you, which gives control back to the harness. &nbsp;This is important, how can the harness tell you what the controllers are doing, and maybe switch to another demo, unless you give control back every now and again? &nbsp;Your code is called once per frame, and must stop. &nbsp;Don't worry, soon after you've stopped, you're code will be called again for the next frame!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Let's do something a little more interesting though. &nbsp;How about we make one of the vertices move? &nbsp;We'll take one bit of our vertex information, the x co-ordinate of the first co-ordinate of the triangle, and increment it, making the vertex move horizontally to the right.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">In assembly, we have to do it a little like this. &nbsp;Load up the value from data memory, change it, and store it back. &nbsp;Here's the three lines you need.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ilw.x iFirstX, 2(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iFirstX, iFirstX, 16</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isw.x iFirstX, 2(vi00)</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The first line says, &quot;<U>I</U>nteger <U>L</U>oad the <U>W</U>ord&quot; stored in the x field of the *3rd* QWord into the iFirstX register. &nbsp;What's the 2(vi00) for? &nbsp;It means, take the address stored in vi00 (Which you may remember is *always* zero), and offset it by 2 (A fancy way to say add 2 to it). &nbsp;So, we're looking at QWord 2, but <I>remember the first QWord is numbered 0.</I> &nbsp;So, that's the 3rd QWord.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Why the 3rd QWord? &nbsp;Look back at gen_data.c in <A HREF="id29.htm" TARGET="_top"    TITLE="3: Making your data file"><U>3: Making your data file</U></A>. &nbsp;QW0 contains the GIFtag, QW1 contains the first vertex's colour info, and QW2 contains the co-ordinates of the first vertex. &nbsp;Now do you see why I've called it the iFirstX register?</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Then the iaddiu instruction appears again, this time to add 16 to the iFirstX register and store the result in... the iFirstX register! &nbsp;It's perfectly OK to specify the same register as inputs and outputs to an instruction.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">The third line looks exactly like the first, but &quot;Integer Load the Word&quot; has become &quot;<U>I</U>nteger <U>S</U>tore the <U>W</U>ord&quot;. &nbsp;In other words, we're writing the value in the iFirstX register back where we got it from.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">These three lines should go in-between the START: line and the existing iaddiu instruction, leaving you with this:</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">START:</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;ilw.x iFirstX, 2(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iFirstX, iFirstX, 16</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;isw.x iFirstX, 2(vi00)</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;iaddiu iKick, vi00, kGifPacket</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;xgkick iKick</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Remake the sample, run it in the harness, and watch that triangle move!</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">If you want to know more about VCL, there is a PDF manual included with it. &nbsp;If you want to know more about the VU instruction set available to you in micromode, see the VU User's Manual. &nbsp;Or see <A HREF="id33.htm" TARGET="_top"    TITLE="5:  Instruction set"><U>5: &nbsp;Instruction set</U></A>. &nbsp;Until then, see if you can answer these homework questions.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">1) &nbsp;Change the code to move a different vertex, in a different direction.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">2) &nbsp;Move all 3 vertices in the same direction at once, moving the triangle.</FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">3) &nbsp;Read up on 2D rotation and scaling, and make your triangle zoom in and out and spin. &nbsp;<I>Note: this is a hard question - you may want to just skip it and come back to it when you're a little happier with VU coding.</I></FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">4) &nbsp;The code above will quite happily move the vertex off screen and keep incrementing it until it hit's the end of the world and wraps back round to the left. &nbsp;Make the vertex change direction or warp to the left of the screen before it can go off screen. &nbsp;<I>Hint: The screen is 640x224, and you'll need to read up on branching instructions and comparison instructions, or maybe the CLIP instruction - again you may want to come back to this later.</I></FONT><BR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">5) &nbsp;Make a GIFpacket with a few hundred random points of random colours with your data generation program. &nbsp;Make them all scroll to the left, at different speeds, making a starfield effect. &nbsp;When a 'star' hits the left of the screen, put it back over at the right of the screen.</FONT><BR>
+<bR>
+<FONT SIZE="3" COLOR="#FFCC66" FACE="Arial,Helvetica,sans-serif">Prev - <A HREF="id29.htm" TARGET="_top"    TITLE="3: Making your data file"><U>3: Making your data file</U></A> Next - <A HREF="id33.htm" TARGET="_top"    TITLE="5:  Instruction set"><U>5: &nbsp;Instruction set</U></A></FONT><BR>
+<bR>
+</BODY>
+</HTML>
